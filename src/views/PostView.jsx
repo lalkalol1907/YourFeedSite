@@ -50,13 +50,13 @@ class PostView extends Component {
 
     render() {
         var LikeIcon = this.state.liked ? <RiHeartFill className='w-6 h-auto fill-red-500 px-5 group-hover:fill-red-400' /> : <RiHeartFill className='w-6 h-auto fill-bottom-icon-color px-5 group-hover:fill-red-400' />
-        var LikeSvgClass = this.state.liked ? "group bg-red-300 border-solid border border-red-500 rounded-full mb-2 ml-2 hover:bg-red-200 hover:border-red-400 hover:cursor-pointer" : "group bg-bottom-icon-bg-color border-solid border border-bottom-icon-border-color rounded-full mb-2 ml-2 hover:bg-red-100 hover:border-red-400 hover:cursor-pointer"
+        var LikeSvgClass = this.state.liked ? "group bg-red-300 border-solid border border-red-500 rounded-full mb-2 ml-2 hover:bg-red-200 hover:border-red-400 hover:cursor-pointer" : "group bg-gray-100 border-solid border border-bottom-icon-border-color rounded-full mb-2 ml-2 hover:bg-red-100 hover:border-red-400 hover:cursor-pointer"
 
         return (
             <div className="grid items-center max-w-xl border-solid border border-gray-200 rounded-2xl mb-9">
-                <div className="flex items-center py-1 px-2.5">
+                <div className="flex items-center py-1 px-2.5 group hover:cursor-pointer">
                     <Avatar className='mr-2.5' src={this.user_pic} />
-                    <h3 className='text-base font-bold'>{this.username}</h3>
+                    <h3 className='text-base font-bold hover:underline'>{this.username}</h3>
                 </div>
                 <div>
                     <img src={this.content} alt="content" className="w-full object-contain" />
@@ -72,8 +72,8 @@ class PostView extends Component {
                         {LikeIcon}
                     </button>
                     <div className='flex-1' />
-                    <button onClick={this.OnSendPressed} className="group bg-bottom-icon-bg-color border-solid border border-bottom-icon-border-color rounded-full mb-2 mr-2 hover:cursor-pointer hover:bg-cyan-100 hover:border-cyan-300">
-                        <RiShareForwardLine className="w-6 h-auto fill-bottom-icon-color px-5 group-hover:fill-cyan-400" />
+                    <button onClick={this.OnSendPressed} className="group bg-gray-100 border-solid border border-bottom-icon-border-color rounded-full mb-2 mr-2 hover:cursor-pointer hover:bg-fuchsia-100 hover:border-fuchsia-400">
+                        <RiShareForwardLine className="w-6 h-auto fill-bottom-icon-color px-5 group-hover:fill-fuchsia-400" />
                     </button>
                 </div>
             </div>

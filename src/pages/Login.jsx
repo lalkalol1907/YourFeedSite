@@ -46,6 +46,10 @@ class Login extends Component {
         event.preventDefault()
     }
 
+    handleRegister(event) {
+        event.preventDefault()
+    }
+
     handleLoginChange(event) {
         this.setState({ ...this.state, login: event.target.value })
     }
@@ -85,15 +89,18 @@ class Login extends Component {
 
     render() {
         return (
-            <div>
+            <div className='flex flex-col items-center min-h-screen bg-gray-100'>
                 {this.state.auth &&
                     <Redirect to="/feed" />
                 }
                 <NavBar />
-                <form className="text-xl p-5 flex flex-col w-40" onSubmit={this.handleSubmit}>
-                    <input type="text" value={this.state.login} onChange={this.handleLoginChange} />
-                    <input type="text" value={this.state.password} onChange={this.handleLPasswordChange} />
-                    <input type="submit" value="Login" />
+                <form className="h-96 text-xl p-5 flex flex-col items-center bg-gray-200 border-0 rounded-3xl shadow-2xl m-10 w-80" onSubmit={this.handleSubmit} >
+                    <p className='text-xl font-bold text-gray-700'>Log In</p>
+                    <input type="text" value={this.state.login} onChange={this.handleLoginChange} className='text-lg py-2 px-4 my-1 text-gray-500 bg-gray-200 border-0 border-b w-60 hover:bg-gray-300 rounded-t-lg'/>
+                    <input type="text" value={this.state.password} onChange={this.handleLPasswordChange} className='text-lg py-2 px-4 my-1 text-gray-500 bg-gray-200 border-0 border-b w-60 mb-8 hover:bg-gray-300 rounded-t-lg'/>
+                    <input type="submit" value="Log In" className='text-lg py-2 px-0 my-1 rounded-full text-white bg-fuchsia-700 w-36 border-0 hover:cursor-pointer shadow hover:shadow-md hover:shadow-fuchsia-700 shadow-fuchsia-700'/>
+                    <div className='flex-1' />
+                    <button className='text-lg text-gray-600 bg-gray-200 underline border-0 hover:cursor-pointer mb-2' onClick={this.handleRegister}>Register</button>
                 </form>
             </div>
         )

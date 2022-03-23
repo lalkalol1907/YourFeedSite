@@ -19,6 +19,7 @@ class Feed extends Component {
         }
         this.user_id = 0
         this.like_button = this.like_button.bind(this)
+        this.init = this.init.bind(this)
     }
 
     init() {
@@ -71,11 +72,11 @@ class Feed extends Component {
 
     render() {
         return (
-            <div className={'min-h-screen flex flex-col items-center m-0 p'}>
+            <div className={'min-h-screen flex flex-col items-center m-0 p bg-gray-100'}>
                 {this.state.should_redirect &&
                     <Redirect to="/login" />
                 }
-                <NavBar />
+                <NavBar auth={this.state.auth} />
                 {!this.state.loading && this.state.auth &&
                     <div className="flex flex-col items-center">
                         {this.state.posts.map(post => (
