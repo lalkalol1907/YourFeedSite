@@ -34,7 +34,7 @@ class Login extends Component {
             response.json().then(body => {
                 console.log(body)
                 if (body.stat) {
-                    document.cookie = `access_token=${body.access_token}`
+                    Cookies.set('access_token', body.access_token)
                     this.setState({ ...this.state, auth: true, user_id: body.user.id })
                 }
             })
