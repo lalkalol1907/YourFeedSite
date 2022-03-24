@@ -10,8 +10,10 @@ class Login extends Component {
         this.state = {
             auth: false,
             user_id: 0,
-            login: 'abobik',
-            password: 'aboba'
+            login: '',
+            password: '',
+            IncorrectPassword: false, 
+            IncorrectLogin: false
         }
         this.LogIn = this.LogIn.bind(this)
         this.handleLoginChange = this.handleLoginChange.bind(this)
@@ -83,7 +85,6 @@ class Login extends Component {
     }
 
     componentDidMount() {
-        // document.title = "YourFeed"
         this.getToken()
     }
 
@@ -94,13 +95,15 @@ class Login extends Component {
                     <Redirect to="/feed" />
                 }
                 <NavBar />
-                <form className="h-96 text-xl p-5 flex flex-col items-center bg-gray-200 border-0 rounded-3xl shadow-2xl m-10 w-80" onSubmit={this.handleSubmit} >
+                <form className="h-96 text-xl p-5 flex flex-col items-center bg-gray-200 border-0 rounded-3xl shadow-2xl mt-16 w-80" onSubmit={this.handleSubmit} >
                     <p className='text-xl font-bold text-gray-700'>Log In</p>
-                    <input type="text" value={this.state.login} onChange={this.handleLoginChange} className='text-lg py-2 px-4 my-1 text-gray-500 bg-gray-200 border-0 border-b w-60 hover:bg-gray-300 rounded-t-lg'/>
-                    <input type="text" value={this.state.password} onChange={this.handleLPasswordChange} className='text-lg py-2 px-4 my-1 text-gray-500 bg-gray-200 border-0 border-b w-60 mb-8 hover:bg-gray-300 rounded-t-lg'/>
+                    <input type="text" value={this.state.login} onChange={this.handleLoginChange} className='text-lg py-2 px-4 my-1 text-gray-500 bg-gray-200 border-0 border-b w-60 hover:bg-gray-300 rounded-t-lg' placeholder='Username or email'/>
+                    <input type="text" value={this.state.password} onChange={this.handleLPasswordChange} className='text-lg py-2 px-4 my-1 text-gray-500 bg-gray-200 border-0 border-b w-60 mb-8 hover:bg-gray-300 focus:border-red-300 rounded-t-lg' placeholder='Password'/>
                     <input type="submit" value="Log In" className='text-lg py-2 px-0 my-1 rounded-full text-white bg-fuchsia-700 w-36 border-0 hover:cursor-pointer shadow hover:shadow-md hover:shadow-fuchsia-700 shadow-fuchsia-700'/>
                     <div className='flex-1' />
-                    <button className='text-lg text-gray-600 bg-gray-200 underline border-0 hover:cursor-pointer mb-2' onClick={this.handleRegister}>Register</button>
+                    <button className='hover:cursor-pointer mb-2 bg-gray-200 border-0 py-0' onClick={this.handleRegister}>
+                        <p className='text-lg text-gray-600 py-1 underline my-0 hover:'>Register</p>
+                        </button>
                 </form>
             </div>
         )

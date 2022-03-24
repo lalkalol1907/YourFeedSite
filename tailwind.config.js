@@ -12,6 +12,9 @@ module.exports = {
         'bottom-icon-border-color': '#e0e0e0',
         'bottom-icon-bg-color': '#fefefe',
         'main-pink': '#c333ff'
+      },
+      height: {
+        '128': '32rem'
       }
     },
   },

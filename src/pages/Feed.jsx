@@ -80,7 +80,7 @@ class Feed extends Component {
                 {!this.state.loading && this.state.auth &&
                     <div className="flex flex-col items-center">
                         {this.state.posts.map(post => (
-                            <PostView toggler={this.toggler} id={post.id} text={post.text} likes_count={post.like_users.length} username={post.username} content={post.content} user_pic={post.user_pic} like_users={post.like_users} like_button={this.like_button} USER_ID={this.user_id} />
+                            <PostView key={post.id} toggler={this.toggler} id={post.id} text={post.text} likes_count={post.like_users.length} username={post.username} content={post.content} user_pic={post.user_pic} like_users={post.like_users} like_button={this.like_button} USER_ID={this.user_id} />
                         ))}
                     </div>
                 }
