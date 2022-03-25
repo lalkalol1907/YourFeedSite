@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import NavBar from '../views/NavBar';
 import Cookies from 'js-cookie';
 import { Redirect } from 'react-router-dom';
+import LoginForm from '../views/LoginForm';
 
 class Login extends Component {
 
@@ -10,27 +11,24 @@ class Login extends Component {
         this.state = {
             auth: false,
             user_id: 0,
-            login: '',
-            password: '',
             IncorrectPassword: false, 
-            IncorrectLogin: false
+            IncorrectLogin: false,
+            register: false
         }
-        this.LogIn = this.LogIn.bind(this)
-        this.handleLoginChange = this.handleLoginChange.bind(this)
-        this.handleLPasswordChange = this.handleLPasswordChange.bind(this)
         this.getToken = this.getToken.bind(this)
-        this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleRegButton = this.handleRegButton.bind(this)
+        this.LogIn = this.LogIn.bind(this)
     }
 
-    LogIn() {
+    LogIn(login, password) {
         fetch('/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                login: this.state.login,
-                password: this.state.password
+                login: login,
+                password: password
             })
         }).then(response => {
             response.json().then(body => {
@@ -39,25 +37,20 @@ class Login extends Component {
                     Cookies.set('access_token', body.access_token)
                     this.setState({ ...this.state, auth: true, user_id: body.user.id })
                 }
+                else {
+                    if (body.info.message === "Incorrect password") {
+                        this.setState({...this.state, IncorrectPassword: true, IncorrectLogin: false})
+                    }
+                    if (body.info.message === "Incorrect username") {
+                        this.setState({...this.state, IncorrectLogin: true, IncorrectPassword: false})
+                    }
+                }
             })
         })
     }
 
-    handleSubmit(event) {
-        this.LogIn()
-        event.preventDefault()
-    }
-
-    handleRegister(event) {
-        event.preventDefault()
-    }
-
-    handleLoginChange(event) {
-        this.setState({ ...this.state, login: event.target.value })
-    }
-
-    handleLPasswordChange(event) {
-        this.setState({ ...this.state, password: event.target.value })
+    handleRegButton() {
+        this.setState({...this.setState, register: true, IncorrectLogin: false, IncorrectPassword: false})
     }
 
     getToken() {
@@ -95,16 +88,7 @@ class Login extends Component {
                     <Redirect to="/feed" />
                 }
                 <NavBar />
-                <form className="h-96 text-xl p-5 flex flex-col items-center bg-gray-200 border-0 rounded-3xl shadow-2xl mt-16 w-80" onSubmit={this.handleSubmit} >
-                    <p className='text-xl font-bold text-gray-700'>Log In</p>
-                    <input type="text" value={this.state.login} onChange={this.handleLoginChange} className='text-lg py-2 px-4 my-1 text-gray-500 bg-gray-200 border-0 border-b w-60 hover:bg-gray-300 rounded-t-lg' placeholder='Username or email'/>
-                    <input type="text" value={this.state.password} onChange={this.handleLPasswordChange} className='text-lg py-2 px-4 my-1 text-gray-500 bg-gray-200 border-0 border-b w-60 mb-8 hover:bg-gray-300 focus:border-red-300 rounded-t-lg' placeholder='Password'/>
-                    <input type="submit" value="Log In" className='text-lg py-2 px-0 my-1 rounded-full text-white bg-fuchsia-700 w-36 border-0 hover:cursor-pointer shadow hover:shadow-md hover:shadow-fuchsia-700 shadow-fuchsia-700'/>
-                    <div className='flex-1' />
-                    <button className='hover:cursor-pointer mb-2 bg-gray-200 border-0 py-0' onClick={this.handleRegister}>
-                        <p className='text-lg text-gray-600 py-1 underline my-0 hover:'>Register</p>
-                        </button>
-                </form>
+                <LoginForm LogIn={this.LogIn} IncorrectLogin={this.state.IncorrectLogin} IncorrectPassword={this.state.IncorrectPassword} handleRegister={this.handleRegButton}/>
             </div>
         )
     }
