@@ -10,53 +10,51 @@ class Feed extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            loading: true,
-            updater: false,
-            data: "feed",
+            loadingState: true,
             posts: [],
-            auth: false,
-            should_redirect: false
+            authState: false,
+            shouldRedirect: false
         }
-        this.user_id = 0
-        this.like_button = this.like_button.bind(this)
-        this.init = this.init.bind(this)
+        this.userId = this.props.USER_ID
+        this.onPressedLikeButton = this.onPressedLikeButton.bind(this)
+        this.fetchPosts = this.fetchPosts.bind(this)
     }
 
-    init() {
+    fetchPosts() {
         fetch('/feed').then(response => {
             response.json().then(body => {
                 if (response.status === 200) {
-                    this.setState({...this.state, loading: false, data: body.message, posts: body.posts})
+                    this.setState({ ...this.state, loadingState: false, posts: body.posts })
                 }
             })
-        });  
+        });
     };
 
     componentDidMount() {
         document.title = "Feed"
-        var access_token = Cookies.get('access_token')
+        var cleintToken = Cookies.get('access_token')
         fetch('/is_authenticated', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                access_token: access_token
+                access_token: cleintToken
             })
         }).then(response => {
             response.json().then(body => {
                 if (body.stat) {
-                    this.user_id = body.user.id
-                    this.setState({ ...this.state, auth: true })
-                    this.init()
+                    this.userId = body.user.id
+                    this.setState({ ...this.state, authState: true })
+                    this.fetchPosts()
                 } else {
-                    this.setState({ ...this.state, should_redirect: true })
+                    this.setState({ ...this.state, shouldRedirect: true })
                 }
             })
         })
     }
 
-    like_button(id) {
+    onPressedLikeButton(id) {
         fetch('/like-event', {
             method: 'POST',
             headers: {
@@ -64,7 +62,7 @@ class Feed extends Component {
             },
             body: JSON.stringify({
                 post_id: id,
-                user_id: this.user_id,
+                user_id: this.userId,
                 access_token: Cookies.get('access_token')
             })
         })
@@ -73,18 +71,18 @@ class Feed extends Component {
     render() {
         return (
             <div className={'min-h-screen flex flex-col items-center m-0 p bg-gray-100'}>
-                {this.state.should_redirect &&
+                {this.state.shouldRedirect &&
                     <Redirect to="/login" />
                 }
-                <NavBar auth={this.state.auth} />
-                {!this.state.loading && this.state.auth &&
+                <NavBar auth={this.state.authState} />
+                {!this.state.loadingState && this.state.authState &&
                     <div className="flex flex-col items-center">
                         {this.state.posts.map(post => (
-                            <PostView key={post.id} toggler={this.toggler} id={post.id} text={post.text} likes_count={post.like_users.length} username={post.username} content={post.content} user_pic={post.user_pic} like_users={post.like_users} like_button={this.like_button} USER_ID={this.user_id} />
+                            <PostView key={post.id} id={post.id} text={post.text} username={post.username} content={post.content} userPic={post.user_pic} likedUsers={post.like_users} onPressedLikeButton={this.onPressedLikeButton} userId={this.userId} />
                         ))}
                     </div>
                 }
-                {(this.state.loading || !this.state.auth) &&
+                {(this.state.loadingState || !this.state.authState) &&
                     <div className='my-5 mx-0'>
                         <ClipLoader />
                     </div>

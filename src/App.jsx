@@ -14,7 +14,7 @@ class App extends Component {
   constructor() {
     super()
     this.state = {
-      auth: undefined
+      authState: undefined
     }
   }
 
@@ -31,7 +31,7 @@ class App extends Component {
       })
     }).then(res => {
       res.json().then(body => {
-        this.setState({ auth: body.stat })
+        this.setState({ authState: body.stat })
         console.log(body)
       })
     })
@@ -46,23 +46,23 @@ class App extends Component {
               <Home />
             </Route>
             <Route path={'/feed'}>
-              <Feed USER_ID="2" />
+              <Feed />
             </Route>
             <Route path={'/messenger'}>
-              <Messenger USER_ID="2" />
+              <Messenger />
             </Route>
             <Route path={'/profile'}>
-              <Profile USER_ID="2" />
+              <Profile />
             </Route>
             <Route path={'/settings'}>
-              <Settings USER_ID="2" />
+              <Settings />
             </Route>
             <Route path={'/login'}>
               <Login />
             </Route>
             <Route path={'*'}>
-              {this.state.auth === false && <Redirect to="/login" />}
-              {this.state.auth === true && <Redirect to="/feed" />}
+              {this.state.authState === false && <Redirect to="/login" />}
+              {this.state.authState === true && <Redirect to="/feed" />}
             </Route>
           </Switch>
         </div>

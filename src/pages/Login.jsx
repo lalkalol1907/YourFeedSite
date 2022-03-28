@@ -6,21 +6,21 @@ import LoginForm from '../views/LoginForm';
 
 class Login extends Component {
 
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
-            auth: false,
-            user_id: 0,
-            IncorrectPassword: false, 
-            IncorrectLogin: false,
+            authState: false,
+            userId: 0,
+            incorrectPassword: false, 
+            incorrectLogin: false,
             register: false
         }
         this.getToken = this.getToken.bind(this)
-        this.handleRegButton = this.handleRegButton.bind(this)
-        this.LogIn = this.LogIn.bind(this)
+        this.onPressedRegButton = this.onPressedRegButton.bind(this)
+        this.logIn = this.logIn.bind(this)
     }
 
-    LogIn(login, password) {
+    logIn(login, password) {
         fetch('/login', {
             method: 'POST',
             headers: {
@@ -35,22 +35,22 @@ class Login extends Component {
                 console.log(body)
                 if (body.stat) {
                     Cookies.set('access_token', body.access_token)
-                    this.setState({ ...this.state, auth: true, user_id: body.user.id })
+                    this.setState({ ...this.state, authState: true, userId: body.user.id })
                 }
                 else {
                     if (body.info.message === "Incorrect password") {
-                        this.setState({...this.state, IncorrectPassword: true, IncorrectLogin: false})
+                        this.setState({...this.state, incorrectPassword: true, incorrectLogin: false})
                     }
                     if (body.info.message === "Incorrect username") {
-                        this.setState({...this.state, IncorrectLogin: true, IncorrectPassword: false})
+                        this.setState({...this.state, incorrectLogin: true, incorrectPassword: false})
                     }
                 }
             })
         })
     }
 
-    handleRegButton() {
-        this.setState({...this.setState, register: true, IncorrectLogin: false, IncorrectPassword: false})
+    onPressedRegButton() {
+        this.setState({...this.setState, register: true, incorrectLogin: false, incorrectPassword: false})
     }
 
     getToken() {
@@ -67,9 +67,9 @@ class Login extends Component {
             response.json().then(
                 body => {
                     if (body.stat) {
-                        this.setState({ ...this.state, auth: true, user_id: body.user.id })
+                        this.setState({ ...this.state, authState: true, userId: body.user.id })
                     } else {
-                        this.setState({ ...this.state, auth: false })
+                        this.setState({ ...this.state, authState: false })
                     }
                     console.log(body)
                 }
@@ -84,11 +84,11 @@ class Login extends Component {
     render() {
         return (
             <div className='flex flex-col items-center min-h-screen bg-gray-100'>
-                {this.state.auth &&
+                {this.state.authState &&
                     <Redirect to="/feed" />
                 }
                 <NavBar />
-                <LoginForm LogIn={this.LogIn} IncorrectLogin={this.state.IncorrectLogin} IncorrectPassword={this.state.IncorrectPassword} handleRegister={this.handleRegButton}/>
+                <LoginForm logIn={this.logIn} incorrectLogin={this.state.incorrectLogin} incorrectPassword={this.state.incorrectPassword} onPressedRegButton={this.onPressedRegButton}/>
             </div>
         )
     }

@@ -8,17 +8,17 @@ class NavBar extends Component {
         super(props)
         this.props = props
         this.state = {
-            authStat: props.auth,
+            authState: props.auth,
             user: props.user
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({...this.state, authStat: nextProps.auth, user: nextProps.user})
+        this.setState({...this.state, authState: nextProps.auth, user: nextProps.user})
     }
     
     render() {
-        if (this.state.authStat) {
+        if (this.state.authState) {
             return (
                 <div className='min-w-full flex items-center py-2 md:justify-start border-solid border-b border-0 border-gray-200 mb-4 bg-gray-100'>
                     <div className='ml-3 mr-1'>
