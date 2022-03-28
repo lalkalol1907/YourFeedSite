@@ -8,16 +8,23 @@ class LoginForm extends Component {
             login: '',
             password: '',
             IncorrectPassword: false,
-            IncorrectLogin: false
+            IncorrectLogin: false,
+            button_isActive: false
         }
         this.props = props
         this.handleLoginChange = this.handleLoginChange.bind(this)
         this.handleLPasswordChange = this.handleLPasswordChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.changeButtonStat = this.changeButtonStat.bind(this)
     }
 
     componentWillReceiveProps(newProps) {
         this.setState({ ...this.state, IncorrectLogin: newProps.IncorrectLogin, IncorrectPassword: newProps.IncorrectPassword })
+    }
+
+    changeButtonStat() {    
+        let is_valid_login = /^[0-9A-Z_-]+$/i.test(this.state.login)
+        this.setState({...this.state, button_isActive: this.state.password.length >= 8 && this.state.login.length > 0 && is_valid_login})
     }
 
     handleSubmit(event) {
@@ -48,7 +55,7 @@ class LoginForm extends Component {
                 <input type="text" value={this.state.password} onChange={this.handleLPasswordChange} className={this.state.IncorrectPassword ?
                     'text-lg py-2 px-4 my-1 text-gray-500 bg-red-300 border-0 border-b border-red-600 w-60 mb-8 hover:bg-red-200 focus:outline-none focus:bg-red-200 focus:shadow rounded-t-lg' :
                     'text-lg py-2 px-4 my-1 text-gray-500 bg-gray-200 border-0 border-b border-gray-700 w-60 mb-8 hover:bg-gray-300 focus:outline-none focus:bg-gray-300 focus:shadow rounded-t-lg'} placeholder='Password' />
-                <input type="submit" value="Log In" className='text-lg py-2 px-0 my-1 rounded-full text-white bg-fuchsia-700 w-36 border-0 hover:cursor-pointer shadow hover:shadow-md hover:shadow-fuchsia-700 shadow-fuchsia-700' />
+                <input type="submit" value="Log In" className='text-lg py-2 px-0 my-1 rounded-full text-white bg-fuchsia-700 w-36 border-0 hover:cursor-pointer shadow hover:shadow-md hover:shadow-fuchsia-700 shadow-fuchsia-700 disabled:hover:shadow disabled:hover:shadow-fuchsia-700' disabled={!this.state.button_isActive}/>
                 <div className='flex-1' />
                 <button className='hover:cursor-pointer mb-2 bg-gray-200 border-0 py-0' onClick={this.handleRegister}>
                     <p className='text-lg text-gray-600 py-1 underline my-0 hover:'>Register</p>
