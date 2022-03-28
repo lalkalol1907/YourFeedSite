@@ -42,9 +42,9 @@ class LoginForm extends Component {
         return (
             <form className="h-96 text-xl p-5 flex flex-col items-center bg-gray-200 border-0 rounded-3xl shadow-2xl mt-16 w-80" onSubmit={this.handleSubmit} >
                 <p className='text-xl font-bold text-gray-700'>Log In</p>
-                {this.state.IncorrectLogin && <input type="text" value={this.state.login} onChange={this.handleLoginChange} className={this.state.IncorrectLogin ?
+                <input type="text" value={this.state.login} onChange={this.handleLoginChange} className={this.state.IncorrectLogin ?
                     'text-lg py-2 px-4 my-1 text-gray-500 bg-red-300 border-0 border-b border-red-600 w-60 hover:bg-red-200 focus:outline-none focus:bg-red-200 focus:shadow rounded-t-lg'
-                    : 'text-lg py-2 px-4 my-1 text-gray-500 bg-gray-200 border-0 border-b border-gray-700 w-60 hover:bg-gray-300 focus:outline-none focus:bg-gray-300 focus:shadow rounded-t-lg'} placeholder='Username or email' />}
+                    : 'text-lg py-2 px-4 my-1 text-gray-500 bg-gray-200 border-0 border-b border-gray-700 w-60 hover:bg-gray-300 focus:outline-none focus:bg-gray-300 focus:shadow rounded-t-lg'} placeholder='Username or email' />
                 <input type="text" value={this.state.password} onChange={this.handleLPasswordChange} className={this.state.IncorrectPassword ?
                     'text-lg py-2 px-4 my-1 text-gray-500 bg-red-300 border-0 border-b border-red-600 w-60 mb-8 hover:bg-red-200 focus:outline-none focus:bg-red-200 focus:shadow rounded-t-lg' :
                     'text-lg py-2 px-4 my-1 text-gray-500 bg-gray-200 border-0 border-b border-gray-700 w-60 mb-8 hover:bg-gray-300 focus:outline-none focus:bg-gray-300 focus:shadow rounded-t-lg'} placeholder='Password' />
