@@ -3,9 +3,9 @@ import PostView from '../views/PostView';
 import NavBar from '../views/NavBar'
 import ClipLoader from "react-spinners/ClipLoader";
 import Cookies from 'js-cookie';
-import { Redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
 
-class Feed extends Component {
+class FeedComponent extends Component {
 
     constructor(props) {
         super(props)
@@ -13,11 +13,11 @@ class Feed extends Component {
             loadingState: true,
             posts: [],
             authState: false,
-            shouldRedirect: false
         }
         this.userId = this.props.USER_ID
         this.onPressedLikeButton = this.onPressedLikeButton.bind(this)
         this.fetchPosts = this.fetchPosts.bind(this)
+        this.navigate = this.props.navigate
     }
 
     fetchPosts() {
@@ -48,7 +48,7 @@ class Feed extends Component {
                     this.setState({ ...this.state, authState: true })
                     this.fetchPosts()
                 } else {
-                    this.setState({ ...this.state, shouldRedirect: true })
+                    this.navigate('/login')
                 }
             })
         })
@@ -71,9 +71,6 @@ class Feed extends Component {
     render() {
         return (
             <div className={'min-h-screen flex flex-col items-center m-0 p bg-gray-100'}>
-                {this.state.shouldRedirect &&
-                    <Redirect to="/login" />
-                }
                 <NavBar auth={this.state.authState} />
                 {!this.state.loadingState && this.state.authState &&
                     <div className="flex flex-col items-center">
@@ -90,6 +87,11 @@ class Feed extends Component {
             </div>
         )
     }
+}
+
+function Feed(props) {
+    let navigate = useNavigate()
+    return (<FeedComponent {...props} navigate={navigate}/ >)
 }
 
 export default Feed;

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import NavBar from '../views/NavBar';
 import Cookies from 'js-cookie';
-import { Redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
 import LoginForm from '../views/LoginForm';
 
-class Login extends Component {
+class LoginComponent extends Component {
 
     constructor(props) {
         super(props)
@@ -18,6 +18,7 @@ class Login extends Component {
         this.getToken = this.getToken.bind(this)
         this.onPressedRegButton = this.onPressedRegButton.bind(this)
         this.logIn = this.logIn.bind(this)
+        this.navigate = this.props.navigate
     }
 
     logIn(login, password) {
@@ -36,6 +37,7 @@ class Login extends Component {
                 if (body.stat) {
                     Cookies.set('access_token', body.access_token)
                     this.setState({ ...this.state, authState: true, userId: body.user.id })
+                    this.navigate('/feed')
                 }
                 else {
                     if (body.info.message === "Incorrect password") {
@@ -68,6 +70,7 @@ class Login extends Component {
                 body => {
                     if (body.stat) {
                         this.setState({ ...this.state, authState: true, userId: body.user.id })
+                        this.navigate('/feed')
                     } else {
                         this.setState({ ...this.state, authState: false })
                     }
@@ -84,14 +87,16 @@ class Login extends Component {
     render() {
         return (
             <div className='flex flex-col items-center min-h-screen bg-gray-100'>
-                {this.state.authState &&
-                    <Redirect to="/feed" />
-                }
                 <NavBar />
                 <LoginForm logIn={this.logIn} incorrectLogin={this.state.incorrectLogin} incorrectPassword={this.state.incorrectPassword} onPressedRegButton={this.onPressedRegButton}/>
             </div>
         )
     }
+}
+
+function Login(props) {
+    let navigate = useNavigate()
+    return (<LoginComponent {...props} navigate={navigate} />)
 }
 
 export default Login
