@@ -24,7 +24,7 @@ class FeedComponent extends Component {
         fetch('/feed').then(response => {
             response.json().then(body => {
                 if (response.status === 200) {
-                    this.setState({ ...this.state, loadingState: false, posts: body.posts })
+                    this.setState(prevState => ({ ...prevState, loadingState: false, posts: body.posts }))
                 }
             })
         });
@@ -45,7 +45,7 @@ class FeedComponent extends Component {
             response.json().then(body => {
                 if (body.stat) {
                     this.userId = body.user.id
-                    this.setState({ ...this.state, authState: true })
+                    this.setState(prevState => ({ ...prevState, authState: true }))
                     this.fetchPosts()
                 } else {
                     this.navigate('/login')
@@ -91,7 +91,7 @@ class FeedComponent extends Component {
 
 function Feed(props) {
     let navigate = useNavigate()
-    return (<FeedComponent {...props} navigate={navigate}/ >)
+    return (<FeedComponent {...props} navigate={navigate} />)
 }
 
 export default Feed;

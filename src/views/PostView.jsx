@@ -41,7 +41,7 @@ class PostView extends Component {
             this.likedUsers.push(this.userId)
             diff = 1
         }
-        this.setState({ liked: !this.state.liked, likesCounter: this.state.likesCounter + diff })
+        this.setState(prevState => ({ liked: !prevState.liked, likesCounter: prevState.likesCounter + diff }))
     }
 
     onSendPressed() {

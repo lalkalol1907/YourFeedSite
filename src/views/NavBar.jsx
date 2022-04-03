@@ -14,7 +14,7 @@ class NavBar extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({...this.state, authState: nextProps.auth, user: nextProps.user})
+        this.setState(prevState => ({...prevState, authState: nextProps.auth, user: nextProps.user}))
     }
     
     render() {

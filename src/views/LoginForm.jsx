@@ -19,12 +19,12 @@ class LoginForm extends Component {
     }
 
     componentWillReceiveProps(newProps) {
-        this.setState({ ...this.state, incorrectLogin: newProps.incorrectLogin, incorrectPassword: newProps.incorrectPassword })
+        this.setState(prevState => ({ ...prevState, incorrectLogin: newProps.incorrectLogin, incorrectPassword: newProps.incorrectPassword }))
     }
 
     changeButtonState() {
         let loginIsValid = /^[0-9A-Z_-]+$/i.test(this.state.login)
-        this.setState({ ...this.state, buttonIsActive: this.state.password.length >= 0 && this.state.login.length > 0 && loginIsValid })
+        this.setState(prevState => ({ ...prevState, buttonIsActive: prevState.password.length >= 0 && prevState.login.length > 0 && loginIsValid }))
     }
 
     handleSubmit(event) {
@@ -38,12 +38,12 @@ class LoginForm extends Component {
     }
 
     handleLoginChange(event) {
-        this.setState({ ...this.state, login: event.target.value, incorrectLogin: false })
+        this.setState(prevState => ({ ...prevState, login: event.target.value, incorrectLogin: false }))
         // this.changeButtonState()
     }
 
     handleLPasswordChange(event) {
-        this.setState({ ...this.state, password: event.target.value, incorrectPassword: false })
+        this.setState(prevState => ({ ...prevState, password: event.target.value, incorrectPassword: false }))
         // this.changeButtonState()
     }
 
