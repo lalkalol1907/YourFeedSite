@@ -54,7 +54,7 @@ class NavBar extends Component {
             )
         }
         return (
-            <div className='min-w-full flex items-center py-2 md:justify-start border-solid border-b border-0 border-gray-200 mb-4'>
+            <div className='min-w-full flex items-center py-2 md:justify-start border-solid border-b border-0 border-gray-200 bg-gray-100 mb-4'>
                 <div className='ml-3 mr-1'>
                     <Link to="/home">
                         <button type='button' className=' mb-0 p-0 border-0 bg-gray-100 rounded-xl hover:bg-gray-200 hover:cursor-pointer'>
