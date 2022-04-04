@@ -76,7 +76,7 @@ function Login(props) {
 
     useEffect(() => {
         getToken()
-    })
+    }, [])
 
     return (
         <div className="flex flex-col items-center min-h-screen bg-gray-100">

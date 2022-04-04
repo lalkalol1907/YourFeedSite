@@ -60,7 +60,7 @@ function Feed(props) {
                 }
             })
         })
-    });
+    }, []);
 
     return (
         <div className={'min-h-screen flex flex-col items-center m-0 p bg-gray-100'}>

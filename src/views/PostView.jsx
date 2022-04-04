@@ -1,6 +1,6 @@
 import Avatar from '@material-ui/core/Avatar'
 import { RiHeartFill, RiShareForwardLine } from "react-icons/ri"
-import { Component, useEffect, useState } from 'react'
+import { useState } from 'react'
 // TODO: Сменить иконки, потому что выглядят плохо 
 
 function PostView(props) {
