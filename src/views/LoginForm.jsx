@@ -1,70 +1,62 @@
-import { Component } from "react";
+import { useState, useEffect } from "react";
 
-class LoginForm extends Component {
+function LoginForm(props) {
+    
+    const [login, setLogin] = useState('')
+    const [password, setPassword] = useState('')
+    const [incorrectPassword, setIncorrectPassword] = useState(false)
+    const [incorrectLogin, setIncorrectLogin] = useState(false)
+    const [buttonEnabled, setButtonEnabled] = useState(true)
+    const [showPassword, setShowPassword] = useState(false)
 
-    constructor(props) {
-        super(props)
-        this.state = {
-            login: '',
-            password: '',
-            incorrectPassword: false,
-            incorrectLogin: false,
-            buttonIsActive: true,
-            showPassword: false
-        }
-        this.handleLoginChange = this.handleLoginChange.bind(this)
-        this.handleLPasswordChange = this.handleLPasswordChange.bind(this)
-        this.handleSubmit = this.handleSubmit.bind(this)
-        this.changeButtonState = this.changeButtonState.bind(this)
-    }
-
-    componentWillReceiveProps(newProps) {
-        this.setState(prevState => ({ ...prevState, incorrectLogin: newProps.incorrectLogin, incorrectPassword: newProps.incorrectPassword }))
-    }
-
-    changeButtonState() {
+    const changeButtonState = () => {
         let loginIsValid = /^[0-9A-Z_-]+$/i.test(this.state.login)
-        this.setState(prevState => ({ ...prevState, buttonIsActive: prevState.password.length >= 0 && prevState.login.length > 0 && loginIsValid }))
+        setButtonEnabled(password.length >= 0 && login.length > 0 && loginIsValid)
     }
 
-    handleSubmit(event) {
-        this.props.logIn(this.state.login, this.state.password)
+    const handleSubmit = (event) => {
+        props.logIn(login, password)
         event.preventDefault()
     }
 
-    handleRegisterButton(event) {
-        this.props.onPressedRegButton()
+    const handleRegisterButton = (event) => {
+        props.onPressedRegButton()
         event.preventDefault()
     }
 
-    handleLoginChange(event) {
-        this.setState(prevState => ({ ...prevState, login: event.target.value, incorrectLogin: false }))
-        // this.changeButtonState()
+    const handleLoginChange = (event) => {
+        setLogin(event.target.value)
+        setIncorrectLogin(false)
+        // changeButtonState()
     }
 
-    handleLPasswordChange(event) {
-        this.setState(prevState => ({ ...prevState, password: event.target.value, incorrectPassword: false }))
-        // this.changeButtonState()
+    const handleLPasswordChange = (event) => {
+        setPassword(event.target.value)
+        setIncorrectPassword(false)
+        // changeButtonState()
     }
 
-    render() {
-        return (
-            <form className="h-96 text-xl p-5 flex flex-col items-center bg-gray-200 border-0 rounded-3xl shadow-2xl mt-16 w-80" onSubmit={this.handleSubmit} >
-                <p className='text-xl font-bold text-gray-700'>Log In</p>
-                <input type="text" value={this.state.login} onChange={this.handleLoginChange} className={this.state.incorrectLogin ?
-                    'text-lg py-2 px-4 my-1 text-gray-500 bg-red-300 border-0 border-b border-red-600 w-60 hover:bg-red-200 focus:outline-none focus:bg-red-200 focus:shadow rounded-t-lg'
-                    : 'text-lg py-2 px-4 my-1 text-gray-500 bg-gray-200 border-0 border-b border-gray-700 w-60 hover:bg-gray-300 focus:outline-none focus:bg-gray-300 focus:shadow rounded-t-lg'} placeholder='Username or email' />
-                <input type={ this.state.showPassword ? "text" : "password" } value={this.state.password} onChange={this.handleLPasswordChange} className={this.state.incorrectPassword ?
-                    'text-lg py-2 px-4 my-1 text-gray-500 bg-red-300 border-0 border-b border-red-600 w-60 mb-8 hover:bg-red-200 focus:outline-none focus:bg-red-200 focus:shadow rounded-t-lg' :
-                    'text-lg py-2 px-4 my-1 text-gray-500 bg-gray-200 border-0 border-b border-gray-700 w-60 mb-8 hover:bg-gray-300 focus:outline-none focus:bg-gray-300 focus:shadow rounded-t-lg'} placeholder='Password' />
-                <input type="submit" value="Log In" className='text-lg py-2 px-0 my-1 rounded-full text-white bg-fuchsia-700 w-36 border-0 hover:cursor-pointer shadow hover:shadow-md hover:shadow-fuchsia-700 shadow-fuchsia-700 disabled:hover:shadow disabled:hover:shadow-fuchsia-700' disabled={!this.state.buttonIsActive} />
-                <div className='flex-1' />
-                <button className='hover:cursor-pointer mb-2 bg-gray-200 border-0 py-0' onClick={this.handleRegisterButton}>
-                    <p className='text-lg text-gray-600 py-1 underline my-0 hover:'>Register</p>
-                </button>
-            </form>
-        )
-    }
+    useEffect(() => {
+        setIncorrectLogin(props.incorrectLogin)
+        setIncorrectPassword(props.incorrectPassword)
+    }, [props.incorrectLogin, props.incorrectPassword])
+
+    return (
+        <form className="h-96 text-xl p-5 flex flex-col items-center bg-gray-200 border-0 rounded-3xl shadow-2xl mt-16 w-80" onSubmit={handleSubmit} >
+            <p className='text-xl font-bold text-gray-700'>Log In</p>
+            <input type="text" value={login} onChange={handleLoginChange} className={incorrectLogin ?
+                'text-lg py-2 px-4 my-1 text-gray-500 bg-red-300 border-0 border-b border-red-600 w-60 hover:bg-red-200 focus:outline-none focus:bg-red-200 focus:shadow rounded-t-lg'
+                : 'text-lg py-2 px-4 my-1 text-gray-500 bg-gray-200 border-0 border-b border-gray-700 w-60 hover:bg-gray-300 focus:outline-none focus:bg-gray-300 focus:shadow rounded-t-lg'} placeholder='Username or email' />
+            <input type={showPassword ? "text" : "password"} value={password} onChange={handleLPasswordChange} className={incorrectPassword ?
+                'text-lg py-2 px-4 my-1 text-gray-500 bg-red-300 border-0 border-b border-red-600 w-60 mb-8 hover:bg-red-200 focus:outline-none focus:bg-red-200 focus:shadow rounded-t-lg' :
+                'text-lg py-2 px-4 my-1 text-gray-500 bg-gray-200 border-0 border-b border-gray-700 w-60 mb-8 hover:bg-gray-300 focus:outline-none focus:bg-gray-300 focus:shadow rounded-t-lg'} placeholder='Password' />
+            <input type="submit" value="Log In" className='text-lg py-2 px-0 my-1 rounded-full text-white bg-fuchsia-700 w-36 border-0 hover:cursor-pointer shadow hover:shadow-md hover:shadow-fuchsia-700 shadow-fuchsia-700 disabled:hover:shadow disabled:hover:shadow-fuchsia-700' disabled={!buttonEnabled} />
+            <div className='flex-1' />
+            <button className='hover:cursor-pointer mb-2 bg-gray-200 border-0 py-0' onClick={handleRegisterButton}>
+                <p className='text-lg text-gray-600 py-1 underline my-0 hover:'>Register</p>
+            </button>
+        </form>
+    )
 }
 
 export default LoginForm

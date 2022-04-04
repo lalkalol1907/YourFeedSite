@@ -1,17 +1,10 @@
-import { Component } from 'react'
+import React from 'react'
 
-class StoriesBar extends Component {
+function StoriesBar(props) {
 
-    constructor(props) {
-        super(props)
-
-    }
-
-    render() {
-        return (
-            <div></div>
-        )
-    }
+    return (
+        <div></div>
+    )
 }
 
 export default StoriesBar;

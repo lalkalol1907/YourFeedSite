@@ -1,32 +1,25 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../views/NavBar';
 import LoginForm from '../views/LoginForm';
+import RegisterForm from '../views/RegisterForm';
 
-class LoginComponent extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            authState: false,
-            userId: 0,
-            incorrectPassword: false,
-            incorrectLogin: false,
-            register: false,
-        };
-        this.getToken = this.getToken.bind(this);
-        this.onPressedRegButton = this.onPressedRegButton.bind(this);
-        this.logIn = this.logIn.bind(this);
-        this.navigate = this.props.navigate;
+
+function Login(props) {
+    
+    const [incorrectPassword, setIncorrectPassword] = useState(false)
+    const [incorrectLogin, setIncorrectLogin] = useState(false)
+    const [registerForm, setRegisterForm] = useState(false)
+    const navigate = useNavigate();
+
+    const onPressedRegButton = () => {
+        setRegisterForm(true)
+        setIncorrectLogin(false)
+        setIncorrectPassword(false)
     }
 
-    onPressedRegButton() {
-        this.setState(prevState => ({
-            ...prevState, register: true, incorrectLogin: false, incorrectPassword: false,
-        }));
-    }
-
-    getToken() {
+    const getToken = () => {
         const accessToken = Cookies.get('access_token');
         fetch('/is_authenticated', {
             method: 'POST',
@@ -40,18 +33,14 @@ class LoginComponent extends Component {
             response.json().then(
                 (body) => {
                     if (body.stat) {
-                        this.setState(prevState => ({ ...prevState, authState: true, userId: body.user.id }));
-                        this.navigate('/feed');
-                    } else {
-                        this.setState(prevState => ({ ...prevState, authState: false }));
+                        navigate('/feed');
                     }
-                    console.log(body);
                 },
             );
         });
     }
 
-    logIn(login, password) {
+    const logIn = (login, password) => {
         fetch('/login', {
             method: 'POST',
             headers: {
@@ -66,37 +55,36 @@ class LoginComponent extends Component {
                 console.log(body);
                 if (body.stat) {
                     Cookies.set('access_token', body.access_token);
-                    this.setState(prevState => ({ ...prevState, authState: true, userId: body.user.id }));
-                    this.navigate('/feed');
+                    navigate('/feed');
                 } else {
                     if (body.info.message === 'Incorrect password') {
-                        this.setState(prevState => ({ ...prevState, incorrectPassword: true, incorrectLogin: false }));
+                        setIncorrectPassword(true)
+                        setIncorrectLogin(false)
                     }
                     if (body.info.message === 'Incorrect username') {
-                        this.setState(prevState => ({ ...prevState, incorrectLogin: true, incorrectPassword: false }));
+                        setIncorrectLogin(true)
+                        setIncorrectPassword(false)
                     }
                 }
             });
         });
     }
 
-    componentDidMount() {
-        this.getToken();
+    const onPressedSignInButton = () => {
+
     }
 
-    render() {
-        return (
-            <div className="flex flex-col items-center min-h-screen bg-gray-100">
-                <NavBar />
-                <LoginForm logIn={this.logIn} incorrectLogin={this.state.incorrectLogin} incorrectPassword={this.state.incorrectPassword} onPressedRegButton={this.onPressedRegButton} />
-            </div>
-        );
-    }
-}
+    useEffect(() => {
+        getToken()
+    })
 
-function Login(props) {
-    const navigate = useNavigate();
-    return (<LoginComponent {...props} navigate={navigate} />);
+    return (
+        <div className="flex flex-col items-center min-h-screen bg-gray-100">
+            <NavBar />
+            <LoginForm logIn={logIn} incorrectLogin={incorrectLogin} incorrectPassword={incorrectPassword} onPressedRegButton={onPressedRegButton} />
+            {/* <RegisterForm handleSignInButton={onPressedSignInButton} /> */}
+        </div>
+    );
 }
 
 export default Login;

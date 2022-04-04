@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { Component, useState } from "react";
 
 class RegisterForm extends Component {
 
@@ -19,6 +19,7 @@ class RegisterForm extends Component {
     }
 
     handleSignInButton(event) {
+        this.props.handleSignInButton()
         event.preventDefault()
     }
 
@@ -33,3 +34,17 @@ class RegisterForm extends Component {
     }
 
 }
+
+function RegisterForm(props) {
+
+    const [login, setLogin] = useState('')
+    const [password, setPassword] = useState('')
+    const [passwordConfirmation, setPasswordConfirmation] = useState('')
+    const [username, setUsername] = useState('')
+
+    const handleSubmit = (event) => {
+        event.preventDefault()
+    }
+}
+
+export default RegisterForm
