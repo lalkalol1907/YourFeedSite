@@ -3,8 +3,13 @@
 @import "feedPage.scss";
 @import "loginPage.scss";
 @import "loginForm.scss";
+@import "navbar.scss";
 
 body {
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
+}
+
+.spacer {
+    flex: 1 1 0%;
 }

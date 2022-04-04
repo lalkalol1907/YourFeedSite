@@ -18,38 +18,38 @@ function NavBar(props) {
 
     if (auth) {
         return (
-            <nav className='min-w-full flex items-center py-2 md:justify-start border-solid border-b border-0 border-gray-200 mb-4 bg-gray-100'>
+            <nav className='navbar_div'>
                 <div className='ml-3 mr-1'>
                     <Link to="/home">
-                        <button type='button' className=' mb-0 p-0 border-0 bg-gray-100 rounded-xl hover:bg-gray-200 hover:cursor-pointer'>
+                        <button type='button' className='logo_button'>
                             <img src={require('../logo.svg').default} alt="avatar" className='w-14 px-3 py-0 m-0' />
                         </button>
                     </Link>
                 </div>
-                <div className='mx-1'>
+                <div className='navbar_button_div'>
                     <Link to="/feed">
                         <button type="button" className="group bg-gray-100 border-0 rounded-xl hover:bg-gray-200 text-base font-semibold hover:cursor-pointer px-0">
                             <p className='text-gray-500 px-2 py-0 group-hover:text-fuchsia-700 mx-2'>Feed</p>
                         </button>
                     </Link>
                 </div>
-                <div className='mx-1'>
+                <div className='navbar_button_div'>
                     <Link to="/messenger">
                         <button type="button" className="group bg-gray-100 border-0 rounded-xl hover:bg-gray-200 text-base font-semibold hover:cursor-pointer px-0">
                             <p className='text-gray-500 px-2 py-0 group-hover:text-fuchsia-700 mx-2'>Messenger</p>
                         </button>
                     </Link>
                 </div>
-                <div className='flex-1' />
+                <div className='spacer' />
                 <div className='ml-1 mr-3'>
 
                     
 
-                    {/* <Link to="/profile">
+                    <Link to="/profile">
                         <button type="button" className='group bg-gray-100 border-0 hover:cursor-pointer p-0 m-0'>
                             <Avatar className='m-0 p-0 group-hover:brightness-75' src={""} />
                         </button>
-                    </Link> */}
+                    </Link>
                 </div>
             </nav>
         )
