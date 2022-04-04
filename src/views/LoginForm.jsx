@@ -42,18 +42,18 @@ function LoginForm(props) {
     }, [props.incorrectLogin, props.incorrectPassword])
 
     return (
-        <form className="h-96 text-xl p-5 flex flex-col items-center bg-gray-200 border-0 rounded-3xl shadow-2xl mt-16 w-80" onSubmit={handleSubmit} >
-            <p className='text-xl font-bold text-gray-700'>Log In</p>
+        <form className="login_form" onSubmit={handleSubmit} >
+            <p className='log_in_text'>Log In</p>
             <input type="text" value={login} onChange={handleLoginChange} className={incorrectLogin ?
-                'text-lg py-2 px-4 my-1 text-gray-500 bg-red-300 border-0 border-b border-red-600 w-60 hover:bg-red-200 focus:outline-none focus:bg-red-200 focus:shadow rounded-t-lg'
-                : 'text-lg py-2 px-4 my-1 text-gray-500 bg-gray-200 border-0 border-b border-gray-700 w-60 hover:bg-gray-300 focus:outline-none focus:bg-gray-300 focus:shadow rounded-t-lg'} placeholder='Username or email' />
+                'incorrect_input'
+                : 'correct_input'} placeholder='Username or email' />
             <input type={showPassword ? "text" : "password"} value={password} onChange={handleLPasswordChange} className={incorrectPassword ?
-                'text-lg py-2 px-4 my-1 text-gray-500 bg-red-300 border-0 border-b border-red-600 w-60 mb-8 hover:bg-red-200 focus:outline-none focus:bg-red-200 focus:shadow rounded-t-lg' :
-                'text-lg py-2 px-4 my-1 text-gray-500 bg-gray-200 border-0 border-b border-gray-700 w-60 mb-8 hover:bg-gray-300 focus:outline-none focus:bg-gray-300 focus:shadow rounded-t-lg'} placeholder='Password' />
-            <input type="submit" value="Log In" className='text-lg py-2 px-0 my-1 rounded-full text-white bg-fuchsia-700 w-36 border-0 hover:cursor-pointer shadow hover:shadow-md hover:shadow-fuchsia-700 shadow-fuchsia-700 disabled:hover:shadow disabled:hover:shadow-fuchsia-700' disabled={!buttonEnabled} />
+                'incorrect_input' :
+                'correct_input'} placeholder='Password' />
+            <input type="submit" value="Log In" className='login_button' disabled={!buttonEnabled} />
             <div className='flex-1' />
             <button className='hover:cursor-pointer mb-2 bg-gray-200 border-0 py-0' onClick={handleRegisterButton}>
-                <p className='text-lg text-gray-600 py-1 underline my-0 hover:'>Register</p>
+                <p className='register_option_button'>Register</p>
             </button>
         </form>
     )

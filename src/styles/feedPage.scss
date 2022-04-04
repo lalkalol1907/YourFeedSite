@@ -1,0 +1,22 @@
+@import "colors.scss";
+
+.feed_page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px;
+    background-color: $gray-100;
+}
+
+.feed_posts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.clip_loader {
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+

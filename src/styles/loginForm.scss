@@ -1,0 +1,151 @@
+@import "colors.scss";
+@import "fonts.scss";
+
+.login_form {
+    height: 24rem;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: $gray-200;
+    border-width: 0px;
+    border-radius: 1.5rem;
+
+    --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    
+    margin-top: 4rem;
+    width: 20rem;
+}
+
+.log_in_text {
+    @include text-xl ();
+
+    font-weight: 700;
+    color: $gray-700;
+}
+
+.incorrect_input {
+    @include text-lg ();
+    
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+    color: $gray-500;
+    background-color: $red-300;
+    border-width: 0px;
+    border-bottom-width: 1px;
+    border-color: $red-600;
+    width: 15rem;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}
+
+.incorrect_input:hover {
+    background-color: $red-200;
+}
+
+.incorrect_input:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    background-color: $red-200;
+
+    --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);   
+}
+
+.correct_input {
+    @include text-lg ();
+
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+    color: $gray-500;
+    background-color: $gray-200;
+    border-width: 0px;
+    border-bottom-width: 1px;
+    border-color: $gray-700;
+    width: 15rem;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}
+
+.correct_input:hover {
+    background-color: $gray-300;
+}
+
+.correct_input:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    background-color: $gray-300;
+
+    --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);   
+}
+
+.login_button {
+    @include text-lg ();
+
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-bottom: 0.25rem;
+    margin-top: 2.25rem;
+    border-radius: 9999px;
+    color: $white;
+    background-color: $fuchsia-700;
+    width: 9rem;
+    border-width: 0px;
+
+    --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    --tw-shadow-color: #a21caf;
+    --tw-shadow: var(--tw-shadow-colored);
+}
+
+.login_button:hover {
+    cursor: pointer;
+
+    --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    --tw-shadow-color: #a21caf;
+    --tw-shadow: var(--tw-shadow-colored);
+}
+
+.login_button:disabled {
+    --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.login_button:disabled:hover {
+    --tw-shadow-color: #a21caf;
+    --tw-shadow: var(--tw-shadow-colored);
+}
+
+.register_option_button {
+    @include text-lg ();
+
+    color: $gray-600;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    text-decoration: underline;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.register_option_button:hover {
+    color: $gray-500;
+}

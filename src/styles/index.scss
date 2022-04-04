@@ -1,5 +1,8 @@
 @tailwind components;
 @tailwind utilities;
+@import "feedPage.scss";
+@import "loginPage.scss";
+@import "loginForm.scss";
 
 body {
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;

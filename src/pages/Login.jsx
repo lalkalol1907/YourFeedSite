@@ -79,7 +79,7 @@ function Login(props) {
     }, [])
 
     return (
-        <div className="flex flex-col items-center min-h-screen bg-gray-100">
+        <div className="login_page">
             <NavBar />
             <LoginForm logIn={logIn} incorrectLogin={incorrectLogin} incorrectPassword={incorrectPassword} onPressedRegButton={onPressedRegButton} />
             {/* <RegisterForm handleSignInButton={onPressedSignInButton} /> */}

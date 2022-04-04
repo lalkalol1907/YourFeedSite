@@ -17,7 +17,7 @@ function PostView(props) {
     const id = props.id
 
     const onLikePressed = () => {
-        var likedUsersLocal = likedUsers
+        var likedUsersLocal = likedUsers 
         props.onPressedLikeButton(id)
         var diff = 0
         if (likedUsersLocal.includes(userId)) {

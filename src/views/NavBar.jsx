@@ -1,6 +1,7 @@
 import { Component, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Avatar from '@material-ui/core/Avatar'
+import 'flowbite'
 
 function NavBar(props) {
     const [auth, setAuth] = useState(props.auth)
@@ -11,9 +12,13 @@ function NavBar(props) {
         setUser(props.user)
     }, [props.auth, props.user])
 
+    const onLogOutPressed = () => {
+        props.logOut()
+    }
+
     if (auth) {
         return (
-            <div className='min-w-full flex items-center py-2 md:justify-start border-solid border-b border-0 border-gray-200 mb-4 bg-gray-100'>
+            <nav className='min-w-full flex items-center py-2 md:justify-start border-solid border-b border-0 border-gray-200 mb-4 bg-gray-100'>
                 <div className='ml-3 mr-1'>
                     <Link to="/home">
                         <button type='button' className=' mb-0 p-0 border-0 bg-gray-100 rounded-xl hover:bg-gray-200 hover:cursor-pointer'>
@@ -37,13 +42,16 @@ function NavBar(props) {
                 </div>
                 <div className='flex-1' />
                 <div className='ml-1 mr-3'>
-                    <Link to="/profile">
+
+                    
+
+                    {/* <Link to="/profile">
                         <button type="button" className='group bg-gray-100 border-0 hover:cursor-pointer p-0 m-0'>
-                            <Avatar className='m-0 p-0 group-hover:brightness-75' src={""}/>
+                            <Avatar className='m-0 p-0 group-hover:brightness-75' src={""} />
                         </button>
-                    </Link>
+                    </Link> */}
                 </div>
-            </div>
+            </nav>
         )
     }
     return (

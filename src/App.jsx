@@ -1,4 +1,4 @@
-import './App.css';
+import './styles/index.scss';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import Feed from './pages/Feed';
 import Home from './pages/Home'

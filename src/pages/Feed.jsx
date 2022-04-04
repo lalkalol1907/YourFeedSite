@@ -10,7 +10,7 @@ function Feed(props) {
     const [loading, setLoading] = useState(true)
     const [posts, setPosts] = useState([])
     const [auth, setAuth] = useState(false)
-    const [userId, setUserId] = useState(0)
+    const [userId, setUserId] = useState(undefined)
     const navigate = useNavigate()
 
     const fetchPosts = () => {
@@ -23,6 +23,14 @@ function Feed(props) {
             })
         });
     };
+
+    const logOut = () => {
+        Cookies.set('access_token', '')
+        setAuth(false)
+        setUserId(undefined)
+        setPosts([])
+        navigate('/login')
+    }
 
     const onPressedLikeButton = (id) => {
         fetch('/like-event', {
@@ -63,17 +71,17 @@ function Feed(props) {
     }, []);
 
     return (
-        <div className={'min-h-screen flex flex-col items-center m-0 p bg-gray-100'}>
-            <NavBar auth={auth} />
+        <div className='feed_page'>
+            <NavBar auth={auth} logOut={logOut} />
             {!loading && auth &&
-                <div className="flex flex-col items-center">
+                <div className='feed_posts'>
                     {posts.map(post => (
                         <PostView key={post.id} id={post.id} text={post.text} username={post.username} content={post.content} user_pic={post.user_pic} likedUsers={post.like_users} onPressedLikeButton={onPressedLikeButton} userId={userId} />
                     ))}
                 </div>
             }
             {(loading || !auth) &&
-                <div className='my-5 mx-0'>
+                <div className='clip_loader'>
                     <ClipLoader />
                 </div>
             }
