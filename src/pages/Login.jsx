@@ -79,7 +79,7 @@ function Login(props) {
     }, [])
 
     return (
-        <div className="login_page">
+        <div className="login">
             <NavBar />
             <LoginForm logIn={logIn} incorrectLogin={incorrectLogin} incorrectPassword={incorrectPassword} onPressedRegButton={onPressedRegButton} />
             {/* <RegisterForm handleSignInButton={onPressedSignInButton} /> */}

@@ -1,7 +1,7 @@
 @import "colors.scss";
 @import "fonts.scss";
 
-.navbar_div {
+.navbar {
     min-width: 100%;
     display: flex;
     align-items: center;
@@ -16,7 +16,7 @@
     background-color: $gray-100;
 }
 
-.logo_button {
+.logoButton {
     margin-bottom: 0px;
     padding: 0px;
     border-width: 0px;
@@ -24,12 +24,12 @@
     border-radius: 0.75rem;
 }
 
-.logo_button:hover {
+.logoButton:hover {
     background-color: $gray-200;
     cursor: pointer;
 }
 
-.navbar_button_div {
+.navbar_button {
     margin-right: 0.25rem;
     margin-left: 0.25rem;
 }

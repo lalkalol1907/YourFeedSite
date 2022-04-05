@@ -71,7 +71,7 @@ function Feed(props) {
     }, []);
 
     return (
-        <div className='feed_page'>
+        <div className='feed'>
             <NavBar auth={auth} logOut={logOut} />
             {!loading && auth &&
                 <div className='feed_posts'>

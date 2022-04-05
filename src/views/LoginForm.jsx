@@ -43,17 +43,17 @@ function LoginForm(props) {
 
     return (
         <form className="login_form" onSubmit={handleSubmit} >
-            <p className='log_in_text'>Log In</p>
+            <p className='login_form_text'>Log In</p>
             <input type="text" value={login} onChange={handleLoginChange} className={incorrectLogin ?
-                'incorrect_input'
-                : 'correct_input'} placeholder='Username or email' />
+                'login_form_incorrect_input'
+                : 'login_form_correct_input'} placeholder='Username or email' />
             <input type={showPassword ? "text" : "password"} value={password} onChange={handleLPasswordChange} className={incorrectPassword ?
-                'incorrect_input' :
-                'correct_input'} placeholder='Password' />
-            <input type="submit" value="Log In" className='login_button' disabled={!buttonEnabled} />
+                'login_form_incorrect_input' :
+                'login_form_correct_input'} placeholder='Password' />
+            <input type="submit" value="Log In" className='login_form_submit_button' disabled={!buttonEnabled} />
             <div className='flex-1' />
             <button className='hover:cursor-pointer mb-2 bg-gray-200 border-0 py-0' onClick={handleRegisterButton}>
-                <p className='register_option_button'>Register</p>
+                <p className='login_form_register_option_button'>Register</p>
             </button>
         </form>
     )

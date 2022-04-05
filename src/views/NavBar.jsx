@@ -18,15 +18,15 @@ function NavBar(props) {
 
     if (auth) {
         return (
-            <nav className='navbar_div'>
+            <nav className='navbar'>
                 <div className='ml-3 mr-1'>
                     <Link to="/home">
-                        <button type='button' className='logo_button'>
+                        <button type='button' className='logoButton'>
                             <img src={require('../logo.svg').default} alt="avatar" className='w-14 px-3 py-0 m-0' />
                         </button>
                     </Link>
                 </div>
-                <div className='navbar_button_div'>
+                <div className='navbar_button'>
                     <Link to="/feed">
                         <button type="button" className="group bg-gray-100 border-0 rounded-xl hover:bg-gray-200 text-base font-semibold hover:cursor-pointer px-0">
                             <p className='text-gray-500 px-2 py-0 group-hover:text-fuchsia-700 mx-2'>Feed</p>
