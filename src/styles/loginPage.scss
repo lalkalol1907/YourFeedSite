@@ -1,9 +1,8 @@
-@import "colors.scss";
+@use "presets/presets.scss" as presets;
 
 .login {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-    background-color: $gray-100;
+    @include presets.flex-col-center();
+    height: 100vh;
+    width: 100vw;
+    background-color: presets.$gray-100;
 }

@@ -58,11 +58,11 @@ function PostView(props) {
             </div>
             <div className='flex items-center'>
                 <button onClick={onLikePressed} className={liked ? "group bg-red-300 border-solid border border-red-500 rounded-full mb-2 ml-2 hover:bg-red-200 hover:border-red-400 hover:cursor-pointer" : "group bg-gray-100 border-solid border border-bottom-icon-border-color rounded-full mb-2 ml-2 hover:bg-red-100 hover:border-red-400 hover:cursor-pointer"}>
-                    <RiHeartFill className={liked ? 'w-6 h-auto fill-red-500 px-5 group-hover:fill-red-400' : 'w-6 h-auto fill-bottom-icon-color px-5 group-hover:fill-red-400'} />
+                    <RiHeartFill className={liked ? 'w-6 h-auto fill-red-500 mx-5 group-hover:fill-red-400' : 'w-6 h-auto fill-bottom-icon-color px-5 group-hover:fill-red-400'} />
                 </button>
                 <div className='flex-1' />
                 <button onClick={onSendPressed} className="group bg-gray-100 border-solid border border-bottom-icon-border-color rounded-full mb-2 mr-2 hover:cursor-pointer hover:bg-fuchsia-100 hover:border-fuchsia-400">
-                    <RiShareForwardLine className="w-6 h-auto fill-bottom-icon-color px-5 group-hover:fill-fuchsia-400" />
+                    <RiShareForwardLine className="w-6 h-auto fill-bottom-icon-color mx-5 group-hover:fill-fuchsia-400" />
                 </button>
             </div>
         </div>

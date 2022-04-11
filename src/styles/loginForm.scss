@@ -1,151 +1,111 @@
-@import "colors.scss";
-@import "fonts.scss";
+@use "presets/presets.scss"as presets;
 
 .login_form {
+    @include presets.flex-col-center();
+    @include presets.shadow-2xl();
     height: 24rem;
+    width: 20rem;
     padding: 1.25rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: $gray-200;
+    margin-top: 4rem;
+    background-color: presets.$gray-200;
     border-width: 0px;
     border-radius: 1.5rem;
-
-    --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-    --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
-    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-    
-    margin-top: 4rem;
-    width: 20rem;
 }
 
 .login_form_text {
-    @include text-xl ();
+    font-weight: bold;
+    font-size: large;
+    color: presets.$gray-700;
+}
 
-    font-weight: 700;
-    color: $gray-700;
+@mixin _login_form_input {
+    width: 15rem;
+    padding: 0.5rem 1rem;
+    margin: 0.25rem 0;
+    font-size: medium;
+    border-bottom-width: 1px;
+    border-radius: 1rem;
+    color: presets.$gray-500;
+
+    &:focus {
+        @include presets.shadow();
+        outline: 2px solid transparent;
+        outline-offset: 2px;
+    }
+
+    &::placeholder {
+        font-size: medium;
+        font-style: italic;
+        font-weight: 500;
+        opacity: 0.5;
+    }
 }
 
 .login_form_incorrect_input {
-    @include text-lg ();
-    
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    margin-top: 0.25rem;
-    margin-bottom: 0.25rem;
-    color: $gray-500;
-    background-color: $red-300;
-    border-width: 0px;
-    border-bottom-width: 1px;
-    border-color: $red-600;
-    width: 15rem;
-    border-top-left-radius: 0.5rem;
-    border-top-right-radius: 0.5rem;
-}
+    @include _login_form_input();
+    background-color: presets.$red-300;
+    border-color: presets.$red-600;
 
-.login_form_incorrect_input:hover {
-    background-color: $red-200;
-}
+    &:hover {
+        background-color: presets.$red-200;
+    }
 
-.login_form_incorrect_input:focus {
-    outline: 2px solid transparent;
-    outline-offset: 2px;
-    background-color: $red-200;
-
-    --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-    --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
-    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);   
+    &:focus {
+        background-color: presets.$red-200;
+    }
 }
 
 .login_form_correct_input {
-    @include text-lg ();
+    @include _login_form_input();
+    background-color: presets.$gray-200;
+    border-color: presets.$gray-700;
 
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    margin-top: 0.25rem;
-    margin-bottom: 0.25rem;
-    color: $gray-500;
-    background-color: $gray-200;
-    border-width: 0px;
-    border-bottom-width: 1px;
-    border-color: $gray-700;
-    width: 15rem;
-    border-top-left-radius: 0.5rem;
-    border-top-right-radius: 0.5rem;
-}
+    &:hover {
+        background-color: presets.$gray-300;
+    }
 
-.login_form_correct_input:hover {
-    background-color: $gray-300;
-}
-
-.login_form_correct_input:focus {
-    outline: 2px solid transparent;
-    outline-offset: 2px;
-    background-color: $gray-300;
-
-    --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-    --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
-    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);   
+    &:focus {
+        background-color: presets.$gray-300;
+    }
 }
 
 .login_form_submit_button {
-    @include text-lg ();
-
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    padding-left: 0px;
-    padding-right: 0px;
+    @include presets.shadow($color: #a21caf);
+    width: 9rem;
+    padding: 0.5rem 0;
     margin-bottom: 0.25rem;
     margin-top: 2.25rem;
+    font-size: larger;
     border-radius: 9999px;
-    color: $white;
-    background-color: $fuchsia-700;
-    width: 9rem;
-    border-width: 0px;
+    color: white;
+    background-color: presets.$fuchsia-700;
 
-    --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-    --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
-    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-    --tw-shadow-color: #a21caf;
-    --tw-shadow: var(--tw-shadow-colored);
-}
+    &:hover {
+        @include presets.shadow-md($color: #a21caf);
+        cursor: pointer;
+    }
 
-.login_form_submit_button:hover {
-    cursor: pointer;
+    &:disabled {
+        @include presets.shadow();
 
-    --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
-    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-    --tw-shadow-color: #a21caf;
-    --tw-shadow: var(--tw-shadow-colored);
-}
-
-.login_form_submit_button:disabled {
-    --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-    --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
-    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-
-.login_form_submit_button:disabled:hover {
-    --tw-shadow-color: #a21caf;
-    --tw-shadow: var(--tw-shadow-colored);
+        &:hover {
+            @include presets.shadow(#a21caf);
+        }
+    }
 }
 
 .login_form_register_option_button {
-    @include text-lg ();
-
-    color: $gray-600;
-    padding-top: 0.25rem;
-    padding-bottom: 0.25rem;
+    margin-bottom: 0.25rem;
+    background-color: presets.$gray-200;
     text-decoration: underline;
-    margin-top: 0px;
-    margin-bottom: 0px;
+    &:hover {
+        color: presets.$gray-500;
+        cursor: pointer;
+    }
 }
 
-.login_form_register_option_button:hover {
-    color: $gray-500;
+.login_form_register_option_text {
+    color: presets.$gray-600;
+    font-size: medium;
+    padding: 0rem;
 }

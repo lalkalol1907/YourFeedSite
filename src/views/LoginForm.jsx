@@ -51,9 +51,9 @@ function LoginForm(props) {
                 'login_form_incorrect_input' :
                 'login_form_correct_input'} placeholder='Password' />
             <input type="submit" value="Log In" className='login_form_submit_button' disabled={!buttonEnabled} />
-            <div className='flex-1' />
-            <button className='hover:cursor-pointer mb-2 bg-gray-200 border-0 py-0' onClick={handleRegisterButton}>
-                <p className='login_form_register_option_button'>Register</p>
+            <div className='spacer' />
+            <button className='login_form_register_option_button' onClick={handleRegisterButton}>
+                <p className='login_form_register_option_text'>Register</p>
             </button>
         </form>
     )

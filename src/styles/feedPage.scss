@@ -1,18 +1,15 @@
-@import "colors.scss";
+@use "presets/presets.scss" as presets;
 
 .feed {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    @include presets.flex-col-center();
+    height: 100vh;
+    width: 100vw;
     margin: 0px;
-    background-color: $gray-100;
+    background-color: presets.$gray-100;
 }
 
 .feed_posts {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    @include presets.flex-col-center();
 }
 
 .clip_loader {
