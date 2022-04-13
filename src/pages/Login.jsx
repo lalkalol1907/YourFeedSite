@@ -80,9 +80,13 @@ function Login(props) {
 
     return (
         <div className="login">
-            <NavBar />
-            <LoginForm logIn={logIn} incorrectLogin={incorrectLogin} incorrectPassword={incorrectPassword} onPressedRegButton={onPressedRegButton} />
-            {/* <RegisterForm handleSignInButton={onPressedSignInButton} /> */}
+            <div className='login_container'>
+                {/* <img src={""} className="" / > */}
+                <div className='login_pic'></div>
+                <LoginForm logIn={logIn} incorrectLogin={incorrectLogin} incorrectPassword={incorrectPassword} onPressedRegButton={onPressedRegButton} />
+                {/* <RegisterForm handleSignInButton={onPressedSignInButton} /> */}
+
+            </div>
         </div>
     );
 }

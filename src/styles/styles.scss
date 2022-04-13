@@ -1,21 +1,20 @@
 
 @use "feedPage.scss";
 @use "loginPage.scss";
-@use "loginForm.scss";
 @use "navbar.scss";
+@use "postView.scss";
 @use "presets/presets.scss" as presets;
 @tailwind components;
 @tailwind utilities;
 
 html {
     line-height: 1.5;
+
 }
 
 body {
-    @include presets.flex-col-center();
     min-height: 100vh;
     min-width: 100%;
-    background-color: presets.$purple-200;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     overflow: hidden;
     margin: 0;
