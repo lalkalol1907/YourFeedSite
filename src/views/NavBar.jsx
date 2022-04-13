@@ -1,4 +1,4 @@
-import { Component, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Avatar from '@material-ui/core/Avatar'
 import 'flowbite'
@@ -20,7 +20,7 @@ function NavBar(props) {
         return (
             <nav className='navbar'>
                 <Link to="/home" className='navbar_logoButton'>
-                    <img src={require('../logo.svg').default} alt="avatar" className='logo' />
+                    <img src="logo.svg" alt="avatar" className='logo' />
                 </Link>
                 <Link to="/feed" className='navbar_button'>
                     <p>Feed</p>
@@ -38,7 +38,7 @@ function NavBar(props) {
     return (
         <div className='navbar'>
             <Link to="/home" className='navbar_logoButton'>
-                <img src={require('../logo.svg').default} alt="avatar" className='logo' />
+                <img src="logo.svg" alt="avatar" className='logo' />
             </Link>
             <div className='spacer' />
             <button type="button" className='navbar_button_signUp'>

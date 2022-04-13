@@ -1,2 +1,145 @@
-@use "presets/presets.scss" as presets;
+@use "presets/presets.scss"as presets;
 
+.post {
+    display: grid;
+    align-items: center;
+    max-width: 36rem;
+    border: 1px solid presets.$gray-200;
+    border-radius: 1rem;
+    margin: 0 1rem;
+    margin-bottom: 2.25rem;
+}
+
+.post_topbar {
+    @include presets.flex-row-center();
+    padding: 0.25rem 0.625rem;
+
+    h3 {
+        font-size: medium;
+        font-weight: bold;
+    }
+
+    &:hover {
+        cursor: pointer;
+
+        h3 {
+            text-decoration: underline;
+        }
+    }
+}
+
+.post_avatar {
+    margin-right: 0.625rem;
+}
+
+.post_pic {
+    width: 100%;
+    object-fit: contain;
+}
+
+.post_likes {
+    padding: 0.25rem 0.375rem;
+
+    h4 {
+        margin: 0;
+        padding: 0;
+        font-size: smaller;
+        font-weight: bold;
+    }
+}
+
+.post_text {
+    @include presets.flex-row-center();
+    padding: 0 0.375rem;
+    margin-bottom: 1rem;
+
+    h4 {
+        padding: 0;
+        margin: 0;
+        font-size: small;
+        font-weight: normal;
+
+        strong {
+            font-size: inherit;
+            padding-right: 0.25rem;
+        }
+    }
+}
+
+.post_bottom_bar {
+    @include presets.flex-row-center();
+}
+
+@mixin bottom_button {
+    border: 1px solid;
+    border-radius: 9999px;
+    margin: 0.5rem;
+    margin-top: 0;
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    svg {
+        width: 1.5rem;
+        height: auto;
+        margin: 0 1.25rem;
+    }
+}
+
+.like_button {
+    @include bottom_button();
+    background-color: presets.$gray-100;
+    border-color: #e0e0e0;
+
+    &:hover {
+        background-color: presets.$red-100;
+        border-color: presets.$red-400;
+
+        svg {
+            fill: presets.$red-400
+        }
+    }
+
+    svg {
+        fill: #bababa;
+    }
+}
+
+.like_button_pressed {
+    @include bottom_button();
+    background-color: presets.$red-300;
+    border-color: presets.$red-500;
+
+    &:hover {
+        background-color: presets.$red-200;
+        border-color: presets.$red-400;
+
+        svg {
+            fill: presets.$red-400
+        }
+    }
+
+    svg {
+        fill: presets.$red-500;
+    }
+}
+
+.send_button {
+    @include bottom_button();
+    background-color: presets.$gray-100;
+    border-color: #e0e0e0;
+
+    &:hover {
+        background-color: presets.$fuchsia-100;
+        border-color: presets.$fuchsia-400;
+
+        svg {
+            fill: presets.$fuchsia-400;
+        }
+    }
+
+    svg {
+        fill: #bababa
+    }
+}

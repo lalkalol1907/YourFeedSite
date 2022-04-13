@@ -4,12 +4,9 @@
 @use "navbar.scss";
 @use "postView.scss";
 @use "presets/presets.scss" as presets;
-@tailwind components;
-@tailwind utilities;
 
 html {
     line-height: 1.5;
-
 }
 
 body {
