@@ -1,6 +1,13 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
-function LoginForm(props) {
+interface LoginFormProps {
+    logIn: (login: string, password: string) => void;
+    incorrectLogin: boolean;
+    incorrectPassword: boolean;
+    onPressedRegButton: () => void
+}
+
+function LoginForm(props: LoginFormProps) {
     
     const [login, setLogin] = useState('')
     const [password, setPassword] = useState('')
@@ -10,27 +17,27 @@ function LoginForm(props) {
     const [showPassword, setShowPassword] = useState(false)
 
     const changeButtonState = () => {
-        let loginIsValid = /^[0-9A-Z_-]+$/i.test(this.state.login)
+        let loginIsValid = /^[0-9A-Z_-]+$/i.test(login)
         setButtonEnabled(password.length >= 0 && login.length > 0 && loginIsValid)
     }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = (event: React.SyntheticEvent) => {
         props.logIn(login, password)
         event.preventDefault()
     }
 
-    const handleRegisterButton = (event) => {
+    const handleRegisterButton = (event: React.SyntheticEvent) => {
         props.onPressedRegButton()
         event.preventDefault()
     }
 
-    const handleLoginChange = (event) => {
+    const handleLoginChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setLogin(event.target.value)
         setIncorrectLogin(false)
         // changeButtonState()
     }
 
-    const handleLPasswordChange = (event) => {
+    const handleLPasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(event.target.value)
         setIncorrectPassword(false)
         // changeButtonState()

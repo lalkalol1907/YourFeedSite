@@ -1,15 +1,15 @@
 import React from 'react'
 import NavBar from '../views/NavBar';
 
-function Settings(props) {
+function Messenger() {
     return (
         <div>
-            <NavBar />
+            {/* <NavBar /> */}
             <div className="text-xl p-5">
-                <p>Settings</p>
+                <p>Messenger</p>
             </div>
         </div>
     )
 }
 
-export default Settings;
+export default Messenger;

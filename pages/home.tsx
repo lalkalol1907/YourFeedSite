@@ -1,15 +1,15 @@
-import React from 'react'
+import React from 'react';
 import NavBar from '../views/NavBar';
 
-function Messenger(props) {
+function Home() {
     return (
         <div>
-            <NavBar />
+            {/* <NavBar /> */}
             <div className="text-xl p-5">
-                <p>Messenger</p>
+                <p>Home</p>
             </div>
         </div>
     )
 }
 
-export default Messenger;
+export default Home;

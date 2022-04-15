@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom';
 import NavBar from '../views/NavBar';
 import LoginForm from '../views/LoginForm';
 import RegisterForm from '../views/RegisterForm';
+import Router from 'next/router';
 
-
-function Login(props) {
+function Login() {
     
     const [incorrectPassword, setIncorrectPassword] = useState(false)
     const [incorrectLogin, setIncorrectLogin] = useState(false)
     const [registerForm, setRegisterForm] = useState(false)
-    const navigate = useNavigate();
 
     const onPressedRegButton = () => {
         setRegisterForm(true)
@@ -20,28 +18,31 @@ function Login(props) {
     }
 
     const getToken = () => {
-        const accessToken = Cookies.get('access_token');
-        fetch('/is_authenticated', {
+        const access_token = Cookies.get('access_token');
+        console.log(access_token)
+        fetch('/api/is_authenticated', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                accessToken,
+                access_token,
             }),
         }).then((response) => {
             response.json().then(
                 (body) => {
+                    console.log(body)
                     if (body.stat) {
-                        navigate('/feed');
+                        Router.push('/feed')
                     }
                 },
             );
         });
     }
 
-    const logIn = (login, password) => {
-        fetch('/login', {
+    const logIn = (login: string, password: string) => {
+        console.log("ABOBA")
+        fetch('/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -55,7 +56,7 @@ function Login(props) {
                 console.log(body);
                 if (body.stat) {
                     Cookies.set('access_token', body.access_token);
-                    navigate('/feed');
+                    Router.push('/feed');
                 } else {
                     if (body.info.message === 'Incorrect password') {
                         setIncorrectPassword(true)

@@ -1,9 +1,15 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import Avatar from '@material-ui/core/Avatar'
-import 'flowbite'
+import User from '../models/user'
 
-function NavBar(props) {
+interface NavBarProps {
+    auth: boolean
+    user: User
+    logOut: () => void
+}
+
+function NavBar(props: NavBarProps) {
     const [auth, setAuth] = useState(props.auth)
     const [user, setUser] = useState(props.user)
 
@@ -19,26 +25,26 @@ function NavBar(props) {
     if (auth) {
         return (
             <nav className='navbar'>
-                <Link to="/home" className='navbar_logoButton'>
-                    <img src="logo.svg" alt="avatar" className='logo' />
+                <Link href="/home" >
+                    <img src="logo.svg" alt="avatar" className='navbar_logoButton' />
                 </Link>
-                <Link to="/feed" className='navbar_button'>
-                    <p>Feed</p>
+                <Link href="/feed" >
+                    <p className='navbar_button'>Feed</p>
                 </Link>
-                <Link to="/messenger" className='navbar_button'>
-                    <p>Messenger</p>
+                <Link href="/messenger" >
+                    <p className='navbar_button'>Messenger</p>
                 </Link>
                 <div className='spacer' />
-                <Link to="/profile" className='navbar_avatarButton'>
-                    <Avatar src={""} />
+                <Link href="/profile" >
+                    <Avatar src={""} className='navbar_avatarButton'/>
                 </Link>
             </nav>
         )
     }
     return (
         <div className='navbar'>
-            <Link to="/home" className='navbar_logoButton'>
-                <img src="logo.svg" alt="avatar" className='logo' />
+            <Link href="/home" >
+                <img src="logo.svg" alt="avatar" className='navbar_logoButton' />
             </Link>
             <div className='spacer' />
             <button type="button" className='navbar_button_signUp'>

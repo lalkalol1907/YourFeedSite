@@ -3,18 +3,18 @@ import PostView from '../views/PostView';
 import NavBar from '../views/NavBar'
 import ClipLoader from "react-spinners/ClipLoader";
 import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom'
+import Router from 'next/router';
+import Post from '../models/post';
 
-function Feed(props) {
+function Feed() {
 
     const [loading, setLoading] = useState(true)
-    const [posts, setPosts] = useState([])
+    const [posts, setPosts] = useState<Post[]>([])
     const [auth, setAuth] = useState(false)
-    const [userId, setUserId] = useState(undefined)
-    const navigate = useNavigate()
+    const [userId, setUserId] = useState(0)
 
     const fetchPosts = () => {
-        fetch('/feed').then(response => {
+        fetch('/api/feed').then(response => {
             response.json().then(body => {
                 if (response.status === 200) {
                     setLoading(false)
@@ -27,13 +27,13 @@ function Feed(props) {
     const logOut = () => {
         Cookies.set('access_token', '')
         setAuth(false)
-        setUserId(undefined)
+        setUserId(0)
         setPosts([])
-        navigate('/login')
+        Router.push('/login')
     }
 
-    const onPressedLikeButton = (id) => {
-        fetch('/like-event', {
+    const onPressedLikeButton = (id: number) => {
+        fetch('/api/like-event', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -49,7 +49,7 @@ function Feed(props) {
     useEffect(() => {
         document.title = "Feed"
         var cleintToken = Cookies.get('access_token')
-        fetch('/is_authenticated', {
+        fetch('/api/is_authenticated', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -64,7 +64,7 @@ function Feed(props) {
                     setAuth(true)
                     fetchPosts()
                 } else {
-                    navigate('/login')
+                    Router.push('/login')
                 }
             })
         })
@@ -72,7 +72,7 @@ function Feed(props) {
 
     return (
         <div className='feed'>
-            <NavBar auth={auth} logOut={logOut} />
+            {/* <NavBar auth={auth} logOut={logOut} /> */}
             {!loading && auth &&
                 <div className='feed_posts'>
                     {posts.map(post => (

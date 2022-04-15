@@ -1,10 +1,10 @@
 import React from 'react'
 import NavBar from '../views/NavBar';
 
-function Profile(props) {
+function Profile() {
     return (
         <div>
-            <NavBar />
+            {/* <NavBar /> */}
             <div className="text-xl p-5">
                 <p>Profile</p>
             </div>

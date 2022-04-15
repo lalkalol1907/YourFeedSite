@@ -1,6 +1,6 @@
 import React from 'react'
 
-function StoriesBar(props) {
+function StoriesBar() {
 
     return (
         <div></div>

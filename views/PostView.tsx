@@ -3,7 +3,18 @@ import { RiHeartFill, RiShareForwardLine } from "react-icons/ri"
 import { useState } from 'react'
 // TODO: Сменить иконки, потому что выглядят плохо 
 
-function PostView(props) {
+interface PostViewProps {
+    userId: number 
+    username: string
+    user_pic: string
+    content: string
+    text: string
+    id: number
+    likedUsers: number[]
+    onPressedLikeButton: (id: number) => void
+}
+
+function PostView(props: PostViewProps) {
 
     const [liked, setLiked] = useState(props.likedUsers.includes(props.userId))
     const [likesCounter, setLikesCounter] = useState(props.likedUsers.length)

@@ -1,15 +1,15 @@
-import React from 'react';
+import React from 'react'
 import NavBar from '../views/NavBar';
 
-function Home(props) {
+function Settings() {
     return (
         <div>
-            <NavBar />
+            {/* <NavBar /> */}
             <div className="text-xl p-5">
-                <p>Home</p>
+                <p>Settings</p>
             </div>
         </div>
     )
 }
 
-export default Home;
+export default Settings;

@@ -12,11 +12,6 @@
     background-color: presets.$gray-100;
 }
 
-.logo {
-    width: 3.5rem;
-    margin: 0 0.75rem;
-}
-
 .navbar_button {
     margin: 0 0.5rem;
     padding: 0 1rem;
@@ -39,7 +34,8 @@
     margin-right: 0.25rem;
     margin-bottom: 0;
     padding: 0px;
-
+    width: 3.5rem;
+    margin: 0 0.75rem;
     &:hover {
         background-color: presets.$gray-200;
         cursor: pointer;

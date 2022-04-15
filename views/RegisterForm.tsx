@@ -1,17 +1,22 @@
 import { useState } from "react";
+import React from "react";
 
-function RegisterForm(props) {
+interface RegisterFormProps {
+    handleSignInButton: () => void
+}
+
+function RegisterForm(props: RegisterFormProps) {
 
     const [login, setLogin] = useState('')
     const [password, setPassword] = useState('')
     const [passwordConfirmation, setPasswordConfirmation] = useState('')
     const [username, setUsername] = useState('')
 
-    const handleSubmit = (event) => {
+    const handleSubmit = (event: React.SyntheticEvent) => {
         event.preventDefault()
     }
 
-    const handleSignInButton = (event) => {
+    const handleSignInButton = (event: React.SyntheticEvent) => {
         props.handleSignInButton()
         event.preventDefault()
     }
