@@ -4,11 +4,14 @@ import NavBar from '../views/NavBar';
 import LoginForm from '../views/LoginForm';
 import RegisterForm from '../views/RegisterForm';
 import Router from 'next/router';
+import { BSONSymbol } from 'mongodb';
 
 function Login() {
 	const [ incorrectPassword, setIncorrectPassword ] = useState(false);
 	const [ incorrectLogin, setIncorrectLogin ] = useState(false);
 	const [ registerForm, setRegisterForm ] = useState(false);
+    const [ registrarionError, setRegistrationError ] = useState(false);
+    const [ loginError, setLoginError ] = useState(false)
 
 	const onPressedRegButton = () => {
 		setRegisterForm(true);
@@ -63,8 +66,25 @@ function Login() {
 						setIncorrectLogin(true);
 						setIncorrectPassword(false);
 					}
+                    if (!body.info.message) {
+                        setLoginError(true)
+                    }
 				}
 			});
+		});
+	};
+
+	const register = (email: string, username: string, password: string) => {
+		fetch('/api/register', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'aplication/json'
+			},
+			body: JSON.stringify({
+				email,
+				username,
+				password
+			})
 		});
 	};
 
@@ -83,13 +103,14 @@ function Login() {
 				{/* <img src={""} className="" / > */}
 				<div className="login_pic" />
 				{registerForm ? (
-					<RegisterForm handleSignInButton={onPressedSignInButton} />
+					<RegisterForm handleSignInButton={onPressedSignInButton} register={register} error={registrarionError} />
 				) : (
 					<LoginForm
 						logIn={logIn}
 						incorrectLogin={incorrectLogin}
 						incorrectPassword={incorrectPassword}
 						onPressedRegButton={onPressedRegButton}
+                        error={loginError}
 					/>
 				)}
 			</div>

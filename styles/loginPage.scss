@@ -25,9 +25,9 @@
         }
 
         @supports not (-webkit-touch-callout: none) {
-            height: calc(80vw * 9 / 16);
-            max-height: calc(min(90vh, 1080px));
-            width: calc(min(80vw, 80vh * 16 / 9));
+            height: calc(70vw * 9 / 16);
+            max-height: calc(min(80vh, 1080px));
+            width: calc(min(70vw, 70vh * 16 / 9));
             max-width: 1920px;
             min-width: 24rem;
             min-height: 26rem;
@@ -135,11 +135,11 @@
 
 .form_correct_input {
     @include _login_form_input();
-    background-color: presets.$gray-200;
+    background-color: presets.$gray-300;
     border-color: presets.$gray-700;
 
     &:hover {
-        background-color: presets.$gray-300;
+        background-color: presets.$gray-400;
     }
 
     &:focus {

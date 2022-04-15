@@ -5,6 +5,7 @@ interface LoginFormProps {
     incorrectLogin: boolean;
     incorrectPassword: boolean;
     onPressedRegButton: () => void
+    error: boolean
 }
 
 function LoginForm(props: LoginFormProps) {
@@ -13,12 +14,17 @@ function LoginForm(props: LoginFormProps) {
     const [password, setPassword] = useState('')
     const [incorrectPassword, setIncorrectPassword] = useState(false)
     const [incorrectLogin, setIncorrectLogin] = useState(false)
-    const [buttonEnabled, setButtonEnabled] = useState(true)
+    const [buttonEnabled, setButtonEnabled] = useState(true) // false
     const [showPassword, setShowPassword] = useState(false)
+    const [loginValid, setLoginValid] = useState(true)
 
     const changeButtonState = () => {
+        setButtonEnabled(password.length >= 0 && login.length > 0 && loginValid)
+    }
+
+    const checkLogin = () => {
         let loginIsValid = /^[0-9A-Z_-]+$/i.test(login)
-        setButtonEnabled(password.length >= 0 && login.length > 0 && loginIsValid)
+        setLoginValid(loginIsValid)
     }
 
     const handleSubmit = (event: React.SyntheticEvent) => {
