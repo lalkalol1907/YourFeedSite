@@ -5,8 +5,8 @@ import User from '../models/user'
 
 interface NavBarProps {
     auth: boolean
-    user: User
-    logOut: () => void
+    user?: User
+    logOut?: () => void
 }
 
 function NavBar(props: NavBarProps) {
@@ -19,6 +19,9 @@ function NavBar(props: NavBarProps) {
     }, [props.auth, props.user])
 
     const onLogOutPressed = () => {
+        if (!props.logOut) {
+            return
+        }
         props.logOut()
     }
 
@@ -26,7 +29,9 @@ function NavBar(props: NavBarProps) {
         return (
             <nav className='navbar'>
                 <Link href="/home" >
-                    <img src="logo.svg" alt="avatar" className='navbar_logoButton' />
+                    <div className='navbar_logoButton'>
+                        <img src="logo.svg" alt="avatar" className='navbar_logo' />
+                    </div>
                 </Link>
                 <Link href="/feed" >
                     <p className='navbar_button'>Feed</p>

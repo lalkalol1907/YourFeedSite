@@ -1,7 +1,6 @@
+import type { NextApiRequest, NextApiResponse } from 'next'
 const { PostsDataBase, UsersDataBase, TokenSTG } = require('../../DB_Objects');
-import { Response, Request } from "express";
 
-export default (req: Request, res: Response) => {
-    console.log(req)
+export default (req: NextApiRequest, res: NextApiResponse) => {
     PostsDataBase.getPosts(res)
 }

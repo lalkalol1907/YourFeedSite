@@ -81,6 +81,7 @@ function Login() {
 
     return (
         <div className="login">
+            <NavBar auth={true} />
             <div className='login_container'>
                 {/* <img src={""} className="" / > */}
                 <div className='login_pic'></div>

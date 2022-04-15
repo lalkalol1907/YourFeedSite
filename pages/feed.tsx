@@ -72,7 +72,7 @@ function Feed() {
 
     return (
         <div className='feed'>
-            {/* <NavBar auth={auth} logOut={logOut} /> */}
+            <NavBar auth={auth} logOut={logOut} />
             {!loading && auth &&
                 <div className='feed_posts'>
                     {posts.map(post => (

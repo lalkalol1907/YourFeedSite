@@ -1,13 +1,12 @@
 @use "presets/presets.scss"as presets;
 
 .login {
+    @include presets.flex-col-center();
     height: 100vh;
     width: 100vw;
     max-width: 100vw;
     margin: 0;
     background-color: presets.$gray-100;
-    display: flex;
-  justify-content: center;
 }
 
 .login_container {

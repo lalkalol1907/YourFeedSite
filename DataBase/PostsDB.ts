@@ -1,5 +1,7 @@
 import DB from "./DB";
 import { Response } from "express";
+import Post from "../models/post"
+import { MongoClient, AnyError } from "mongodb";
 
 class PostsDB extends DB {
 
@@ -8,18 +10,25 @@ class PostsDB extends DB {
     }
 
     getPosts(res: Response) {
-        this.DBclient.connect((error, client) => {
-            client.db("yourfeed").collection("posts").find({}).toArray((err, posts) => {
+        this.DBclient.connect((err?: AnyError, result?: MongoClient) => {
+            if (!result) {
+                res.send({stat: 405})
+                return
+            }
+            result.db("yourfeed").collection("posts").find({}).toArray((err, posts) => {
                 err ? res.send({ stat: 405 }) : res.send({ stat: 200, posts })
             })
         })
     }
 
     ChangeLike(user_id: number, post_id: number) {
-        this.DBclient.connect((error, client) => {
-            client.db("yourfeed").collection("posts").findOne({ id: post_id }, (err, post) => {
+        this.DBclient.connect((error?: AnyError, result?: MongoClient) => {
+            if (!result) {
+                return
+            }
+            result.db("yourfeed").collection("posts").findOne({ id: post_id }, (err, post) => {
                 if (err) { return }
-                var curlikes = post.like_users
+                var curlikes = (post as Post).like_users
                 if (curlikes.includes(user_id)) {
                     for (let i = 0; i < curlikes.length; i++) {
                         if (curlikes[i] == user_id) {
@@ -31,7 +40,7 @@ class PostsDB extends DB {
                 else {
                     curlikes.push(user_id)
                 }
-                client.db("yourfeed").collection("posts").updateOne(
+                result.db("yourfeed").collection("posts").updateOne(
                     { id: post_id },
                     {
                         $set: { like_users: curlikes }

@@ -7,15 +7,15 @@ const LocalStrategy = require('passport-local').Strategy
 passport.use('local', new LocalStrategy({
     usernameField: 'login',
     passwordField: 'password'
-}, (username: string | undefined, password: string | undefined, done) => {
+}, (username: string | undefined, password: string | undefined, done: (error: any, user?: any, options?: {message: string}) => void) => {
     UsersDataBase.auth(username, password, done)
 }))
 
-passport.serializeUser((user: User, done) => {
+passport.serializeUser((user: User, done: (error: any, user?: any, options?: {message: string}) => void) => {
     done(null, user.id)
 })
 
-passport.deserializeUser((id: number, done) => {
+passport.deserializeUser((id: number, done: (error: any, user?: any, options?: {message: string}) => void) => {
     UsersDataBase.deserializeUser(id, done)
 })
 
