@@ -49,20 +49,20 @@ function LoginForm(props: LoginFormProps) {
     }, [props.incorrectLogin, props.incorrectPassword])
 
     return (
-        <form className="login_form" onSubmit={handleSubmit} >
-            <p className='login_form_text'>Log In</p>
+        <form className="form" onSubmit={handleSubmit} >
+            <p className='form_text'>Log In</p>
             <div className='spacer' />
             <input type="text" value={login} onChange={handleLoginChange} className={incorrectLogin ?
-                'login_form_incorrect_input'
-                : 'login_form_correct_input'} placeholder='Username or email' />
+                'form_incorrect_input'
+                : 'form_correct_input'} placeholder='Username or email' />
             <input type={showPassword ? "text" : "password"} value={password} onChange={handleLPasswordChange} className={incorrectPassword ?
-                'login_form_incorrect_input' :
-                'login_form_correct_input'} placeholder='Password' />
-            <input type="submit" value="Log In" className='login_form_submit_button' disabled={!buttonEnabled} />
+                'form_incorrect_input' :
+                'form_correct_input'} placeholder='Password' />
+            <input type="submit" value="Log In" className='form_submit_button' disabled={!buttonEnabled} />
             <div className='spacer' />
             <div className='spacer' />
-            <button className='login_form_register_option_button' onClick={handleRegisterButton}>
-                <p className='login_form_register_option_text'>Register</p>
+            <button className='form_register_option_button' onClick={handleRegisterButton}>
+                <p className='form_register_option_text'>Register</p>
             </button>
         </form>
     )

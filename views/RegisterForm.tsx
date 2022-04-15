@@ -22,9 +22,10 @@ function RegisterForm(props: RegisterFormProps) {
     }
 
     return (
-        <form className="h-96 text-xl p-5 flex flex-col items-center bg-gray-200 border-0 rounded-3xl shadow-2xl mt-16 w-80" onSubmit={handleSubmit} >
-            <button className='hover:cursor-pointer mb-2 bg-gray-200 border-0 py-0' onClick={handleSignInButton}>
-                <p className='text-lg text-gray-600 py-1 underline my-0 hover:'>SignIn</p>
+        <form className="form" onSubmit={handleSubmit} >
+            <p className='form_text'>Register</p>
+            <button className='form_register_option_button' onClick={handleSignInButton}>
+                <p className='form_register_option_text'>SignIn</p>
             </button>
         </form>
     )
