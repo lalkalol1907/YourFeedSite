@@ -1,4 +1,5 @@
 import DB from "./DB";
+import { Response } from "express";
 
 class PostsDB extends DB {
 
@@ -6,17 +7,15 @@ class PostsDB extends DB {
         super()
     }
 
-    getPosts(res) {
+    getPosts(res: Response) {
         this.DBclient.connect((error, client) => {
-
-
             client.db("yourfeed").collection("posts").find({}).toArray((err, posts) => {
                 err ? res.send({ stat: 405 }) : res.send({ stat: 200, posts })
             })
         })
     }
 
-    ChangeLike(user_id, post_id) {
+    ChangeLike(user_id: number, post_id: number) {
         this.DBclient.connect((error, client) => {
             client.db("yourfeed").collection("posts").findOne({ id: post_id }, (err, post) => {
                 if (err) { return }

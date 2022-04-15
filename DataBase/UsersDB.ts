@@ -7,7 +7,7 @@ class UsersDB extends DB {
         super()
     }
 
-    deserializeUser(id, done) {
+    deserializeUser(id: number, done) {
         this.DBclient.connect((err, client) => {
             client.db("yourfeed").collection("users").findOne({ id: id }, (err, user) => {
                 err ? done(err) : done(null, user)
@@ -15,7 +15,7 @@ class UsersDB extends DB {
         })
     }
 
-    auth(username, password, done) {
+    auth(username: string | undefined, password: string | undefined, done) {
         this.DBclient.connect((err, client) => {
             client.db("yourfeed").collection("users").findOne({ $or: [{ username: username }, { email: username }] }, (err, user) => {
                 return err ? done(err) : user ? bcrypt.compare(password, user.password, (err, res) => {
@@ -25,7 +25,7 @@ class UsersDB extends DB {
         })
     }
 
-    register(res) {
+    register(res: Response) {
 
     }
 }

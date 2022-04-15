@@ -1,12 +1,15 @@
-const FileSystem = require("fs");
+import User from "../models/user";
+import { Response } from "express";
 
 class TokenStorage {
+
+    tokens: { [token: string]: User }
 
     constructor() {
         this.tokens = {}
     }
 
-    authToken(token, res) {
+    authToken(token: string, res: Response) {
         if (this.tokens[token]) {
             res.send({ stat: true, user: this.tokens[token] })
             return
@@ -14,15 +17,15 @@ class TokenStorage {
         res.send({ stat: false, message: "no token" })
     }
 
-    addToken(token, user) {
+    addToken(token: string, user: User) {
         this.tokens[token] = user
     }
 
-    removeToken(token) {
+    removeToken(token: string) {
         delete this.tokens[token]
     }
 
-    createToken(user, res) {
+    createToken(user: User, res: Response) {
         var token = '';
         var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         var length = 40;
