@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import Cookies from 'js-cookie';
 import NavBar from '../views/NavBar';
 import LoginForm from '../views/LoginForm';
 import RegisterForm from '../views/RegisterForm';
 import Router from 'next/router';
 import { BSONSymbol } from 'mongodb';
+import { useCookies } from 'react-cookie';
 
 function Login() {
 	const [ incorrectPassword, setIncorrectPassword ] = useState(false);
@@ -12,6 +12,8 @@ function Login() {
 	const [ registerForm, setRegisterForm ] = useState(false);
 	const [ registrarionError, setRegistrationError ] = useState('');
 	const [ loginError, setLoginError ] = useState('');
+    const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
+
 
 	const onPressedRegButton = () => {
 		setRegisterForm(true);
@@ -20,7 +22,7 @@ function Login() {
 	};
 
 	const getToken = () => {
-		const access_token = Cookies.get('access_token');
+		const access_token = cookies.access_token
 		console.log(access_token);
 		fetch('/api/is_authenticated', {
 			method: 'POST',
@@ -55,7 +57,7 @@ function Login() {
 			response.json().then((body) => {
 				console.log(body);
 				if (body.stat) {
-					Cookies.set('access_token', body.access_token);
+					setCookie('access_token', body.access_token)
 					Router.push('/feed');
 				} else {
 					if (body.info.message === 'Incorrect password') {
@@ -89,7 +91,7 @@ function Login() {
 		}).then((response) => {
 			response.json().then((body) => {
 				if (body.stat) {
-					Cookies.set('access_token', body.access_token);
+					setCookie('access_token', body.access_token)
 					Router.push('/feed');
 				} else {
 					setRegistrationError(body.err);

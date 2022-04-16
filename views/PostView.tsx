@@ -1,4 +1,4 @@
-import Avatar from '@material-ui/core/Avatar'
+import { Avatar } from '@mui/material';
 import { RiHeartFill, RiShareForwardLine } from "react-icons/ri"
 import { useState } from 'react'
 // TODO: Сменить иконки, потому что выглядят плохо 

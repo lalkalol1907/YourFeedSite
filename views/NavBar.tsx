@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import Avatar from '@material-ui/core/Avatar'
+import { Avatar } from '@mui/material';
 import User from '../models/user'
 
 interface NavBarProps {

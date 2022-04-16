@@ -57,7 +57,7 @@ function LoginForm(props: LoginFormProps) {
     return (
         <form className="form" onSubmit={handleSubmit} >
             <p className='form_text'>Log In</p>
-            <div className='spacer' />
+            <div className="spacer" />
             <input type="text" value={login} onChange={handleLoginChange} className={incorrectLogin ?
                 'form_incorrect_input'
                 : 'form_correct_input'} placeholder='Username or email' />
@@ -65,8 +65,7 @@ function LoginForm(props: LoginFormProps) {
                 'form_incorrect_input' :
                 'form_correct_input'} placeholder='Password' />
             <input type="submit" value="Log In" className='form_submit_button' disabled={!buttonEnabled} />
-            <div className='spacer' />
-            <div className='spacer' />
+            <div className="spacer" />
             <button className='form_register_option_button' onClick={handleRegisterButton}>
                 <p className='form_register_option_text'>Register</p>
             </button>

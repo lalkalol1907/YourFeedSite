@@ -2,15 +2,17 @@ import React, { useState, useEffect } from 'react';
 import PostView from '../views/PostView';
 import NavBar from '../views/NavBar';
 import ClipLoader from 'react-spinners/ClipLoader';
-import Cookies from 'js-cookie';
 import Router from 'next/router';
 import Post from '../models/post';
+import { useCookies } from 'react-cookie';
 
 function Feed() {
 	const [ loading, setLoading ] = useState(true);
 	const [ posts, setPosts ] = useState<Post[]>([]);
 	const [ auth, setAuth ] = useState(false);
 	const [ userId, setUserId ] = useState(0);
+    const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
+
 
 	const fetchPosts = () => {
 		fetch('/api/feed').then((response) => {
@@ -24,7 +26,7 @@ function Feed() {
 	};
 
 	const logOut = () => {
-		Cookies.set('access_token', '');
+		removeCookie('access_token')
 		setAuth(false);
 		setUserId(0);
 		setPosts([]);
@@ -40,14 +42,14 @@ function Feed() {
 			body: JSON.stringify({
 				post_id: id,
 				user_id: userId,
-				access_token: Cookies.get('access_token')
+				access_token: cookies.access_token
 			})
 		});
 	};
 
 	useEffect(() => {
 		document.title = 'Feed';
-		var cleintToken = Cookies.get('access_token');
+		var cleintToken = cookies.access_token
 		fetch('/api/is_authenticated', {
 			method: 'POST',
 			headers: {

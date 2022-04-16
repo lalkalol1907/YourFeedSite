@@ -70,12 +70,11 @@
     @include presets.flex-col-center();
     transition: height 1s;
     -webkit-transition: height 1s;
-    transition-delay: 1s;
     transition: width 1s;
     -webkit-transition: width 1s;
     background-color: presets.$gray-200;
     border-radius: 1.5rem;
-
+    align-self: stretch;
     @media (orientation: landscape) {
         width: 40%;
         min-width: 26rem;
@@ -149,10 +148,12 @@
 
 .form_submit_button {
     @include presets.shadow($color: #a21caf);
+    min-width: fit-content;
     width: 30%;
-    padding: 0.5rem 0;
+    max-width: 10rem;
+    padding: 0.3rem 1rem;
     margin-bottom: 0.25rem;
-    margin-top: 2.25rem;
+    margin-top: 1rem ;
     font-size: larger;
     border-radius: 9999px;
     color: white;
@@ -164,6 +165,7 @@
     }
 
     &:disabled {
+        background-color: presets.$gray-500;
         @include presets.shadow();
 
         &:hover {
@@ -173,10 +175,11 @@
 }
 
 .form_register_option_button {
+    position: relative;
+    // bottom: 0;
     margin-bottom: 0.25rem;
     background-color: presets.$gray-200;
     text-decoration: underline;
-
     &:hover {
         color: presets.$gray-500;
         cursor: pointer;

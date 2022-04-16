@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import React from 'react';
 import Login from '../pages/login';
-import { flushSync } from 'react-dom';
 
 interface RegisterFormProps {
 	handleSignInButton: () => void;
@@ -38,18 +37,15 @@ function RegisterForm(props: RegisterFormProps) {
 
 	const checkPassword = () => {
 		setPasswordValid(true);
-		changeButtonState();
 	};
 
 	const checkUsername = () => {
 		let loginIsValid = /^[0-9A-Z_-]+$/i.test(username) || Login.length == 0;
 		setUsernameValid(loginIsValid);
-		changeButtonState();
 	};
 
 	const checkPasswordMatch = () => {
 		setPasswordMatch(password === passwordConfirmation);
-		changeButtonState();
 	};
 
 	const checkEmail = () => {
@@ -78,7 +74,6 @@ function RegisterForm(props: RegisterFormProps) {
 				setUsernameExists(body.exists);
 			});
 		});
-		changeButtonState();
 	};
 
 	const checkEmailExists = () => {
@@ -99,7 +94,6 @@ function RegisterForm(props: RegisterFormProps) {
 				setEmailExists(body.exists);
 			});
 		});
-		changeButtonState();
 	};
 
 	const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -146,15 +140,10 @@ function RegisterForm(props: RegisterFormProps) {
 	);
 
 	useEffect(
-
-        // TODO: fix bug with password matching
+		// TODO: fix bug with password matching
 		() => {
-			flushSync(() => {
-				checkPasswordMatch();
-			});
-			flushSync(() => {
-				checkPassword();
-			});
+			checkPasswordMatch();
+			checkPassword();
 		},
 		[ password ]
 	);
@@ -165,13 +154,9 @@ function RegisterForm(props: RegisterFormProps) {
 				setEmailExists(false);
 				setEmailValid(true);
 			} else {
-				flushSync(() => {
-					checkEmail();
-				});
+				checkEmail();
 				if (emailValid && email.length != 0) {
-					flushSync(() => {
-						checkEmailExists();
-					});
+					checkEmailExists();
 				}
 			}
 		},
@@ -185,17 +170,29 @@ function RegisterForm(props: RegisterFormProps) {
 				setUsernameValid(true);
 				return;
 			} else {
-				flushSync(() => {
-					checkUsername();
-				});
+				checkUsername();
 				if (usernameValid && username.length != 0) {
-					flushSync(() => {
-						checkUsernameExists();
-					});
+					checkUsernameExists();
 				}
 			}
 		},
 		[ username ]
+	);
+
+	useEffect(
+		() => {
+			changeButtonState();
+		},
+		[
+			usernameExists,
+			usernameValid,
+			emailValid,
+			passwordMatch,
+			passwordValid,
+			emailExists,
+			username.length != 0,
+			password.length != 0
+		]
 	);
 
 	return (
@@ -232,7 +229,7 @@ function RegisterForm(props: RegisterFormProps) {
 				className={passwordMatch ? 'form_correct_input' : 'form_incorrect_input'}
 				placeholder="Confirm password"
 			/>
-			<input type="submit" value="Register" disabled={!buttonEnabled} />
+			<input type="submit" value="Register" className="form_submit_button" disabled={!buttonEnabled} />
 			<div className="spacer" />
 			<div className="spacer" />
 			<button className="form_register_option_button" onClick={handleSignInButton}>
