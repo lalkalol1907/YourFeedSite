@@ -75,10 +75,11 @@ function Login() {
 	};
 
 	const register = (email: string, username: string, password: string) => {
+        console.log(password)
 		fetch('/api/register', {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'aplication/json'
+				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
 				email,

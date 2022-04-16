@@ -4,7 +4,7 @@ import DB from "./DB";
 import { Response } from "express";
 import { NextApiResponse } from "next";
 import bcrypt from "bcryptjs"
-const { TokenSTG } = require('./DB_Objects');
+import { TokenSTG } from "./DB_Objects"
 
 class UsersDB extends DB {
 
@@ -48,6 +48,7 @@ class UsersDB extends DB {
 
     register(username: string, password: string, email: string, res: Response): void {
         this.DBclient.connect((err?: AnyError, result?: MongoClient) => {
+            
             if (!result) {
                 return
             }
@@ -57,13 +58,16 @@ class UsersDB extends DB {
                     return
                 }
                 bcrypt.hash(password, 10, (err, hashed) => {
+                    console.log(err)
                     if (err) {
                         res.send({ stat: false, err: err })
                         return
                     }
-                    var new_user = new User(user.id, username, hashed, email, "")
+                    var new_user = new User(user.id + 1, username, hashed, email, "")
                     result.db("yourfeed").collection("users").insertOne(new_user, (err, result) => {
+                        console.log(result)
                         if (err) {
+                            console.log(err)
                             res.send({ stat: false, err: err })
                             return
                         }
@@ -75,6 +79,7 @@ class UsersDB extends DB {
     }
 
     checkUsernameExists(username: string, res: NextApiResponse): void {
+        console.log(username)
         this.DBclient.connect((err?: AnyError, result?: MongoClient) => {
             if (!result) {
                 res.send({ stat: false, err: err })
@@ -86,6 +91,7 @@ class UsersDB extends DB {
                     res.send({ stat: false, err: err })
                     return
                 }
+                console.log(user)
                 res.send({ stat: true, exists: user ? true : false })
             })
         })
@@ -98,7 +104,8 @@ class UsersDB extends DB {
                 return
             }
 
-            result.db("yourfeed").collection("users").findOne({ email: email }, (err, user) => {
+            result.db("yourfeed").collection("users").findOne({ email: email }, {}, (err, user) => {
+                console.log(user)
                 if (err) {
                     res.send({ stat: false, err: err })
                     return
