@@ -39,7 +39,20 @@
     &:hover {
         background-color: presets.$gray-200;
         cursor: pointer;
-        color: presets.$fuchsia-700;
+        color: presets.$purple;
+    }
+}
+
+.createpost_button {
+    @extend .navbar_button;
+    font-size: large;
+    font-weight: normal;
+    font-style: italic;
+    color: presets.$dark-blue;
+    margin-right: 1rem;
+
+    &:hover {
+        color: presets.$mid-blue;
     }
 }
 

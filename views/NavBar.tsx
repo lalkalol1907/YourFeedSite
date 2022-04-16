@@ -7,6 +7,7 @@ interface NavBarProps {
 	auth: boolean;
 	user?: User;
 	logOut?: () => void;
+    newPost?: () => void;
 }
 
 function NavBar(props: NavBarProps) {
@@ -43,6 +44,9 @@ function NavBar(props: NavBarProps) {
 					<p className="navbar_button">Messenger</p>
 				</Link>
 				<div className="spacer" />
+                <button className='createpost_button' onClick={props.newPost} >
+                    Add Post
+                </button>
 				<Link href="/profile">
 					<Avatar src={''} className="navbar_avatarButton" />
 				</Link>

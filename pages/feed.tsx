@@ -11,6 +11,7 @@ function Feed() {
 	const [ posts, setPosts ] = useState<Post[]>([]);
 	const [ auth, setAuth ] = useState(false);
 	const [ userId, setUserId ] = useState(0);
+    const [ newPostWindow, setNewPostWindow ] = useState(false);
     const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
 
 
@@ -47,6 +48,10 @@ function Feed() {
 		});
 	};
 
+    const newPost = () => {
+        setNewPostWindow(true)
+    }
+
 	useEffect(() => {
 		document.title = 'Feed';
 		var cleintToken = cookies.access_token
@@ -73,7 +78,7 @@ function Feed() {
 
 	return (
 		<div className="feed">
-			<NavBar auth={auth} logOut={logOut} />
+			<NavBar auth={auth} logOut={logOut} newPost={newPost} />
 			{!loading &&
 			auth && (
 				<div className="feed_posts">

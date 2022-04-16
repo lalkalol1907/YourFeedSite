@@ -110,6 +110,14 @@ function Login() {
 		getToken();
 	}, []);
 
+    const passwordChanged = () => {
+        setIncorrectPassword(false)
+    }
+
+    const loginChanged = () => {
+        setIncorrectLogin(false)
+    }
+
 	return (
 		<div className="login">
 			<NavBar auth={false} />
@@ -132,6 +140,8 @@ function Login() {
 						incorrectPassword={incorrectPassword}
 						onPressedRegButton={onPressedRegButton}
 						error={loginError}
+                        passwordChanged={passwordChanged}
+                        loginChanged={loginChanged}
 					/>
 				)}
 			</div>

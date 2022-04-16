@@ -124,7 +124,7 @@
 
 .form_incorrect_input {
     @include _login_form_input();
-    background-color: presets.$red-300;
+    background-color: presets.$incorrect-input;
     border-color: presets.$red-600;
 
     &:hover {
@@ -151,7 +151,7 @@
 }
 
 .form_submit_button {
-    @include presets.shadow($color: #a21caf);
+    @include presets.shadow($color: presets.$purple);
     min-width: fit-content;
     width: 30%;
     max-width: 10rem;
@@ -161,17 +161,17 @@
     font-size: larger;
     border-radius: 9999px;
     color: white;
-    background-color: presets.$fuchsia-700;
+    background-color: presets.$purple;
 
     &:hover {
-        @include presets.shadow-md($color: #a21caf);
+        @include presets.shadow-md($color: presets.$purple);
         cursor: pointer;
     }
 
     &:disabled {
 
-        background-color: presets.$gray-500;
-        @include presets.shadow-md();
+        background-color: presets.$light-purple;
+        @include presets.shadow-md(presets.$light-purple);
 
         &:hover {
             cursor: default;
