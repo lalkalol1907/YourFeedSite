@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { CSSTransition } from 'react-transition-group'
+import Router from 'next/router';
+import { useCookies } from 'react-cookie';
 
 interface LoginFormProps {
-	logIn: (login: string, password: string) => void;
-	incorrectLogin: boolean;
-	incorrectPassword: boolean;
 	onPressedRegButton: () => void;
-	error: string;
-    passwordChanged: () => void;
-    loginChanged:() => void;
 }
 
 function LoginForm(props: LoginFormProps) {
@@ -19,6 +15,42 @@ function LoginForm(props: LoginFormProps) {
 	const [ buttonEnabled, setButtonEnabled ] = useState(false); // false
 	const [ showPassword, setShowPassword ] = useState(false);
 	const [ loginValid, setLoginValid ] = useState(true);
+    const [ loginError, setLoginError ] = useState('');
+    const [ cookies, setCookie, removeCookie ] = useCookies([ 'access_token' ]);
+
+    const logIn = (login: string, password: string) => {
+		console.log('ABOBA');
+		fetch('/api/login', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				login,
+				password
+			})
+		}).then((response) => {
+			response.json().then((body) => {
+				console.log(body);
+				if (body.stat) {
+					setCookie('access_token', body.access_token);
+					Router.push('/feed');
+				} else {
+					if (body.info.message === 'Incorrect password') {
+						setIncorrectPassword(true);
+						setIncorrectLogin(false);
+					}
+					if (body.info.message === 'Incorrect username') {
+						setIncorrectLogin(true);
+						setIncorrectPassword(false);
+					}
+					if (!body.info.message) {
+						setLoginError(body.err);
+					}
+				}
+			});
+		});
+	};
 
 	const changeButtonState = () => {
 		setButtonEnabled(password.length != 0 && login.length != 0 && loginValid);
@@ -30,7 +62,7 @@ function LoginForm(props: LoginFormProps) {
 	};
 
 	const handleSubmit = (event: React.SyntheticEvent) => {
-		props.logIn(login, password);
+		logIn(login, password);
 		event.preventDefault();
 	};
 
@@ -50,26 +82,17 @@ function LoginForm(props: LoginFormProps) {
 
 	useEffect(
 		() => {
-            console.log(props)
-			setIncorrectLogin(props.incorrectLogin);
-			setIncorrectPassword(props.incorrectPassword);
-		},
-		[ props.incorrectLogin, props.incorrectPassword ]
-	);
-
-	useEffect(
-		() => {
 			changeButtonState();
 		},
 		[ password.length != 0, login.length != 0, loginValid ]
 	);
 
     useEffect(() => {
-        props.passwordChanged()
+        setIncorrectPassword(false)
     }, [ password ])
 
     useEffect(() => {
-        props.loginChanged()
+        setIncorrectLogin(false)
     }, [login])
 
 	return (

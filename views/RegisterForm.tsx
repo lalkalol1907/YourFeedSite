@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import React from 'react';
 import Login from '../pages/login';
+import { useCookies } from 'react-cookie';
+import Router from 'next/router';
+
 
 interface RegisterFormProps {
 	handleSignInButton: () => void;
-	register: (email: string, username: string, password: string) => void;
-	error: string;
 }
 
 function RegisterForm(props: RegisterFormProps) {
@@ -20,7 +21,8 @@ function RegisterForm(props: RegisterFormProps) {
 	const [ buttonEnabled, setButtonEnabled ] = useState(true); // false
 	const [ emailValid, setEmailValid ] = useState(true);
 	const [ emailExists, setEmailExists ] = useState(false);
-	const [ error, setError ] = useState(props.error);
+	const [ registrarionError, setRegistrationError ] = useState('');
+    const [ cookies, setCookie, removeCookie ] = useCookies([ 'access_token' ]);
 
 	const changeButtonState = () => {
 		setButtonEnabled(
@@ -55,6 +57,30 @@ function RegisterForm(props: RegisterFormProps) {
 		setEmailValid(emailIsValid);
 	};
 
+    const register = () => {
+		console.log(password);
+		fetch('/api/register', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				email,
+				username,
+				password
+			})
+		}).then((response) => {
+			response.json().then((body) => {
+				if (body.stat) {
+					setCookie('access_token', body.access_token);
+					Router.push('/feed');
+				} else {
+					setRegistrationError(body.err);
+				}
+			});
+		});
+	};
+
 	const checkUsernameExists = () => {
 		fetch('/api/check_username_exists', {
 			method: 'POST',
@@ -67,7 +93,7 @@ function RegisterForm(props: RegisterFormProps) {
 		}).then((response) => {
 			response.json().then((body) => {
 				if (!body.stat) {
-					setError(body.err);
+					setRegistrationError(body.err);
 					return;
 				}
 				console.log(body.exists);
@@ -88,7 +114,7 @@ function RegisterForm(props: RegisterFormProps) {
 		}).then((response) => {
 			response.json().then((body) => {
 				if (!body.stat) {
-					setError(body.err);
+					setRegistrationError(body.err);
 					return;
 				}
 				setEmailExists(body.exists);
@@ -116,7 +142,7 @@ function RegisterForm(props: RegisterFormProps) {
 		if (!buttonEnabled) {
 			return;
 		}
-		props.register(email, username, password);
+		register();
 		event.preventDefault();
 	};
 
@@ -124,13 +150,6 @@ function RegisterForm(props: RegisterFormProps) {
 		props.handleSignInButton();
 		event.preventDefault();
 	};
-
-	useEffect(
-		() => {
-			setError(props.error);
-		},
-		[ props.error ]
-	);
 
 	useEffect(
 		() => {
