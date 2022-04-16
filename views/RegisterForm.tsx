@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import React from 'react';
+import Login from '../pages/login';
 
 interface RegisterFormProps {
 	handleSignInButton: () => void;
@@ -19,7 +20,6 @@ function RegisterForm(props: RegisterFormProps) {
 	const [ buttonEnabled, setButtonEnabled ] = useState(true); // false
 	const [ emailValid, setEmailValid ] = useState(true);
 	const [ emailExists, setEmailExists ] = useState(false);
-
 	const [ error, setError ] = useState(props.error);
 
 	const changeButtonState = () => {
@@ -41,7 +41,7 @@ function RegisterForm(props: RegisterFormProps) {
 	};
 
 	const checkUsername = () => {
-		let loginIsValid = /^[0-9A-Z_-]+$/i.test(username);
+		let loginIsValid = /^[0-9A-Z_-]+$/i.test(username) || Login.length == 0;
 		setUsernameValid(loginIsValid);
 		changeButtonState();
 	};
@@ -102,25 +102,18 @@ function RegisterForm(props: RegisterFormProps) {
 
 	const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setUsername(event.target.value.toLowerCase());
-		checkUsername();
-        checkUsernameExists();
 	};
 
 	const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setEmail(event.target.value.toLowerCase());
-		checkEmail();
-        checkEmailExists();
 	};
 
 	const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setPassword(event.target.value);
-		checkPassword();
-		checkPasswordMatch();
 	};
 
 	const handlePasswordConfirmationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setPasswordConfirmation(event.target.value);
-		checkPasswordMatch();
 	};
 
 	const handleSubmit = (event: React.SyntheticEvent) => {
@@ -135,6 +128,33 @@ function RegisterForm(props: RegisterFormProps) {
 		props.handleSignInButton();
 		event.preventDefault();
 	};
+
+    useEffect(() => {
+        setError(props.error)
+    }, [props.error])
+
+    useEffect(() => {
+        checkPasswordMatch();
+    }, [passwordConfirmation])
+
+    useEffect(() => {
+        checkPasswordMatch();
+        checkPassword();
+    }, [password])
+
+    useEffect(() => {
+        checkEmail();
+        if (emailValid && email.length != 0) {
+            checkEmailExists();
+        }
+    }, [email])
+
+    useEffect(() => {
+        checkUsername();
+        if (usernameValid && username.length != 0) {
+            checkUsernameExists();
+        }
+    }, [username])
 
 	return (
 		<form className="form" onSubmit={handleSubmit}>
@@ -151,7 +171,7 @@ function RegisterForm(props: RegisterFormProps) {
 				type="text"
 				value={email}
 				onChange={handleEmailChange}
-				className={emailValid ? 'form_correct_input' : 'form_incorrect_input'}
+				className={emailValid || email.length == 0 ? 'form_correct_input' : 'form_incorrect_input'}
 				placeholder="Email"
 			/>
 			<input
@@ -168,6 +188,7 @@ function RegisterForm(props: RegisterFormProps) {
 				className={passwordMatch ? 'form_correct_input' : 'form_incorrect_input'}
 				placeholder="Confirm password"
 			/>
+            <input type="submit" value="Register" disabled={!buttonEnabled} />
 			<div className="spacer" />
 			<div className="spacer" />
 			<button className="form_register_option_button" onClick={handleSignInButton}>
