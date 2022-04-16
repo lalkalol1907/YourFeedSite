@@ -10,6 +10,21 @@
     border-color: presets.$gray-200;
     margin-bottom: 1rem;
     background-color: presets.$gray-100;
+
+    @media (orientation: portrait) {
+        min-width: 0;
+        height: 0;
+        width: 0;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        * {
+            height: 0;
+            width: 0;
+            margin: 0;
+            padding: 0;
+        }
+    }
 }
 
 .navbar_button {

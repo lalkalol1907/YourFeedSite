@@ -12,17 +12,12 @@ function Login() {
 	const [ registerForm, setRegisterForm ] = useState(false);
 	const [ registrarionError, setRegistrationError ] = useState('');
 	const [ loginError, setLoginError ] = useState('');
-    const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
+	const [ cookies, setCookie, removeCookie ] = useCookies([ 'access_token' ]);
 
-
-	const onPressedRegButton = () => {
-		setRegisterForm(true);
-		setIncorrectLogin(false);
-		setIncorrectPassword(false);
-	};
+    const wrapperRef = React.createRef();
 
 	const getToken = () => {
-		const access_token = cookies.access_token
+		const access_token = cookies.access_token;
 		console.log(access_token);
 		fetch('/api/is_authenticated', {
 			method: 'POST',
@@ -57,7 +52,7 @@ function Login() {
 			response.json().then((body) => {
 				console.log(body);
 				if (body.stat) {
-					setCookie('access_token', body.access_token)
+					setCookie('access_token', body.access_token);
 					Router.push('/feed');
 				} else {
 					if (body.info.message === 'Incorrect password') {
@@ -77,7 +72,7 @@ function Login() {
 	};
 
 	const register = (email: string, username: string, password: string) => {
-        console.log(password)
+		console.log(password);
 		fetch('/api/register', {
 			method: 'POST',
 			headers: {
@@ -91,13 +86,20 @@ function Login() {
 		}).then((response) => {
 			response.json().then((body) => {
 				if (body.stat) {
-					setCookie('access_token', body.access_token)
+					setCookie('access_token', body.access_token);
 					Router.push('/feed');
 				} else {
 					setRegistrationError(body.err);
 				}
 			});
 		});
+	};
+
+	const onPressedRegButton = () => {
+
+		setRegisterForm(true);
+		setIncorrectLogin(false);
+		setIncorrectPassword(false);
 	};
 
 	const onPressedSignInButton = () => {
@@ -110,10 +112,13 @@ function Login() {
 
 	return (
 		<div className="login">
-			<NavBar auth={true} />
+			<NavBar auth={false} />
 			<div className="login_container">
-				{/* <img src={""} className="" / > */}
-				<div className="login_pic" />
+                <div className='login_wrapper'>
+				{/* <img src={"login.svg"} className="login_pic" / > */}
+                    <div className="login_pic" />
+                </div>
+				{/* <div className="login_pic" /> */}
 				{registerForm ? (
 					<RegisterForm
 						handleSignInButton={onPressedSignInButton}
