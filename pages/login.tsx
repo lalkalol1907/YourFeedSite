@@ -10,8 +10,8 @@ function Login() {
 	const [ incorrectPassword, setIncorrectPassword ] = useState(false);
 	const [ incorrectLogin, setIncorrectLogin ] = useState(false);
 	const [ registerForm, setRegisterForm ] = useState(false);
-    const [ registrarionError, setRegistrationError ] = useState(false);
-    const [ loginError, setLoginError ] = useState(false)
+	const [ registrarionError, setRegistrationError ] = useState('');
+	const [ loginError, setLoginError ] = useState('');
 
 	const onPressedRegButton = () => {
 		setRegisterForm(true);
@@ -66,9 +66,9 @@ function Login() {
 						setIncorrectLogin(true);
 						setIncorrectPassword(false);
 					}
-                    if (!body.info.message) {
-                        setLoginError(true)
-                    }
+					if (!body.info.message) {
+						setLoginError(body.err);
+					}
 				}
 			});
 		});
@@ -85,6 +85,15 @@ function Login() {
 				username,
 				password
 			})
+		}).then((response) => {
+			response.json().then((body) => {
+				if (body.stat) {
+					Cookies.set('access_token', body.access_token);
+					Router.push('/feed');
+				} else {
+					setRegistrationError(body.err);
+				}
+			});
 		});
 	};
 
@@ -103,14 +112,18 @@ function Login() {
 				{/* <img src={""} className="" / > */}
 				<div className="login_pic" />
 				{registerForm ? (
-					<RegisterForm handleSignInButton={onPressedSignInButton} register={register} error={registrarionError} />
+					<RegisterForm
+						handleSignInButton={onPressedSignInButton}
+						register={register}
+						error={registrarionError}
+					/>
 				) : (
 					<LoginForm
 						logIn={logIn}
 						incorrectLogin={incorrectLogin}
 						incorrectPassword={incorrectPassword}
 						onPressedRegButton={onPressedRegButton}
-                        error={loginError}
+						error={loginError}
 					/>
 				)}
 			</div>

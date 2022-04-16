@@ -1,4 +1,5 @@
 import User from "../models/user";
+import type { NextApiResponse } from 'next'
 import { Response } from "express";
 
 class TokenStorage {
@@ -9,7 +10,7 @@ class TokenStorage {
         this.tokens = {}
     }
 
-    authToken(token: string, res: Response) {
+    authToken(token: string, res: NextApiResponse): void {
         if (this.tokens[token]) {
             res.send({ stat: true, user: this.tokens[token] })
             return
@@ -17,15 +18,15 @@ class TokenStorage {
         res.send({ stat: false, message: "no token" })
     }
 
-    addToken(token: string, user: User) {
+    addToken(token: string, user: User): void {
         this.tokens[token] = user
     }
 
-    removeToken(token: string) {
+    removeToken(token: string): void {
         delete this.tokens[token]
     }
 
-    createToken(user: User, res: Response) {
+    createToken(user: User, res: Response): void {
         var token = '';
         var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         var length = 40;

@@ -1,5 +1,5 @@
 import DB from "./DB";
-import { Response } from "express";
+import type { NextApiResponse } from 'next'
 import Post from "../models/post"
 import { MongoClient, AnyError } from "mongodb";
 
@@ -9,19 +9,19 @@ class PostsDB extends DB {
         super()
     }
 
-    getPosts(res: Response) {
+    getPosts(res: NextApiResponse): void {
         this.DBclient.connect((err?: AnyError, result?: MongoClient) => {
             if (!result) {
-                res.send({stat: 405})
+                res.send({stat: false})
                 return
             }
             result.db("yourfeed").collection("posts").find({}).toArray((err, posts) => {
-                err ? res.send({ stat: 405 }) : res.send({ stat: 200, posts })
+                err ? res.send({ stat: false }) : res.send({ stat: true, posts })
             })
         })
     }
 
-    ChangeLike(user_id: number, post_id: number) {
+    ChangeLike(user_id: number, post_id: number): void {
         this.DBclient.connect((error?: AnyError, result?: MongoClient) => {
             if (!result) {
                 return

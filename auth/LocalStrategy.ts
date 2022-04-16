@@ -1,6 +1,6 @@
 import User from "../models/user"
+import { UsersDataBase } from '../DataBase/DB_Objects';
 
-const { UsersDataBase } = require('../DB_Objects')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 

@@ -1,6 +1,10 @@
 import { AnyError, MongoClient } from "mongodb";
+import User from "../models/user";
 import DB from "./DB";
-var bcrypt = require('bcryptjs');
+import { Response } from "express";
+import { NextApiResponse } from "next";
+import bcrypt from "bcryptjs"
+const { TokenSTG } = require('./DB_Objects');
 
 class UsersDB extends DB {
 
@@ -8,7 +12,7 @@ class UsersDB extends DB {
         super()
     }
 
-    deserializeUser(id: number, done: (error: any, user?: any, options?: {message: string}) => void) {
+    deserializeUser(id: number, done: (error: any, user?: any, options?: { message: string }) => void): void {
         this.DBclient.connect((err?: AnyError, result?: MongoClient) => {
             if (!result) {
                 done(err)
@@ -20,8 +24,16 @@ class UsersDB extends DB {
         })
     }
 
-    auth(username: string | undefined, password: string | undefined, done: (error: any, user?: any, options?: {message: string}) => void) {
+    auth(username: string | undefined, password: string | undefined, done: (error: any, user?: any, options?: { message: string }) => void): void {
         this.DBclient.connect((err?: AnyError, result?: MongoClient) => {
+            if (!password) {
+                done(null, false, { message: "Incorrect password" })
+                return
+            }
+            if (!username) {
+                done(null, false, { message: "Incorrect username" })
+                return
+            }
             if (!result) {
                 done(err)
                 return
@@ -34,8 +46,66 @@ class UsersDB extends DB {
         })
     }
 
-    register(res: Response) {
+    register(username: string, password: string, email: string, res: Response): void {
+        this.DBclient.connect((err?: AnyError, result?: MongoClient) => {
+            if (!result) {
+                return
+            }
+            result.db("yourfeed").collection("users").findOne({}, { sort: { id: -1 } }, (err, user) => {
+                if (!user) {
+                    res.send({ stat: false, err: err })
+                    return
+                }
+                bcrypt.hash(password, 10, (err, hashed) => {
+                    if (err) {
+                        res.send({ stat: false, err: err })
+                        return
+                    }
+                    var new_user = new User(user.id, username, hashed, email, "")
+                    result.db("yourfeed").collection("users").insertOne(new_user, (err, result) => {
+                        if (err) {
+                            res.send({ stat: false, err: err })
+                            return
+                        }
+                        TokenSTG.createToken(new_user, res)
+                    })
+                })
+            })
+        })
+    }
 
+    checkUsernameExists(username: string, res: NextApiResponse): void {
+        this.DBclient.connect((err?: AnyError, result?: MongoClient) => {
+            if (!result) {
+                res.send({ stat: false, err: err })
+                return
+            }
+
+            result.db("yourfeed").collection("users").findOne({ username: username }, (err, user) => {
+                if (err) {
+                    res.send({ stat: false, err: err })
+                    return
+                }
+                res.send({ stat: true, exists: user ? true : false })
+            })
+        })
+    }
+
+    checkEmailExists(email: string, res: NextApiResponse): void {
+        this.DBclient.connect((err?: AnyError, result?: MongoClient) => {
+            if (!result) {
+                res.send({ stat: false, err: err })
+                return
+            }
+
+            result.db("yourfeed").collection("users").findOne({ email: email }, (err, user) => {
+                if (err) {
+                    res.send({ stat: false, err: err })
+                    return
+                }
+                res.send({ stat: true, exists: user ? true : false })
+            })
+        })
     }
 }
 

@@ -5,7 +5,7 @@ interface LoginFormProps {
     incorrectLogin: boolean;
     incorrectPassword: boolean;
     onPressedRegButton: () => void
-    error: boolean
+    error: string 
 }
 
 function LoginForm(props: LoginFormProps) {
@@ -19,7 +19,7 @@ function LoginForm(props: LoginFormProps) {
     const [loginValid, setLoginValid] = useState(true)
 
     const changeButtonState = () => {
-        setButtonEnabled(password.length >= 0 && login.length > 0 && loginValid)
+        setButtonEnabled(password.length != 0 && login.length != 0 && loginValid)
     }
 
     const checkLogin = () => {

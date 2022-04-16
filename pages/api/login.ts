@@ -3,7 +3,7 @@ import passport from '../../auth/LocalStrategy';
 import { Response, Request } from "express";
 import User from '../../models/user';
 import { AnyError } from 'mongodb';
-const { TokenSTG } = require('../../DB_Objects');
+import { TokenSTG } from '../../DataBase/DB_Objects';
 
 const handler = nextConnect()
 
