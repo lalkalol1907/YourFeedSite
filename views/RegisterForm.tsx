@@ -74,8 +74,8 @@ function RegisterForm(props: RegisterFormProps) {
 		);
 		setEmailValid(emailIsValid);
 		if (emailIsValid && email.length != 0) {
-            checkEmailExists();
-        }
+			checkEmailExists();
+		}
 	};
 
 	const register = () => {
@@ -227,8 +227,6 @@ function RegisterForm(props: RegisterFormProps) {
 			password.length != 0
 		]
 	);
-
-	// TODO: create state vars for every input and replace vars in useEffect()
 
 	useEffect(
 		() => {

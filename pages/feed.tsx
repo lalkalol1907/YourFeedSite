@@ -11,9 +11,11 @@ function Feed() {
 	const [ posts, setPosts ] = useState<Post[]>([]);
 	const [ auth, setAuth ] = useState(false);
 	const [ userId, setUserId ] = useState(0);
-    const [ newPostWindow, setNewPostWindow ] = useState(false);
-    const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
+	const [ newPostWindow, setNewPostWindow ] = useState(false);
+	const [ cookies, setCookie, removeCookie ] = useCookies([ 'access_token' ]);
+	const [ buttonClosed, setButtonClosed ] = useState(false);
 
+	const wrapperRefButton = React.createRef<HTMLButtonElement>();
 
 	const fetchPosts = () => {
 		fetch('/api/feed').then((response) => {
@@ -27,7 +29,7 @@ function Feed() {
 	};
 
 	const logOut = () => {
-		removeCookie('access_token')
+		removeCookie('access_token');
 		setAuth(false);
 		setUserId(0);
 		setPosts([]);
@@ -48,13 +50,13 @@ function Feed() {
 		});
 	};
 
-    const newPost = () => {
-        setNewPostWindow(true)
-    }
+	const newPost = () => {
+		setNewPostWindow(true);
+	};
 
 	useEffect(() => {
 		document.title = 'Feed';
-		var cleintToken = cookies.access_token
+		var cleintToken = cookies.access_token;
 		fetch('/api/is_authenticated', {
 			method: 'POST',
 			headers: {
@@ -76,12 +78,27 @@ function Feed() {
 		});
 	}, []);
 
+	useEffect(
+		() => {
+			const wrapper = wrapperRefButton.current;
+			if (wrapper) {
+				wrapper.classList.toggle('closed');
+			}
+		},
+		[ buttonClosed ]
+	);
+
+
 	return (
 		<div className="feed">
 			<NavBar auth={auth} logOut={logOut} newPost={newPost} />
 			{!loading &&
 			auth && (
+				// <div className="feed_posts_wrapper">
 				<div className="feed_posts">
+					<button className="new_post_button" ref={wrapperRefButton}>
+						Add Post
+					</button>
 					{posts.map((post) => (
 						<PostView
 							key={post.id}
@@ -96,6 +113,7 @@ function Feed() {
 						/>
 					))}
 				</div>
+				// </div>
 			)}
 			{(loading || !auth) && (
 				<div className="clip_loader">

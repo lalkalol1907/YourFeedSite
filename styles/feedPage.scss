@@ -11,6 +11,8 @@
 
 .feed_posts {
     @include presets.flex-col-center();
+    overflow: scroll;
+    width: 100%;
 }
 
 .clip_loader {
@@ -18,3 +20,170 @@
     margin-bottom: 1.25rem;
 }
 
+.post {
+    display: grid;
+    align-items: center;
+    max-width: 36rem;
+    min-width: 36rem;
+    width: 100%;
+    border: 1px solid presets.$gray-200;
+    border-radius: 1rem;
+    margin: 0 1rem;
+    margin-bottom: 2.25rem;
+}
+
+.new_post_button {
+    @include presets.shadow-lg(presets.$ultralight-purple);
+    width: 100%;
+    color: presets.$purple;
+    font-weight: 400;
+    font-size: large;
+    background-color: presets.$ultralight-purple;
+    min-width: 36rem;
+    max-width: 36rem;
+    padding: 0.5rem 0;
+    margin: 1rem 1rem;
+    margin-bottom: 2rem;
+    border-radius: 9999rem;
+    transition: width 1s, height 1s;
+    &.closed {
+        min-width: 0;
+        min-height: 0;
+        width: 0;
+        height: 0;
+    }
+}
+
+.post_topbar {
+    @include presets.flex-row-center();
+    padding: 0.25rem 0.625rem;
+
+    h3 {
+        font-size: medium;
+        font-weight: bold;
+    }
+
+    &:hover {
+        cursor: pointer;
+
+        h3 {
+            text-decoration: underline;
+        }
+    }
+}
+
+.post_avatar {
+    margin-right: 0.625rem;
+}
+
+.post_pic {
+    width: 100%;
+    object-fit: contain;
+}
+
+.post_likes {
+    padding: 0.25rem 0.375rem;
+
+    h4 {
+        margin: 0;
+        padding: 0;
+        font-size: smaller;
+        font-weight: bold;
+    }
+}
+
+.post_text {
+    @include presets.flex-row-center();
+    padding: 0 0.375rem;
+    margin-bottom: 1rem;
+
+    h4 {
+        padding: 0;
+        margin: 0;
+        font-size: small;
+        font-weight: normal;
+
+        strong {
+            font-size: inherit;
+            padding-right: 0.25rem;
+        }
+    }
+}
+
+.post_bottom_bar {
+    @include presets.flex-row-center();
+}
+
+@mixin bottom_button {
+    border: 1px solid;
+    border-radius: 9999px;
+    margin: 0.5rem;
+    margin-top: 0;
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    svg {
+        width: 1.5rem;
+        height: auto;
+        margin: 0 1.25rem;
+    }
+}
+
+.like_button {
+    @include bottom_button();
+    background-color: presets.$gray-100;
+    border-color: #e0e0e0;
+
+    &:hover {
+        background-color: presets.$red-100;
+        border-color: presets.$red-400;
+
+        svg {
+            fill: presets.$red-400
+        }
+    }
+
+    svg {
+        fill: #bababa;
+    }
+}
+
+.like_button_pressed {
+    @include bottom_button();
+    background-color: presets.$red-300;
+    border-color: presets.$red-500;
+
+    &:hover {
+        background-color: presets.$red-200;
+        border-color: presets.$red-400;
+
+        svg {
+            fill: presets.$red-400
+        }
+    }
+
+    svg {
+        fill: presets.$red-500;
+    }
+}
+
+.send_button {
+    @include bottom_button();
+    background-color: presets.$gray-100;
+    border-color: #e0e0e0;
+
+    &:hover {
+        background-color: presets.$fuchsia-100;
+        border-color: presets.$fuchsia-400;
+
+        svg {
+            fill: presets.$fuchsia-400;
+        }
+    }
+
+    svg {
+        fill: #bababa
+    }
+}
