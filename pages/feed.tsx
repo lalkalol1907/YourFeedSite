@@ -90,6 +90,8 @@ function Feed() {
 
 
 	return (
+        <div className='feed_wrapper'>
+            <button className='new_post_button'>+</button>
 		<div className="feed">
 			<NavBar auth={auth} logOut={logOut} newPost={newPost} />
 			{!loading &&
@@ -118,6 +120,7 @@ function Feed() {
 				</div>
 			)}
 		</div>
+        </div>
 	);
 }
 
