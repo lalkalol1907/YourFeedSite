@@ -96,9 +96,6 @@ function Feed() {
 			auth && (
 				// <div className="feed_posts_wrapper">
 				<div className="feed_posts">
-					<button className="new_post_button" ref={wrapperRefButton}>
-						Add Post
-					</button>
 					{posts.map((post) => (
 						<PostView
 							key={post.id}
