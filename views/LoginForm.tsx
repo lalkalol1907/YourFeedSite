@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { CSSTransition } from 'react-transition-group'
+import { CSSTransition } from 'react-transition-group';
 import Router from 'next/router';
 import { useCookies } from 'react-cookie';
 
@@ -15,13 +15,15 @@ function LoginForm(props: LoginFormProps) {
 	const [ buttonEnabled, setButtonEnabled ] = useState(false); // false
 	const [ showPassword, setShowPassword ] = useState(false);
 	const [ loginValid, setLoginValid ] = useState(true);
-    const [ loginError, setLoginError ] = useState('');
-    const [ cookies, setCookie, removeCookie ] = useCookies([ 'access_token' ]);
+	const [ loginError, setLoginError ] = useState('');
+	const [ cookies, setCookie, removeCookie ] = useCookies([ 'access_token' ]);
+	const [ passwordRed, setPasswordRed ] = useState(false);
+	const [ loginRed, setLoginRed ] = useState(false);
 
-    const wrapperRefLogin = React.createRef<HTMLInputElement>();
-    const wrapperRefPassword = React.createRef<HTMLInputElement>();
+	const wrapperRefLogin = React.createRef<HTMLInputElement>();
+	const wrapperRefPassword = React.createRef<HTMLInputElement>();
 
-    const logIn = (login: string, password: string) => {
+	const logIn = (login: string, password: string) => {
 		console.log('ABOBA');
 		fetch('/api/login', {
 			method: 'POST',
@@ -80,7 +82,6 @@ function LoginForm(props: LoginFormProps) {
 
 	const handleLPasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setPassword(event.target.value);
-		
 	};
 
 	useEffect(
@@ -90,52 +91,73 @@ function LoginForm(props: LoginFormProps) {
 		[ password.length != 0, login.length != 0, loginValid ]
 	);
 
-    useEffect(() => {
-        setIncorrectPassword(false)
-    }, [ password ])
+	useEffect(
+		() => {
+			setIncorrectPassword(false);
+		},
+		[ password ]
+	);
 
-    useEffect(() => {
-        setIncorrectLogin(false)
-    }, [login])
+	useEffect(
+		() => {
+			setIncorrectLogin(false);
+            if (login.length === 0) {
+                setLoginValid(true)
+            } else {
+                checkLogin()
+            }
+		},
+		[ login ]
+	);
 
-    useEffect(() => {
-        const wrapper = wrapperRefPassword.current
-        if (wrapper) {
-            if (password.length != 0)
-            wrapper.classList.toggle('incorrect')
-        }
-    }, [incorrectPassword])
+	useEffect(
+		() => {
+			const wrapper = wrapperRefPassword.current;
+			if (wrapper) {
+				if (passwordRed !== incorrectPassword) {
+					wrapper.classList.toggle('incorrect');
+                    setPasswordRed(!passwordRed);
+				}
+			}
+		},
+		[ incorrectPassword ]
+	);
 
-    useEffect(() => {
-        const wrapper = wrapperRefLogin.current
-        if (wrapper) {
-            if (login.length != 0)
-            wrapper.classList.toggle('incorrect')
-        }
-    }, [ incorrectLogin ])
+	useEffect(
+		() => {
+			const wrapper = wrapperRefLogin.current;
+			if (wrapper) {
+				if ((loginRed && loginValid && !incorrectLogin) || (!loginRed && (!loginValid || incorrectLogin))) {
+					wrapper.classList.toggle('incorrect');
+                    setLoginRed(!loginRed);
+				}
+			}
+		},
+		[ incorrectLogin, loginValid ]
+	);
 
 	return (
 		<form className="form" onSubmit={handleSubmit}>
 			<p className="form_text">Log In</p>
 			<div className="spacer" />
 			<input
-            ref={wrapperRefLogin}
+				ref={wrapperRefLogin}
 				type="text"
 				value={login}
 				onChange={handleLoginChange}
-				className='form_input'
+				className="form_input"
 				placeholder="Username or email"
 			/>
-            {/* <CSSTransition in={incorrectPassword} classNames="fade" timeout={0} > */}
+			{/* <CSSTransition in={incorrectPassword} classNames="fade" timeout={0} > */}
 			<input
-            ref={wrapperRefPassword}
+				ref={wrapperRefPassword}
 				type={showPassword ? 'text' : 'password'}
 				value={password}
 				onChange={handleLPasswordChange}
-				className='form_input'
+				className="form_input"
 				placeholder="Password"
 			/>
-            {/* </CSSTransition> */}
+			{/* </CSSTransition> */}
 			<input type="submit" value="Log In" className="form_submit_button" disabled={!buttonEnabled} />
 			<div className="spacer" />
 			<button className="form_register_option_button" onClick={handleRegisterButton}>
