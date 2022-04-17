@@ -50,6 +50,15 @@
     font-style: italic;
     color: presets.$dark-blue;
     margin-right: 1rem;
+    transition: visibility 0.5s;
+    transition-delay: 1s;
+    transition: opacity 1s;
+    // TODO: do transition
+    @media (min-width: 70rem) {
+        
+        opacity: 0;
+        visibility: hidden;
+    }
 
     &:hover {
         color: presets.$mid-blue;

@@ -96,7 +96,6 @@ function Feed() {
 			<NavBar auth={auth} logOut={logOut} newPost={newPost} />
 			{!loading &&
 			auth && (
-				// <div className="feed_posts_wrapper">
 				<div className="feed_posts">
 					{posts.map((post) => (
 						<PostView
@@ -112,7 +111,6 @@ function Feed() {
 						/>
 					))}
 				</div>
-				// </div>
 			)}
 			{(loading || !auth) && (
 				<div className="clip_loader">
