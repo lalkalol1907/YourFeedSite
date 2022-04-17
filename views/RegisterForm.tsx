@@ -4,7 +4,6 @@ import Login from '../pages/login';
 import { useCookies } from 'react-cookie';
 import Router from 'next/router';
 
-
 interface RegisterFormProps {
 	handleSignInButton: () => void;
 }
@@ -22,7 +21,12 @@ function RegisterForm(props: RegisterFormProps) {
 	const [ emailValid, setEmailValid ] = useState(true);
 	const [ emailExists, setEmailExists ] = useState(false);
 	const [ registrarionError, setRegistrationError ] = useState('');
-    const [ cookies, setCookie, removeCookie ] = useCookies([ 'access_token' ]);
+	const [ cookies, setCookie, removeCookie ] = useCookies([ 'access_token' ]);
+
+	const wrapperRefUsername = React.createRef<HTMLInputElement>();
+	const wrapperRefEmail = React.createRef<HTMLInputElement>();
+	const wrapperRefPassword = React.createRef<HTMLInputElement>();
+	const wrapperRefConfirmation = React.createRef<HTMLInputElement>();
 
 	const changeButtonState = () => {
 		setButtonEnabled(
@@ -42,7 +46,7 @@ function RegisterForm(props: RegisterFormProps) {
 	};
 
 	const checkUsername = () => {
-		let loginIsValid = /^[0-9A-Z_-]+$/i.test(username) || Login.length == 0;
+		let loginIsValid = /^[0-9A-Z_-]+$/i.test(username);
 		setUsernameValid(loginIsValid);
 	};
 
@@ -57,7 +61,7 @@ function RegisterForm(props: RegisterFormProps) {
 		setEmailValid(emailIsValid);
 	};
 
-    const register = () => {
+	const register = () => {
 		console.log(password);
 		fetch('/api/register', {
 			method: 'POST',
@@ -187,7 +191,6 @@ function RegisterForm(props: RegisterFormProps) {
 			if (username.length == 0) {
 				setUsernameExists(false);
 				setUsernameValid(true);
-				return;
 			} else {
 				checkUsername();
 				if (usernameValid && username.length != 0) {
@@ -214,38 +217,86 @@ function RegisterForm(props: RegisterFormProps) {
 		]
 	);
 
+	// TODO: create state vars for every input and replace vars in useEffect()
+
+	useEffect(
+		() => {
+			const wrapper = wrapperRefUsername.current;
+			if (wrapper) {
+				if (username.length != 0) {
+					wrapper.classList.toggle('incorrect');
+				}
+			}
+		},
+		[ usernameValid && !usernameExists ]
+	);
+
+	useEffect(
+		() => {
+			const wrapper = wrapperRefEmail.current;
+			if (wrapper) {
+				if (email.length != 0) {
+					wrapper.classList.toggle('incorrect');
+				}
+			}
+		},
+		[ emailValid && !emailExists ]
+	);
+
+	useEffect(
+		() => {
+			const wrapper = wrapperRefPassword.current;
+			if (wrapper) {
+				if (password.length != 0) wrapper.classList.toggle('incorrect');
+			}
+		},
+		[ passwordValid ]
+	);
+
+	useEffect(
+		() => {
+			const wrapper = wrapperRefConfirmation.current;
+			if (wrapper) {
+				if (password.length != 0 || passwordConfirmation.length != 0) wrapper.classList.toggle('incorrect');
+			}
+		},
+		[ passwordMatch ]
+	);
+
 	return (
 		<form className="form" onSubmit={handleSubmit}>
 			<p className="form_text">Register</p>
 			<div className="spacer" />
 			<input
+				ref={wrapperRefUsername}
 				type="text"
 				value={username}
 				onChange={handleUsernameChange}
-				className={usernameValid && !usernameExists ? 'form_correct_input' : 'form_incorrect_input'}
+				className="form_input"
 				placeholder="Username"
 			/>
 			<input
+				ref={wrapperRefEmail}
 				type="text"
 				value={email}
 				onChange={handleEmailChange}
-				className={
-					(emailValid || email.length == 0) && !emailExists ? 'form_correct_input' : 'form_incorrect_input'
-				}
+				className="form_input"
 				placeholder="Email"
 			/>
 			<input
+				ref={wrapperRefPassword}
 				type="text"
 				value={password}
 				onChange={handlePasswordChange}
-				className={passwordValid ? 'form_correct_input' : 'form_incorrect_input'}
+				className="form_input"
 				placeholder="Password"
 			/>
 			<input
+				ref={wrapperRefConfirmation}
 				type="text"
 				value={passwordConfirmation}
 				onChange={handlePasswordConfirmationChange}
-				className={passwordMatch ? 'form_correct_input' : 'form_incorrect_input'}
+				className="form_input"
 				placeholder="Confirm password"
 			/>
 			<input type="submit" value="Register" className="form_submit_button" disabled={!buttonEnabled} />

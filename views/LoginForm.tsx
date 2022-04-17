@@ -18,6 +18,9 @@ function LoginForm(props: LoginFormProps) {
     const [ loginError, setLoginError ] = useState('');
     const [ cookies, setCookie, removeCookie ] = useCookies([ 'access_token' ]);
 
+    const wrapperRefLogin = React.createRef<HTMLInputElement>();
+    const wrapperRefPassword = React.createRef<HTMLInputElement>();
+
     const logIn = (login: string, password: string) => {
 		console.log('ABOBA');
 		fetch('/api/login', {
@@ -95,23 +98,41 @@ function LoginForm(props: LoginFormProps) {
         setIncorrectLogin(false)
     }, [login])
 
+    useEffect(() => {
+        const wrapper = wrapperRefPassword.current
+        if (wrapper) {
+            if (password.length != 0)
+            wrapper.classList.toggle('incorrect')
+        }
+    }, [incorrectPassword])
+
+    useEffect(() => {
+        const wrapper = wrapperRefLogin.current
+        if (wrapper) {
+            if (login.length != 0)
+            wrapper.classList.toggle('incorrect')
+        }
+    }, [ incorrectLogin ])
+
 	return (
 		<form className="form" onSubmit={handleSubmit}>
 			<p className="form_text">Log In</p>
 			<div className="spacer" />
 			<input
+            ref={wrapperRefLogin}
 				type="text"
 				value={login}
 				onChange={handleLoginChange}
-				className={incorrectLogin  ? 'form_incorrect_input' : 'form_correct_input'}
+				className='form_input'
 				placeholder="Username or email"
 			/>
             {/* <CSSTransition in={incorrectPassword} classNames="fade" timeout={0} > */}
 			<input
+            ref={wrapperRefPassword}
 				type={showPassword ? 'text' : 'password'}
 				value={password}
 				onChange={handleLPasswordChange}
-				className={incorrectPassword ? 'form_incorrect_input' : 'form_correct_input'}
+				className='form_input'
 				placeholder="Password"
 			/>
             {/* </CSSTransition> */}
