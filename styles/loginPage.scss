@@ -108,6 +108,8 @@
     border-bottom-width: 1px;
     border-radius: 1rem;
     color: presets.$gray-500;
+    transition: background-color 1s ease;
+    -webkit-transition: background-color 1s ease;
 
     &::placeholder {
         font-size: medium;
@@ -156,6 +158,8 @@
     border-radius: 9999px;
     color: white;
     background-color: presets.$purple;
+    transition: background-color 1s ease, box-shadow 1s ease;
+    -webkit-transition: background-color 1s ease, box-shadow 1s ease;
 
     &:hover {
         @include presets.shadow-md($color: presets.$purple);

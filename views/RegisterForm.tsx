@@ -13,14 +13,23 @@ function RegisterForm(props: RegisterFormProps) {
 	const [ password, setPassword ] = useState('');
 	const [ passwordConfirmation, setPasswordConfirmation ] = useState('');
 	const [ username, setUsername ] = useState('');
+
 	const [ usernameExists, setUsernameExists ] = useState(false);
 	const [ passwordValid, setPasswordValid ] = useState(true);
 	const [ usernameValid, setUsernameValid ] = useState(true);
 	const [ passwordMatch, setPasswordMatch ] = useState(true);
-	const [ buttonEnabled, setButtonEnabled ] = useState(true); // false
 	const [ emailValid, setEmailValid ] = useState(true);
 	const [ emailExists, setEmailExists ] = useState(false);
+
+	const [ usernameRed, setUsernameRed ] = useState(false);
+	const [ emailRed, setEmailRed ] = useState(false);
+	const [ passwordRed, setPasswordRed ] = useState(false);
+	const [ confirmationRed, setConfirmationRed ] = useState(false);
+
+	const [ buttonEnabled, setButtonEnabled ] = useState(true); // false
+
 	const [ registrarionError, setRegistrationError ] = useState('');
+
 	const [ cookies, setCookie, removeCookie ] = useCookies([ 'access_token' ]);
 
 	const wrapperRefUsername = React.createRef<HTMLInputElement>();
@@ -37,17 +46,22 @@ function RegisterForm(props: RegisterFormProps) {
 				usernameValid &&
 				!emailExists &&
 				username.length != 0 &&
-				password.length != 0
+				password.length != 0 &&
+				email.length != 0
 		);
 	};
 
 	const checkPassword = () => {
-		setPasswordValid(true);
+		var valid = true;
+		setPasswordValid(valid || password.length == 0);
 	};
 
 	const checkUsername = () => {
-		let loginIsValid = /^[0-9A-Z_-]+$/i.test(username);
-		setUsernameValid(loginIsValid);
+		let usernameIsValid = /^[0-9A-Z_-]+$/i.test(username);
+		setUsernameValid(usernameIsValid);
+		if (usernameIsValid && username.length != 0) {
+			checkUsernameExists();
+		}
 	};
 
 	const checkPasswordMatch = () => {
@@ -59,6 +73,9 @@ function RegisterForm(props: RegisterFormProps) {
 			email
 		);
 		setEmailValid(emailIsValid);
+		if (emailIsValid && email.length != 0) {
+            checkEmailExists();
+        }
 	};
 
 	const register = () => {
@@ -178,9 +195,6 @@ function RegisterForm(props: RegisterFormProps) {
 				setEmailValid(true);
 			} else {
 				checkEmail();
-				if (emailValid && email.length != 0) {
-					checkEmailExists();
-				}
 			}
 		},
 		[ email ]
@@ -193,9 +207,6 @@ function RegisterForm(props: RegisterFormProps) {
 				setUsernameValid(true);
 			} else {
 				checkUsername();
-				if (usernameValid && username.length != 0) {
-					checkUsernameExists();
-				}
 			}
 		},
 		[ username ]
@@ -223,31 +234,39 @@ function RegisterForm(props: RegisterFormProps) {
 		() => {
 			const wrapper = wrapperRefUsername.current;
 			if (wrapper) {
-				if (username.length != 0) {
+				if (
+					(!usernameExists && usernameValid && usernameRed) ||
+					(!usernameRed && (usernameExists || !usernameValid))
+				) {
 					wrapper.classList.toggle('incorrect');
+					setUsernameRed(!usernameRed);
 				}
 			}
 		},
-		[ usernameValid && !usernameExists ]
+		[ usernameValid, usernameExists ]
 	);
 
 	useEffect(
 		() => {
 			const wrapper = wrapperRefEmail.current;
 			if (wrapper) {
-				if (email.length != 0) {
+				if ((!emailExists && emailValid && emailRed) || (!emailRed && (emailExists || !emailValid))) {
 					wrapper.classList.toggle('incorrect');
+					setEmailRed(!emailRed);
 				}
 			}
 		},
-		[ emailValid && !emailExists ]
+		[ emailValid, emailExists ]
 	);
 
 	useEffect(
 		() => {
 			const wrapper = wrapperRefPassword.current;
 			if (wrapper) {
-				if (password.length != 0) wrapper.classList.toggle('incorrect');
+				if (passwordValid === passwordRed) {
+					wrapper.classList.toggle('incorrect');
+					setPasswordRed(!passwordRed);
+				}
 			}
 		},
 		[ passwordValid ]
@@ -257,7 +276,10 @@ function RegisterForm(props: RegisterFormProps) {
 		() => {
 			const wrapper = wrapperRefConfirmation.current;
 			if (wrapper) {
-				if (password.length != 0 || passwordConfirmation.length != 0) wrapper.classList.toggle('incorrect');
+				if (passwordMatch === confirmationRed) {
+					wrapper.classList.toggle('incorrect');
+					setConfirmationRed(!confirmationRed);
+				}
 			}
 		},
 		[ passwordMatch ]
