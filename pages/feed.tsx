@@ -88,10 +88,10 @@ function Feed() {
 		[ buttonClosed ]
 	);
 
-
+    // TODO: switch to react-icon
 	return (
         <div className='feed_wrapper'>
-            <button className='new_post_button'>+</button>
+            <button className='new_post_button'>+</button> 
 		<div className="feed">
 			<NavBar auth={auth} logOut={logOut} newPost={newPost} />
 			{!loading &&
