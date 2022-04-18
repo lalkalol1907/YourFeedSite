@@ -89,7 +89,6 @@ function Feed() {
 		[ buttonClosed ]
 	);
 
-    // TODO: switch to react-icon
 	return (
         <div className='feed_wrapper'>
             {!loading &&

@@ -24,18 +24,13 @@
     width: 4rem;
     height: 4rem;
     border-radius: 50%;
-    font-size: 0;
-    transition: transform 0.45s ease 0.1s, box-shadow 0.2s ease 0s, padding 0s ease 0.2s, background-color 0.4s, color 0.4s;
+    transition: transform 0.45s ease 0.6s, box-shadow 0.2s ease 0.5s, background-color 0.4s, color 0.9s;
     padding: 0;
     color: white;
     transform: scale(1);
 
-    @media (max-width: 70rem) {
-        color: presets.$purple;
+    @media (max-width: 65rem) {
         transition: transform 0.45s ease 0.2s, box-shadow 0.1s ease 0.55s;
-        min-height: 0;
-        // height: 0;
-        // width: 0;
         transform: scale(0);
         box-shadow: none;
     }
@@ -50,15 +45,8 @@
 
 .new_post_icon {
     width: 1.75rem;
-    height: auto;
-    transition: transform 0s ease 0.5s;
-    transform: scale(1);
-    @media (max-width: 70rem) {
-        transition: transform 0s ease 0.5s;
-        transform: scale(0);
-        padding: 0;
-        margin: 0;
-    }
+    height: 1.75rem;
+    margin-top: 3px;
 }
 
 .feed_posts {

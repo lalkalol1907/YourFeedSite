@@ -2,24 +2,25 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Avatar } from '@mui/material';
 import User from '../models/user';
+import { BsPlusLg } from 'react-icons/bs';
 
 interface NavBarProps {
 	auth: boolean;
 	user?: User;
 	logOut?: () => void;
-    newPost?: () => void;
+	newPost?: () => void;
 }
 
 function NavBar(props: NavBarProps) {
-	const [ auth, setAuth ] = useState(props.auth);
-	const [ user, setUser ] = useState(props.user);
+	const [auth, setAuth] = useState(props.auth);
+	const [user, setUser] = useState(props.user);
 
 	useEffect(
 		() => {
 			setAuth(props.auth);
 			setUser(props.user);
 		},
-		[ props.auth, props.user ]
+		[props.auth, props.user]
 	);
 
 	const onLogOutPressed = () => {
@@ -44,9 +45,9 @@ function NavBar(props: NavBarProps) {
 					<p className="navbar_button">Messenger</p>
 				</Link>
 				<div className="spacer" />
-                <button className='createpost_button' onClick={props.newPost} >
-                    Add Post
-                </button>
+				<button className='createpost_button' onClick={props.newPost} >
+					<BsPlusLg className='plus_button' />
+				</button>
 				<Link href="/profile">
 					<Avatar src={''} className="navbar_avatarButton" />
 				</Link>
