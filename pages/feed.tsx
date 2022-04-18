@@ -5,6 +5,7 @@ import ClipLoader from 'react-spinners/ClipLoader';
 import Router from 'next/router';
 import Post from '../models/post';
 import { useCookies } from 'react-cookie';
+import { BsPlusLg } from 'react-icons/bs';
 
 function Feed() {
 	const [ loading, setLoading ] = useState(true);
@@ -91,7 +92,10 @@ function Feed() {
     // TODO: switch to react-icon
 	return (
         <div className='feed_wrapper'>
-            <button className='new_post_button'>+</button> 
+            {!loading &&
+			auth && <button className='new_post_button'>
+				<BsPlusLg className='new_post_icon' />
+				</button> }
 		<div className="feed">
 			<NavBar auth={auth} logOut={logOut} newPost={newPost} />
 			{!loading &&

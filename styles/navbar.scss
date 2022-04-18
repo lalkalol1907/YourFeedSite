@@ -48,16 +48,18 @@
     font-size: large;
     font-weight: normal;
     font-style: italic;
-    color: presets.$dark-blue;
+    color: presets.$purple;
     margin-right: 1rem;
-    transition: visibility 0.5s;
-    transition-delay: 1s;
-    transition: opacity 1s;
+    opacity: 1;
+    transition: opacity 0.5s, visibility 0s linear 0.3s;
+    transition-delay: 0;
     // TODO: do transition
     @media (min-width: 70rem) {
-        
+    transition: opacity 0.5s, visibility 0s linear 0.3s;
+
+        // font-size: 0;
         opacity: 0;
-        visibility: hidden;
+        // visibility: hidden;
     }
 
     &:hover {
