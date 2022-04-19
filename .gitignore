@@ -3,3 +3,4 @@ build/
 .next
 *.env*
 .DS_store
+DataBase/tokens.json

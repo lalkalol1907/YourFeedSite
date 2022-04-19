@@ -6,123 +6,132 @@ import Router from 'next/router';
 import Post from '../models/post';
 import { useCookies } from 'react-cookie';
 import { BsPlusLg } from 'react-icons/bs';
+import * as cookie from 'cookie';
+import { PostsDataBase, TokenSTG } from '../DataBase/DB_Objects';
+import { NextPageContext } from 'next';
 
-function Feed() {
-	const [ loading, setLoading ] = useState(true);
-	const [ posts, setPosts ] = useState<Post[]>([]);
-	const [ auth, setAuth ] = useState(false);
-	const [ userId, setUserId ] = useState(0);
-	const [ newPostWindow, setNewPostWindow ] = useState(false);
-	const [ cookies, setCookie, removeCookie ] = useCookies([ 'access_token' ]);
-	const [ buttonClosed, setButtonClosed ] = useState(false);
+interface FeedProps {
+    auth: boolean,
+    userId?: number,
+    posts?: Post[]
+}
 
-	const wrapperRefButton = React.createRef<HTMLButtonElement>();
+function Feed(props: FeedProps) {
+    const [posts, setPosts] = useState<Post[]>(props.posts || []);
+    const [auth, setAuth] = useState(props.auth);
+    const [userId, setUserId] = useState(props.userId || 0);
+    const [newPostWindow, setNewPostWindow] = useState(false);
+    const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
+    const [buttonClosed, setButtonClosed] = useState(false);
 
-	const fetchPosts = () => {
-		fetch('/api/feed').then((response) => {
-			response.json().then((body) => {
-				if (response.status === 200) {
-					setLoading(false);
-					setPosts(body.posts);
-				}
-			});
-		});
-	};
+    const wrapperRefButton = React.createRef<HTMLButtonElement>();
 
-	const logOut = () => {
-		removeCookie('access_token');
-		setAuth(false);
-		setUserId(0);
-		setPosts([]);
-		Router.push('/login');
-	};
+    const logOut = () => {
+        removeCookie('access_token');
+        setAuth(false);
+        setUserId(0);
+        setPosts([]);
+        Router.push('/login');
+    };
 
-	const onPressedLikeButton = (id: number) => {
-		fetch('/api/like-event', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				post_id: id,
-				user_id: userId,
-				access_token: cookies.access_token
-			})
-		});
-	};
+    const onPressedLikeButton = (id: number) => {
+        fetch('/api/like-event', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                post_id: id,
+                user_id: userId,
+                access_token: cookies.access_token
+            })
+        });
+    };
 
-	const newPost = () => {
-		setNewPostWindow(true);
-	};
+    const newPost = () => {
+        setNewPostWindow(true);
+    };
 
-	useEffect(() => {
-		document.title = 'Feed';
-		var cleintToken = cookies.access_token;
-		fetch('/api/is_authenticated', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				access_token: cleintToken
-			})
-		}).then((response) => {
-			response.json().then((body) => {
-				if (body.stat) {
-					setUserId(body.user.id);
-					setAuth(true);
-					fetchPosts();
-				} else {
-					Router.push('/login');
-				}
-			});
-		});
-	}, []);
+    useEffect(() => {
+        if (!auth) {
+            Router.push('/login');
+        }
+        console.log(posts)
+    }, []);
 
-	useEffect(
-		() => {
-			const wrapper = wrapperRefButton.current;
-			if (wrapper) {
-				wrapper.classList.toggle('closed');
-			}
-		},
-		[ buttonClosed ]
-	);
+    useEffect(
+        () => {
+            const wrapper = wrapperRefButton.current;
+            if (wrapper) {
+                wrapper.classList.toggle('closed');
+            }
+        },
+        [buttonClosed]
+    );
 
-	return (
+    return (
         <div className='feed_wrapper'>
-            {!loading &&
-			auth && <button className='new_post_button'>
-				<BsPlusLg className='new_post_icon' />
-				</button> }
-		<div className="feed">
-			<NavBar auth={auth} logOut={logOut} newPost={newPost} />
-			{!loading &&
-			auth && (
-				<div className="feed_posts">
-					{posts.map((post) => (
-						<PostView
-							key={post.id}
-							id={post.id}
-							text={post.text}
-							username={post.username}
-							content={post.content}
-							user_pic={post.user_pic}
-							likedUsers={post.like_users}
-							onPressedLikeButton={onPressedLikeButton}
-							userId={userId}
-						/>
-					))}
-				</div>
-			)}
-			{(loading || !auth) && (
-				<div className="clip_loader">
-					<ClipLoader />
-				</div>
-			)}
-		</div>
+            <button className='new_post_button'>
+                <BsPlusLg className='new_post_icon' />
+            </button>
+            <div className="feed">
+                <NavBar auth={auth} logOut={logOut} newPost={newPost} />
+                <div className="feed_posts">
+                    {posts.map((post) => (
+                        <PostView
+                            key={post.id}
+                            id={post.id}
+                            text={post.text}
+                            username={post.username}
+                            content={post.content}
+                            user_pic={post.user_pic}
+                            likedUsers={post.like_users}
+                            onPressedLikeButton={onPressedLikeButton}
+                            userId={userId}
+                        />
+                    ))}
+                </div>
+            </div>
         </div>
-	);
+    );
+}
+
+export async function getServerSideProps(context: NextPageContext) {
+    var access_token = cookie.parse(context.req ? context.req.headers.cookie || '' : document.cookie).access_token;
+
+    if (!access_token) {
+        return {
+            props: {
+                auth: false
+            }
+        };
+    }
+
+    const response = TokenSTG.authToken(access_token)
+
+    if (!response.stat) {
+        return {
+            props: {
+                auth: false
+            }
+        }
+    }
+
+    const posts = await PostsDataBase.getPosts()
+
+
+    posts.forEach((post) => {
+        delete post._id;
+    })
+
+
+    return {
+        props: {
+            auth: true,
+            userId: response.user?.id,
+            posts: posts
+        }
+    };
 }
 
 export default Feed;

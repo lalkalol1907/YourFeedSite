@@ -1,29 +1,44 @@
 import User from "../models/user";
-import type { NextApiResponse } from 'next'
 import { Response } from "express";
+import fs from 'fs';
+
+require('custom-env').env('yourfeed')
 
 class TokenStorage {
 
+    path?: string
     tokens: { [token: string]: User }
 
     constructor() {
-        this.tokens = {}
+        this.path = process.env.TOKENS_PATH
+        this.tokens = require(`./${this.path}`)
     }
 
-    authToken(token: string, res: NextApiResponse): void {
+    save() {
+        fs.writeFileSync(`./DataBase/${this.path}`, JSON.stringify(this.tokens, null, 4));
+    }
+
+    authToken(token: string): {stat: boolean, user?: User} {
+        console.log(`auth_token: ${token}`);
+        
         if (this.tokens[token]) {
-            res.send({ stat: true, user: this.tokens[token] })
-            return
+            console.log("found");
+            
+            return {stat: true, user: this.tokens[token]}
         }
-        res.send({ stat: false, message: "no token" })
+        return {stat: false}
     }
 
     addToken(token: string, user: User): void {
         this.tokens[token] = user
+        console.log("saved");
+        
+        this.save()
     }
 
     removeToken(token: string): void {
         delete this.tokens[token]
+        this.save()
     }
 
     createToken(user: User, res: Response): void {
@@ -35,6 +50,8 @@ class TokenStorage {
                 characters.length));
         }
         this.tokens[token] = user
+        this.save()
+
         console.log(token)
         res.send({ stat: true, user: user, access_token: token })
     }

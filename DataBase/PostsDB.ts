@@ -9,16 +9,11 @@ class PostsDB extends DB {
         super()
     }
 
-    getPosts(res: NextApiResponse): void {
-        this.DBclient.connect((err?: AnyError, result?: MongoClient) => {
-            if (!result) {
-                res.send({stat: false})
-                return
-            }
-            result.db("yourfeed").collection("posts").find({}).toArray((err, posts) => {
-                err ? res.send({ stat: false }) : res.send({ stat: true, posts })
-            })
-        })
+    async getPosts(): Promise<Post[]> {
+        const client = await this.DBclient.connect()
+        const posts = (await client.db("yourfeed").collection("posts").find({}).toArray()) as Post[]
+
+        return posts || []
     }
 
     ChangeLike(user_id: number, post_id: number): void {
