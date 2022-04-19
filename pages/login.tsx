@@ -7,13 +7,8 @@ import { NextPageContext } from 'next';
 import * as cookie from 'cookie';
 import { TokenSTG } from '../DataBase/DB_Objects';
 
-interface LoginProps {
-	auth: boolean;
-}
-
-function Login(props: LoginProps) {
+function Login() {
 	const [ registerForm, setRegisterForm ] = useState(false);
-	const [ auth, setAuth ] = useState(props.auth);
 
 	const onPressedRegButton = () => {
 		setRegisterForm(true);
@@ -22,12 +17,6 @@ function Login(props: LoginProps) {
 	const onPressedSignInButton = () => {
 		setRegisterForm(false);
 	};
-
-	useEffect(() => {
-		if (auth) {
-			Router.push('/feed');
-		}
-	}, []);
 
 	return (
 		<div className="login">
@@ -53,17 +42,25 @@ export async function getServerSideProps(context: NextPageContext) {
 
 	if (!access_token) {
 		return {
-			props: {
-				auth: false
-			}
+			props: {}
 		};
 	}
 
-	return {
-		props: {
-			auth: TokenSTG.authToken(access_token).stat
-		}
-	};
+    const auth = TokenSTG.authToken(access_token).stat
+
+	if (auth) {
+        return {
+            redirect: {
+                permanent: false, 
+                destination: "/feed"
+            }, 
+            props: {}
+        }
+    }
+
+    return {
+        props: {}
+    }
 }
 
 export default Login;

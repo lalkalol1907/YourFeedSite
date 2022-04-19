@@ -11,14 +11,12 @@ import { PostsDataBase, TokenSTG } from '../DataBase/DB_Objects';
 import { NextPageContext } from 'next';
 
 interface FeedProps {
-    auth: boolean,
-    userId?: number,
-    posts?: Post[]
+    userId: number,
+    posts: Post[]
 }
 
 function Feed(props: FeedProps) {
     const [posts, setPosts] = useState<Post[]>(props.posts || []);
-    const [auth, setAuth] = useState(props.auth);
     const [userId, setUserId] = useState(props.userId || 0);
     const [newPostWindow, setNewPostWindow] = useState(false);
     const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
@@ -28,9 +26,6 @@ function Feed(props: FeedProps) {
 
     const logOut = () => {
         removeCookie('access_token');
-        setAuth(false);
-        setUserId(0);
-        setPosts([]);
         Router.push('/login');
     };
 
@@ -52,13 +47,6 @@ function Feed(props: FeedProps) {
         setNewPostWindow(true);
     };
 
-    useEffect(() => {
-        if (!auth) {
-            Router.push('/login');
-        }
-        console.log(posts)
-    }, []);
-
     useEffect(
         () => {
             const wrapper = wrapperRefButton.current;
@@ -75,7 +63,7 @@ function Feed(props: FeedProps) {
                 <BsPlusLg className='new_post_icon' />
             </button>
             <div className="feed">
-                <NavBar auth={auth} logOut={logOut} newPost={newPost} />
+                <NavBar auth={true} logOut={logOut} newPost={newPost} />
                 <div className="feed_posts">
                     {posts.map((post) => (
                         <PostView
@@ -101,19 +89,23 @@ export async function getServerSideProps(context: NextPageContext) {
 
     if (!access_token) {
         return {
-            props: {
-                auth: false
-            }
+            redirect: {
+                permanent: false,
+                destination: "/login"
+            },
+            props: {}
         };
     }
 
     const response = TokenSTG.authToken(access_token)
-
+    
     if (!response.stat) {
         return {
-            props: {
-                auth: false
-            }
+            redirect: {
+                permanent: false,
+                destination: "/login"
+            },
+            props: {}
         }
     }
 
@@ -127,7 +119,6 @@ export async function getServerSideProps(context: NextPageContext) {
 
     return {
         props: {
-            auth: true,
             userId: response.user?.id,
             posts: posts
         }
