@@ -114,6 +114,16 @@ class UsersDB extends DB {
             })
         })
     }
+
+    async getUser(user_id: number): Promise<User | undefined> {
+        const client = await this.DBclient.connect()
+        const user = (await client.db("yourfeed").collection("users").findOne({id: user_id})) as User
+        if (!user) {
+            return undefined
+        }
+        delete user._id
+        return user
+    }
 }
 
 export default UsersDB

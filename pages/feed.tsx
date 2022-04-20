@@ -7,22 +7,22 @@ import Post from '../models/post';
 import { useCookies } from 'react-cookie';
 import { BsPlusLg } from 'react-icons/bs';
 import * as cookie from 'cookie';
-import { PostsDataBase, TokenSTG } from '../DataBase/DB_Objects';
+import { PostsDataBase, TokenSTG, UsersDataBase } from '../DataBase/DB_Objects';
 import { NextPageContext } from 'next';
+import User from '../models/user';
 
 interface FeedProps {
     userId: number,
-    posts: Post[]
+    posts: Post[],
+    userDatas: { [id: number]: User }
 }
 
 function Feed(props: FeedProps) {
     const [posts, setPosts] = useState<Post[]>(props.posts || []);
+    const [userDatas, setUserDatas] = useState<{ [id: number]: User }>(props.userDatas)
     const [userId, setUserId] = useState(props.userId || 0);
     const [newPostWindow, setNewPostWindow] = useState(false);
     const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
-    const [buttonClosed, setButtonClosed] = useState(false);
-
-    const wrapperRefButton = React.createRef<HTMLButtonElement>();
 
     const logOut = () => {
         removeCookie('access_token');
@@ -47,15 +47,6 @@ function Feed(props: FeedProps) {
         setNewPostWindow(true);
     };
 
-    useEffect(
-        () => {
-            const wrapper = wrapperRefButton.current;
-            if (wrapper) {
-                wrapper.classList.toggle('closed');
-            }
-        },
-        [buttonClosed]
-    );
 
     return (
         <div className='feed_wrapper'>
@@ -70,10 +61,10 @@ function Feed(props: FeedProps) {
                             key={post.id}
                             id={post.id}
                             text={post.text}
-                            username={post.username}
+                            username={userDatas[post.user_id]?.username || ""}
                             content={post.content}
-                            user_pic={post.user_pic}
                             likedUsers={post.like_users}
+                            user_pic={userDatas[post.user_id]?.picture_url || ""}
                             onPressedLikeButton={onPressedLikeButton}
                             userId={userId}
                         />
@@ -98,7 +89,7 @@ export async function getServerSideProps(context: NextPageContext) {
     }
 
     const response = TokenSTG.authToken(access_token)
-    
+
     if (!response.stat) {
         return {
             redirect: {
@@ -110,17 +101,28 @@ export async function getServerSideProps(context: NextPageContext) {
     }
 
     const posts = await PostsDataBase.getPosts()
-
+    const userDatas:{ [id: number]: User } = {}
 
     posts.forEach((post) => {
         delete post._id;
     })
 
+    for (let i = 0; i < posts.length; i++) {
+        if (!userDatas[posts[i].user_id]) {
+            const res = await UsersDataBase.getUser(posts[i].user_id)
+            if (!res) {
+                continue
+            }
+            userDatas[posts[i].user_id] = res
+        }
+    }
+
 
     return {
         props: {
             userId: response.user?.id,
-            posts: posts
+            posts: posts,
+            userDatas: userDatas
         }
     };
 }

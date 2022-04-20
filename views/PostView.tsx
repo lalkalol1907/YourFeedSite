@@ -55,11 +55,11 @@ function PostView(props: PostViewProps) {
     return (
         <div className="post">
             <div className="post_topbar">
-                <Avatar className='post_avatar' src={user_pic} />
+                <Avatar className='post_avatar' src={`${user_pic}`} />
                 <h3>{username}</h3>
             </div>
             <div>
-                <img src={content} alt="content" className="post_pic" />
+                <img src={`upload/media/${content}`} alt="content" className="post_pic" />
             </div>
             <div className='post_likes'>
                 <h4>Likes: {likesCounter}</h4>

@@ -44,6 +44,24 @@ class PostsDB extends DB {
             })
         })
     }
+
+    addPost(post: Post, res: NextApiResponse) {
+        this.DBclient.connect((error?: AnyError, result?: MongoClient) => {
+            if (!result) {
+                //  TODO: Add Error sending
+                res.send({stat: false})
+                return
+            }
+
+            result.db("yourfeed").collection("posts").insertOne(post, (err, post) => {
+                if (err) {
+                    res.send({stat: false})
+                    return
+                }
+                res.send({stat: true})
+            })
+        })
+    }
 }
 
 export default PostsDB
