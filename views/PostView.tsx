@@ -55,7 +55,8 @@ function PostView(props: PostViewProps) {
     return (
         <div className="post">
             <div className="post_topbar">
-                <Avatar className='post_avatar' src={`${user_pic}`} />
+                {/* upload/profiles/ */}
+                <Avatar className='post_avatar' src={`${user_pic}`} /> 
                 <h3>{username}</h3>
             </div>
             <div>
