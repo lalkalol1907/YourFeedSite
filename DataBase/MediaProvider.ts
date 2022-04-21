@@ -6,7 +6,8 @@ class MediaProvider {
     }
 
     getAvatar(pic: string): string {
-        return `${this.path}/profiles/${pic}`
+        // return `${this.path}/profiles/${pic}`
+        return pic
     } 
 
     getContent(pic: string): string {
