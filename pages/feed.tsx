@@ -14,12 +14,12 @@ import User from '../models/user';
 interface FeedProps {
     userId: number,
     posts: Post[],
-    userDatas: { [id: number]: User }
+    // userDatas: { [id: number]: User }
 }
 
 function Feed(props: FeedProps) {
     const [posts, setPosts] = useState<Post[]>(props.posts || []);
-    const [userDatas, setUserDatas] = useState<{ [id: number]: User }>(props.userDatas)
+    // const [userDatas, setUserDatas] = useState<{ [id: number]: User }>(props.userDatas)
     const [userId, setUserId] = useState(props.userId || 0);
     const [newPostWindow, setNewPostWindow] = useState(false);
     const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
@@ -61,10 +61,10 @@ function Feed(props: FeedProps) {
                             key={post.id}
                             id={post.id}
                             text={post.text}
-                            username={userDatas[post.user_id]?.username || ""}
+                            // username={userDatas[post.user_id]?.username || ""}
                             content={post.content}
                             likedUsers={post.like_users}
-                            user_pic={userDatas[post.user_id]?.picture_url || ""}
+                            // user_pic={userDatas[post.user_id]?.picture_url || ""}
                             onPressedLikeButton={onPressedLikeButton}
                             userId={userId}
                         />
@@ -101,28 +101,28 @@ export async function getServerSideProps(context: NextPageContext) {
     }
 
     const posts = await PostsDataBase.getPosts()
-    const userDatas:{ [id: number]: User } = {}
+    // const userDatas:{ [id: number]: User } = {}
 
     posts.forEach((post) => {
         delete post._id;
     })
 
-    for (let i = 0; i < posts.length; i++) {
-        if (!userDatas[posts[i].user_id]) {
-            const res = await UsersDataBase.getUser(posts[i].user_id)
-            if (!res) {
-                continue
-            }
-            userDatas[posts[i].user_id] = res
-        }
-    }
+    // for (let i = 0; i < posts.length; i++) {
+    //     if (!userDatas[posts[i].user_id]) {
+    //         const res = await UsersDataBase.getUser(posts[i].user_id)
+    //         if (!res) {
+    //             continue
+    //         }
+    //         userDatas[posts[i].user_id] = res
+    //     }
+    // }
 
 
     return {
         props: {
             userId: response.user?.id,
             posts: posts,
-            userDatas: userDatas
+            // userDatas: userDatas
         }
     };
 }

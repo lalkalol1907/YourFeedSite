@@ -1,13 +1,13 @@
 import { Avatar } from '@mui/material';
 import { RiHeartFill, RiShareForwardLine } from "react-icons/ri"
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import MediaProvider from '../DataBase/MediaProvider';
 // TODO: Сменить иконки, потому что выглядят плохо 
 
 interface PostViewProps {
-    userId: number 
-    username: string
-    user_pic: string
+    userId: number
+    // username: string
+    // user_pic: string
     content: string
     text: string
     id: number
@@ -20,18 +20,18 @@ function PostView(props: PostViewProps) {
     const [liked, setLiked] = useState(props.likedUsers.includes(props.userId))
     const [likesCounter, setLikesCounter] = useState(props.likedUsers.length)
     const [likedUsers, setLikedUsers] = useState(props.likedUsers)
+    const [username, setUsername] = useState("")
+    const [userPic, setUserPic] = useState("")
 
     const mediaProvider = new MediaProvider()
 
     const userId = props.userId
-    const username = props.username
-    const user_pic = mediaProvider.getAvatar(props.user_pic)
     const content = mediaProvider.getContent(props.content)
     const text = props.text
     const id = props.id
 
     const onLikePressed = () => {
-        var likedUsersLocal = likedUsers 
+        var likedUsersLocal = likedUsers
         props.onPressedLikeButton(id)
         var diff = 0
         if (likedUsersLocal.includes(userId)) {
@@ -55,11 +55,15 @@ function PostView(props: PostViewProps) {
 
     }
 
+    useEffect(() => {
+        // TODO: fetching userdata from server and setting state
+    }, [])
+
     return (
         <div className="post">
             <div className="post_topbar">
                 {/* upload/profiles/ */}
-                <Avatar className='post_avatar' src={user_pic} /> 
+                <Avatar className='post_avatar' src={userPic} />
                 <h3>{username}</h3>
             </div>
             <div>
