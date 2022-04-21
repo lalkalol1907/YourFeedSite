@@ -12,6 +12,7 @@ class PostsDB extends DB {
     async getPosts(): Promise<Post[]> {
         const client = await this.DBclient.connect()
         const posts = (await client.db("yourfeed").collection("posts").find({}).toArray()) as Post[]
+        await client.close()
 
         return posts || []
     }
@@ -22,7 +23,10 @@ class PostsDB extends DB {
                 return
             }
             result.db("yourfeed").collection("posts").findOne({ id: post_id }, (err, post) => {
-                if (err) { return }
+                if (err) {
+                    result.close()
+                    return
+                }
                 var curlikes = (post as Post).like_users
                 if (curlikes.includes(user_id)) {
                     for (let i = 0; i < curlikes.length; i++) {
@@ -39,7 +43,8 @@ class PostsDB extends DB {
                     { id: post_id },
                     {
                         $set: { like_users: curlikes }
-                    }
+                    },
+                    (err, res) => result.close()
                 )
             })
         })
@@ -49,16 +54,18 @@ class PostsDB extends DB {
         this.DBclient.connect((error?: AnyError, result?: MongoClient) => {
             if (!result) {
                 //  TODO: Add Error sending
-                res.send({stat: false})
+                res.send({ stat: false })
                 return
             }
 
             result.db("yourfeed").collection("posts").insertOne(post, (err, post) => {
                 if (err) {
-                    res.send({stat: false})
+                    result.close()
+                    res.send({ stat: false })
                     return
                 }
-                res.send({stat: true})
+                result.close()
+                res.send({ stat: true })
             })
         })
     }
