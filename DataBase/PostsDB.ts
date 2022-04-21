@@ -60,12 +60,12 @@ class PostsDB extends DB {
 
             result.db("yourfeed").collection("posts").insertOne(post, (err, post) => {
                 if (err) {
-                    result.close()
                     res.send({ stat: false })
+                    result.close()
                     return
                 }
-                result.close()
                 res.send({ stat: true })
+                result.close()
             })
         })
     }

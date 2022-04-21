@@ -51,8 +51,6 @@ class TokenStorage {
         }
         this.tokens[token] = user
         this.save()
-
-        console.log(token)
         res.send({ stat: true, user: user, access_token: token })
     }
 }

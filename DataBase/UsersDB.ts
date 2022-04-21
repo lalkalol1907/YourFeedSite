@@ -19,8 +19,8 @@ class UsersDB extends DB {
                 return
             }
             result.db("yourfeed").collection("users").findOne({ id: id }, (err, user) => {
-                result.close()
                 err ? done(err) : done(null, user)
+                result.close()
             })
         })
     }
@@ -32,13 +32,13 @@ class UsersDB extends DB {
                 return
             }
             if (!password) {
-                result.close()
                 done(null, false, { message: "Incorrect password" })
+                result.close()
                 return
             }
             if (!username) {
-                result.close()
                 done(null, false, { message: "Incorrect username" })
+                result.close()
                 return
             }
 
@@ -59,24 +59,22 @@ class UsersDB extends DB {
             }
             result.db("yourfeed").collection("users").findOne({}, { sort: { id: -1 } }, (err, user) => {
                 if (!user) {
-                    result.close()
                     res.send({ stat: false, err: err })
+                    result.close()
                     return
                 }
                 bcrypt.hash(password, 10, (err, hashed) => {
-                    console.log(err)
                     if (err) {
-                        result.close()
                         res.send({ stat: false, err: err })
+                        result.close()
                         return
                     }
                     var new_user = new User(user.id + 1, username, hashed, email, "")
                     result.db("yourfeed").collection("users").insertOne(new_user, (err, user) => {
                         console.log(result)
                         if (!user) {
-                            result.close()
-                            console.log(err)
                             res.send({ stat: false, err: err })
+                            result.close()
                             return
                         }
                         result.close()

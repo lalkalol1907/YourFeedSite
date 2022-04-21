@@ -1,6 +1,7 @@
 import { Avatar } from '@mui/material';
 import { RiHeartFill, RiShareForwardLine } from "react-icons/ri"
 import { useState } from 'react'
+import MediaProvider from '../DataBase/MediaProvider';
 // TODO: Сменить иконки, потому что выглядят плохо 
 
 interface PostViewProps {
@@ -20,10 +21,12 @@ function PostView(props: PostViewProps) {
     const [likesCounter, setLikesCounter] = useState(props.likedUsers.length)
     const [likedUsers, setLikedUsers] = useState(props.likedUsers)
 
+    const mediaProvider = new MediaProvider()
+
     const userId = props.userId
     const username = props.username
-    const user_pic = props.user_pic
-    const content = props.content
+    const user_pic = mediaProvider.getAvatar(props.user_pic)
+    const content = mediaProvider.getContent(props.content)
     const text = props.text
     const id = props.id
 
@@ -56,11 +59,11 @@ function PostView(props: PostViewProps) {
         <div className="post">
             <div className="post_topbar">
                 {/* upload/profiles/ */}
-                <Avatar className='post_avatar' src={`${user_pic}`} /> 
+                <Avatar className='post_avatar' src={user_pic} /> 
                 <h3>{username}</h3>
             </div>
             <div>
-                <img src={`upload/media/${content}`} alt="content" className="post_pic" />
+                <img src={content} alt="content" className="post_pic" />
             </div>
             <div className='post_likes'>
                 <h4>Likes: {likesCounter}</h4>
