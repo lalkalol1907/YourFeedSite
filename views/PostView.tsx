@@ -5,13 +5,13 @@ import MediaProvider from '../DataBase/MediaProvider';
 // TODO: Сменить иконки, потому что выглядят плохо 
 
 interface PostViewProps {
-    userId: number
-    // username: string
-    // user_pic: string
+    userId: number // global user
     content: string
     text: string
     id: number
     likedUsers: number[]
+    username: string
+    userPic: string
     onPressedLikeButton: (id: number) => void
 }
 
@@ -20,8 +20,6 @@ function PostView(props: PostViewProps) {
     const [liked, setLiked] = useState(props.likedUsers.includes(props.userId))
     const [likesCounter, setLikesCounter] = useState(props.likedUsers.length)
     const [likedUsers, setLikedUsers] = useState(props.likedUsers)
-    const [username, setUsername] = useState("")
-    const [userPic, setUserPic] = useState("")
 
     const mediaProvider = new MediaProvider()
 
@@ -29,6 +27,8 @@ function PostView(props: PostViewProps) {
     const content = mediaProvider.getContent(props.content)
     const text = props.text
     const id = props.id
+    const username = props.username
+    const userPic = props.userPic
 
     const onLikePressed = () => {
         var likedUsersLocal = likedUsers
@@ -54,10 +54,6 @@ function PostView(props: PostViewProps) {
     const onSendPressed = () => {
 
     }
-
-    useEffect(() => {
-        // TODO: fetching userdata from server and setting state
-    }, [])
 
     return (
         <div className="post">
