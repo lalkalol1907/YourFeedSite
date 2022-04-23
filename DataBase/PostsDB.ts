@@ -10,6 +10,7 @@ class PostsDB extends DB {
     }
 
     async getPosts(): Promise<Post[]> {
+        // TODO: Add fetch limit and reverse sorting
         const client = await this.DBclient.connect()
         const posts = (await client.db("yourfeed").collection("posts").find({}).toArray()) as Post[]
         await client.close()
