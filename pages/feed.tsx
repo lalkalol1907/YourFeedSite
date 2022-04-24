@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PostView from '../views/PostView';
 import NavBar from '../views/NavBar';
-import ClipLoader from 'react-spinners/ClipLoader';
 import Router from 'next/router';
 import Post from '../models/post';
 import { useCookies } from 'react-cookie';
@@ -18,11 +17,12 @@ interface FeedProps {
 }
 
 function Feed(props: FeedProps) {
-    const [posts, setPosts] = useState<Post[]>(props.posts || []);
-    const [userDatas, setUserDatas] = useState<{ [id: number]: User }>(props.userDatas)
-    const [userId, setUserId] = useState(props.userId || 0);
     const [newPostWindow, setNewPostWindow] = useState(false);
     const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
+
+    const posts = props.posts
+    const userDatas = props.userDatas
+    const userId = props.userId
 
     const logOut = () => {
         removeCookie('access_token');
@@ -76,6 +76,7 @@ function Feed(props: FeedProps) {
 }
 
 export async function getServerSideProps(context: NextPageContext) {
+
     var access_token = cookie.parse(context.req ? context.req.headers.cookie || '' : document.cookie).access_token;
 
     if (!access_token) {
