@@ -24,6 +24,7 @@ const initialState: FeedState = {
 const fetchPosts = createAsyncThunk(
     'feed/fetchPosts',
     async(userId: number, thunkAPI) => {
+        // !!! TODO: сделать fetch и бэкэнд для этого
         const postViewStates: PostViewState[] = []
         const posts = await PostsDataBase.getPosts()
         posts.forEach(async post => {
