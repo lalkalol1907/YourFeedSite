@@ -1,41 +1,31 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { PostsDataBase, UsersDataBase } from "../../DataBase/DB_Objects";
-
-interface PostViewState {
-    liked: boolean
-    likesCounter: number
-    likedUsers: number[]
-    userId: number
-    content: string
-    text: string
-    id: number
-    username: string
-    userPic: string
-}
+import PostViewState from "../../models/postviewstate";
 
 interface FeedState {
     posts: PostViewState[]
+    newPostView: boolean
 }
 
 const initialState: FeedState = {
-    posts: []
+    posts: [],
+    newPostView: false
 }
 
 const fetchPosts = createAsyncThunk(
     'feed/fetchPosts',
     async(userId: number, thunkAPI) => {
-        // !!! TODO: сделать fetch и бэкэнд для этого
-        const postViewStates: PostViewState[] = []
-        const posts = await PostsDataBase.getPosts()
-        posts.forEach(async post => {
-            delete post._id
-        });
-        for (const post of posts) {
-            const user = await UsersDataBase.getUser(post.user_id)
-            if (!user) continue
-            postViewStates.push({userPic: user.picture_url, username: user.username, id: post.id, text: post.text, content: post.content, userId: post.user_id, likedUsers: post.like_users, likesCounter: post.like_users.length, liked: post.like_users.includes(userId)})
-        }
-        return postViewStates
+        const response = await fetch('/api/like-event', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userId: userId
+            })
+        })
+        const body = await response.json()
+        return [body.posts] as PostViewState[]
     }
 )
 
