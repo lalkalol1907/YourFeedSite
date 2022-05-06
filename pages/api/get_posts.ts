@@ -4,7 +4,7 @@ import PostViewState from "../../models/postviewstate";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     const postViewStates: PostViewState[] = []
-    const userId = JSON.parse(req.body).userId
+    const userId = req.body.userId
     const posts = await PostsDataBase.getPosts()
     posts.forEach(async post => {
         delete post._id

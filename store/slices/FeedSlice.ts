@@ -12,10 +12,10 @@ const initialState: FeedState = {
     newPostView: false
 }
 
-const fetchPosts = createAsyncThunk(
+export const fetchPosts = createAsyncThunk(
     'feed/fetchPosts',
     async(userId: number, thunkAPI) => {
-        const response = await fetch('/api/like-event', {
+        const response = await fetch('/api/get_posts', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -25,7 +25,8 @@ const fetchPosts = createAsyncThunk(
             })
         })
         const body = await response.json()
-        return [body.posts] as PostViewState[]
+        console.log(body.posts[0])
+        return body.posts as PostViewState[]
     }
 )
 

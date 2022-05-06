@@ -23,7 +23,7 @@ class PostsDB extends DB {
                 return
             }
             result.db("yourfeed").collection("posts").findOne({ id: post_id }, (err, post) => {
-                if (err) {
+                if (err || !post) {
                     result.close()
                     return
                 }
