@@ -12,7 +12,7 @@ const initialState: FeedState = {
     newPostView: false
 }
 
-export const fetchPosts = createAsyncThunk(
+export const fetchPosts = createAsyncThunk<PostViewState[], number, {}>(
     'feed/fetchPosts',
     async(userId: number, thunkAPI) => {
         const response = await fetch('/api/get_posts', {
