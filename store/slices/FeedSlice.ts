@@ -1,5 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { PostsDataBase, UsersDataBase } from "../../DataBase/DB_Objects";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import PostViewState from "../../models/postviewstate";
 
 interface FeedState {

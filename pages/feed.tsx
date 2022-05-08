@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import PostView from '../views/PostView';
 import NavBar from '../views/NavBar';
 import Router from 'next/router';

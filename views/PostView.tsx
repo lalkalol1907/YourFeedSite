@@ -1,6 +1,5 @@
 import { Avatar } from '@mui/material';
 import { RiHeartFill, RiShareForwardLine } from "react-icons/ri"
-import { useEffect, useState } from 'react'
 import MediaProvider from '../DataBase/MediaProvider';
 // TODO: Сменить иконки, потому что выглядят плохо 
 
