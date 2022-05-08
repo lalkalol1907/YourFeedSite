@@ -12,24 +12,6 @@ const initialState: FeedState = {
     newPostView: false
 }
 
-export const fetchPosts = createAsyncThunk<PostViewState[], number, {}>(
-    'feed/fetchPosts',
-    async(userId: number, thunkAPI) => {
-        const response = await fetch('/api/get_posts', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                userId: userId
-            })
-        })
-        const body = await response.json()
-        console.log(body.posts[0])
-        return body.posts as PostViewState[]
-    }
-)
-
 export const feedSlice = createSlice({
     name: 'feed',
     initialState,
@@ -56,15 +38,13 @@ export const feedSlice = createSlice({
                 }
             }
             state.posts = posts;
+        },
+        setPosts: (state, action: PayloadAction<PostViewState[]>) => {
+            state.posts = action.payload
         }
     },
-    extraReducers: (builder) => {
-        builder.addCase(fetchPosts.fulfilled, (state, action) => {
-            state.posts = action.payload
-        })
-    }
 })
 
-export const { like } = feedSlice.actions
+export const { like, setPosts } = feedSlice.actions
 
 export default feedSlice.reducer
