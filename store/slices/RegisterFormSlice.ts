@@ -16,3 +16,22 @@ export interface RegisterFormState {
     buttonEnabled: boolean
     registrationError: string
 }
+
+const initialState: RegisterFormState = {
+    email: '',
+    password: '',
+    passwordConfirmation: '',
+    username: '',
+    usernameExists: false,
+    emailExists: false,
+    passwordValid: true,
+    usernameValid: true,
+    emailValid: true,
+    passwordMatch: true,
+    usernameRed: false,
+    emailRed: false,
+    passwordRed: false,
+    passwordConfirmationRed: false,
+    buttonEnabled: false,
+    registrationError: ''
+}

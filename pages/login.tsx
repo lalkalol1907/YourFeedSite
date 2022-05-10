@@ -5,6 +5,8 @@ import RegisterForm from '../views/RegisterForm';
 import { NextPageContext } from 'next';
 import * as cookie from 'cookie';
 import { TokenSTG } from '../DataBase/DB_Objects';
+import { Provider } from 'react-redux';
+import { store } from '../store/store';
 
 function Login() {
 	const [ registerForm, setRegisterForm ] = useState(false);
