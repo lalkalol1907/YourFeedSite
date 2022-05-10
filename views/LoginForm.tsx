@@ -3,17 +3,17 @@ import { CSSTransition } from 'react-transition-group';
 import Router from 'next/router';
 import { useCookies } from 'react-cookie';
 import { RootState } from '../store/store';
-import {
-    setLogin,
-    setPassword,
-    setPasswordRed,
-    setLoginRed,
-    setShowPassword,
-	setIncorrectLogin,
-    setIncorrectPassword,
-    setLoginError
-} from '../store/slices/LoginFormSlice'
 import { useDispatch, useSelector } from 'react-redux';
+import {
+	setLogin,
+	setPassword,
+	setPasswordRed,
+	setLoginRed,
+	setShowPassword,
+	setIncorrectLogin,
+	setIncorrectPassword,
+	setLoginError
+} from '../store/slices/LoginFormSlice'
 
 interface LoginFormProps {
 	onPressedRegButton: () => void;
@@ -36,6 +36,7 @@ function LoginForm(props: LoginFormProps) {
 		passwordRed,
 		loginRed
 	} = useSelector((state: RootState) => state.loginForm)
+
 	const dispatch = useDispatch()
 
 	const logIn = (login: string, password: string) => {

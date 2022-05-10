@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import feedReducer from './slices/FeedSlice'
 import loginFormReducer from './slices/LoginFormSlice'
+import registerFormReducer from "./slices/RegisterFormSlice";
 
 export const store = configureStore({
     reducer: {
         feed: feedReducer,
-        loginForm: loginFormReducer
+        loginForm: loginFormReducer,
+        registerForm: registerFormReducer
     },
 })
 

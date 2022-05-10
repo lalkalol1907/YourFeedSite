@@ -3,80 +3,52 @@ import React from 'react';
 import Login from '../pages/login';
 import { useCookies } from 'react-cookie';
 import Router from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../store/store';
+import {
+	setEmail,
+	setPassword,
+	setPasswordConfirmation,
+	setUsername,
+	setUsernameRed,
+	setEmailRed,
+	setPasswordConfirmationRed,
+	setPasswordRed,
+	setRegistrationError
+} from '../store/slices/RegisterFormSlice';
 
 interface RegisterFormProps {
 	handleSignInButton: () => void;
 }
 
 function RegisterForm(props: RegisterFormProps) {
-	const [ email, setEmail ] = useState('');
-	const [ password, setPassword ] = useState('');
-	const [ passwordConfirmation, setPasswordConfirmation ] = useState('');
-	const [ username, setUsername ] = useState('');
-
-	const [ usernameExists, setUsernameExists ] = useState(false);
-	const [ passwordValid, setPasswordValid ] = useState(true);
-	const [ usernameValid, setUsernameValid ] = useState(true);
-	const [ passwordMatch, setPasswordMatch ] = useState(true);
-	const [ emailValid, setEmailValid ] = useState(true);
-	const [ emailExists, setEmailExists ] = useState(false);
-
-	const [ usernameRed, setUsernameRed ] = useState(false);
-	const [ emailRed, setEmailRed ] = useState(false);
-	const [ passwordRed, setPasswordRed ] = useState(false);
-	const [ confirmationRed, setConfirmationRed ] = useState(false);
-
-	const [ buttonEnabled, setButtonEnabled ] = useState(true); // false
-
-	const [ registrarionError, setRegistrationError ] = useState('');
-
-	const [ cookies, setCookie, removeCookie ] = useCookies([ 'access_token' ]);
+	const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
 
 	const wrapperRefUsername = React.createRef<HTMLInputElement>();
 	const wrapperRefEmail = React.createRef<HTMLInputElement>();
 	const wrapperRefPassword = React.createRef<HTMLInputElement>();
 	const wrapperRefConfirmation = React.createRef<HTMLInputElement>();
 
-	const changeButtonState = () => {
-		setButtonEnabled(
-			passwordValid &&
-				passwordMatch &&
-				emailValid &&
-				!usernameExists &&
-				usernameValid &&
-				!emailExists &&
-				username.length != 0 &&
-				password.length != 0 &&
-				email.length != 0
-		);
-	};
+	const {
+		email,
+		password,
+		passwordConfirmation,
+		username,
+		usernameExists,
+		emailExists,
+		passwordValid,
+		usernameValid,
+		emailValid,
+		passwordMatch,
+		usernameRed,
+		emailRed,
+		passwordRed,
+		passwordConfirmationRed,
+		buttonEnabled,
+		registrationError
+	} = useSelector((state: RootState) => state.registerForm)
 
-	const checkPassword = () => {
-		var valid = true;
-		setPasswordValid(valid || password.length == 0);
-	};
-
-	const checkUsername = () => {
-		let usernameIsValid = /^[0-9A-Z_-]+$/i.test(username);
-		setUsernameValid(usernameIsValid);
-		if (usernameIsValid && username.length != 0) {
-			checkUsernameExists();
-		}
-	};
-
-	const checkPasswordMatch = () => {
-		setPasswordMatch(password === passwordConfirmation);
-	};
-
-	const checkEmail = () => {
-		let emailIsValid = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-			email
-		);
-		setEmailValid(emailIsValid);
-		if (emailIsValid && email.length != 0) {
-			checkEmailExists();
-		}
-	};
+	const dispatch = useDispatch()
 
 	const register = () => {
 		console.log(password);
@@ -96,67 +68,26 @@ function RegisterForm(props: RegisterFormProps) {
 					setCookie('access_token', body.access_token);
 					Router.push('/feed');
 				} else {
-					setRegistrationError(body.err);
+					dispatch(setRegistrationError(body.err));
 				}
-			});
-		});
-	};
-
-	const checkUsernameExists = () => {
-		fetch('/api/check_username_exists', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'aplication/json'
-			},
-			body: JSON.stringify({
-				username: username
-			})
-		}).then((response) => {
-			response.json().then((body) => {
-				if (!body.stat) {
-					setRegistrationError(body.err);
-					return;
-				}
-				console.log(body.exists);
-				setUsernameExists(body.exists);
-			});
-		});
-	};
-
-	const checkEmailExists = () => {
-		fetch('/api/check_email_exists', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'aplication/json'
-			},
-			body: JSON.stringify({
-				email: email
-			})
-		}).then((response) => {
-			response.json().then((body) => {
-				if (!body.stat) {
-					setRegistrationError(body.err);
-					return;
-				}
-				setEmailExists(body.exists);
 			});
 		});
 	};
 
 	const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setUsername(event.target.value.toLowerCase());
+		dispatch(setUsername(event.target.value.toLowerCase()));
 	};
 
 	const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setEmail(event.target.value.toLowerCase());
+		dispatch(setEmail(event.target.value.toLowerCase()));
 	};
 
 	const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setPassword(event.target.value);
+		dispatch(setPassword(event.target.value));
 	};
 
 	const handlePasswordConfirmationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setPasswordConfirmation(event.target.value);
+		dispatch(setPasswordConfirmation(event.target.value));
 	};
 
 	const handleSubmit = (event: React.SyntheticEvent) => {
@@ -174,62 +105,6 @@ function RegisterForm(props: RegisterFormProps) {
 
 	useEffect(
 		() => {
-			checkPasswordMatch();
-		},
-		[ passwordConfirmation ]
-	);
-
-	useEffect(
-		// TODO: fix bug with password matching
-		() => {
-			checkPasswordMatch();
-			checkPassword();
-		},
-		[ password ]
-	);
-
-	useEffect(
-		() => {
-			if (email.length == 0) {
-				setEmailExists(false);
-				setEmailValid(true);
-			} else {
-				checkEmail();
-			}
-		},
-		[ email ]
-	);
-
-	useEffect(
-		() => {
-			if (username.length == 0) {
-				setUsernameExists(false);
-				setUsernameValid(true);
-			} else {
-				checkUsername();
-			}
-		},
-		[ username ]
-	);
-
-	useEffect(
-		() => {
-			changeButtonState();
-		},
-		[
-			usernameExists,
-			usernameValid,
-			emailValid,
-			passwordMatch,
-			passwordValid,
-			emailExists,
-			username.length != 0,
-			password.length != 0
-		]
-	);
-
-	useEffect(
-		() => {
 			const wrapper = wrapperRefUsername.current;
 			if (wrapper) {
 				if (
@@ -237,11 +112,11 @@ function RegisterForm(props: RegisterFormProps) {
 					(!usernameRed && (usernameExists || !usernameValid))
 				) {
 					wrapper.classList.toggle('incorrect');
-					setUsernameRed(!usernameRed);
+					dispatch(setUsernameRed());
 				}
 			}
 		},
-		[ usernameValid, usernameExists ]
+		[usernameValid, usernameExists]
 	);
 
 	useEffect(
@@ -250,11 +125,11 @@ function RegisterForm(props: RegisterFormProps) {
 			if (wrapper) {
 				if ((!emailExists && emailValid && emailRed) || (!emailRed && (emailExists || !emailValid))) {
 					wrapper.classList.toggle('incorrect');
-					setEmailRed(!emailRed);
+					dispatch(setEmailRed());
 				}
 			}
 		},
-		[ emailValid, emailExists ]
+		[emailValid, emailExists]
 	);
 
 	useEffect(
@@ -263,24 +138,24 @@ function RegisterForm(props: RegisterFormProps) {
 			if (wrapper) {
 				if (passwordValid === passwordRed) {
 					wrapper.classList.toggle('incorrect');
-					setPasswordRed(!passwordRed);
+					dispatch(setPasswordRed());
 				}
 			}
 		},
-		[ passwordValid ]
+		[passwordValid]
 	);
 
 	useEffect(
 		() => {
 			const wrapper = wrapperRefConfirmation.current;
 			if (wrapper) {
-				if (passwordMatch === confirmationRed) {
+				if (passwordMatch === passwordConfirmationRed) {
 					wrapper.classList.toggle('incorrect');
-					setConfirmationRed(!confirmationRed);
+					dispatch(setPasswordConfirmationRed());
 				}
 			}
 		},
-		[ passwordMatch ]
+		[passwordMatch]
 	);
 
 	return (
