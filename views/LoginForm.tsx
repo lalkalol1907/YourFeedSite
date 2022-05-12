@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { CSSTransition } from 'react-transition-group';
+import React, { useEffect } from 'react';
 import Router from 'next/router';
 import { useCookies } from 'react-cookie';
 import { RootState } from '../store/store';
@@ -14,12 +13,10 @@ import {
 	setIncorrectPassword,
 	setLoginError
 } from '../store/slices/LoginFormSlice'
+import { setRegisterForm } from '../store/slices/LoginSlice';
 
-interface LoginFormProps {
-	onPressedRegButton: () => void;
-}
 
-function LoginForm(props: LoginFormProps) {
+function LoginForm() {
 	const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
 
 	const wrapperRefLogin = React.createRef<HTMLInputElement>();
@@ -79,7 +76,7 @@ function LoginForm(props: LoginFormProps) {
 	};
 
 	const handleRegisterButton = (event: React.SyntheticEvent) => {
-		props.onPressedRegButton();
+		dispatch(setRegisterForm())
 		event.preventDefault();
 	};
 

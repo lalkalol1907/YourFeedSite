@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import React from 'react';
-import Login from '../pages/login';
 import { useCookies } from 'react-cookie';
 import Router from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,12 +17,9 @@ import {
 	checkEmailExists,
 	checkUsernameExists
 } from '../store/slices/RegisterFormSlice';
+import { setRegisterForm } from '../store/slices/LoginSlice';
 
-interface RegisterFormProps {
-	handleSignInButton: () => void;
-}
-
-function RegisterForm(props: RegisterFormProps) {
+function RegisterForm() {
 	const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
 
 	const wrapperRefUsername = React.createRef<HTMLInputElement>();
@@ -110,7 +106,7 @@ function RegisterForm(props: RegisterFormProps) {
 	};
 
 	const handleSignInButton = (event: React.SyntheticEvent) => {
-		props.handleSignInButton();
+		dispatch(setRegisterForm())
 		event.preventDefault();
 	};
 

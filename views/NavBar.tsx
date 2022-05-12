@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Avatar } from '@mui/material';
 import User from '../models/user';
 import { BsPlusLg } from 'react-icons/bs';
-
+//TODO: navbar redux
 interface NavBarProps {
     auth: boolean;
     user?: User;

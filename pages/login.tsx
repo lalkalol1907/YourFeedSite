@@ -1,23 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import NavBar from '../views/NavBar';
 import LoginForm from '../views/LoginForm';
 import RegisterForm from '../views/RegisterForm';
 import { NextPageContext } from 'next';
 import * as cookie from 'cookie';
 import { TokenSTG } from '../DataBase/DB_Objects';
-import { Provider } from 'react-redux';
-import { store } from '../store/store';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
 
 function Login() {
-	const [ registerForm, setRegisterForm ] = useState(false);
-
-	const onPressedRegButton = () => {
-		setRegisterForm(true);
-	};
-
-	const onPressedSignInButton = () => {
-		setRegisterForm(false);
-	};
+	const { registerForm } = useSelector((state: RootState) => state.login)
 
 	return (
 		<div className="login">
@@ -28,9 +20,9 @@ function Login() {
 					<div className="login_pic" />
 				</div>
 				{registerForm ? (
-					<RegisterForm handleSignInButton={onPressedSignInButton} />
+					<RegisterForm />
 				) : (
-					<LoginForm onPressedRegButton={onPressedRegButton} />
+					<LoginForm />
 				)}
 			</div>
 		</div>
