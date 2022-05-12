@@ -14,7 +14,9 @@ import {
 	setEmailRed,
 	setPasswordConfirmationRed,
 	setPasswordRed,
-	setRegistrationError
+	setRegistrationError,
+	checkEmailExists,
+	checkUsernameExists
 } from '../store/slices/RegisterFormSlice';
 
 interface RegisterFormProps {
@@ -75,11 +77,20 @@ function RegisterForm(props: RegisterFormProps) {
 	};
 
 	const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		dispatch(setUsername(event.target.value.toLowerCase()));
+		const localUsername = event.target.value.toLowerCase()
+		dispatch(setUsername(localUsername));
+		if (usernameValid) {
+			dispatch(checkUsernameExists(localUsername))
+		}
+		console.log(emailValid)
 	};
 
 	const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		dispatch(setEmail(event.target.value.toLowerCase()));
+		const localEmail = event.target.value.toLowerCase()
+		dispatch(setEmail(localEmail));
+		if (emailValid) {
+			dispatch(checkEmailExists(localEmail))
+		}
 	};
 
 	const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {

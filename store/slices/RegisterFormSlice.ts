@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 export interface RegisterFormState {
     email: string
@@ -33,37 +33,44 @@ const checkPassword = (password: string): boolean => {
     return true
 }
 
-const checkUsernameExists = async (username: string): Promise<boolean> => {
-    // TODO: fix
+export const checkUsernameExists = createAsyncThunk(
+    'registerForm/checkUsernameExists',
+    async (username: string): Promise<boolean> => {
+        // TODO: fix
 
-    const response = await fetch('/api/check_username_exists', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'aplication/json'
-        },
-        body: JSON.stringify({
-            username: username
+        const response = await fetch('/api/check_username_exists', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'aplication/json'
+            },
+            body: JSON.stringify({
+                username: username
+            })
         })
-    })
-    const body = await response.json()
-    return body.stat && body.exists
-}
+        const body = await response.json()
 
-const checkEmailExists = async (email: string): Promise<boolean> => {
-    // TODO: fix
-    
-    const response = await fetch('/api/check_email_exists', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'aplication/json'
-        },
-        body: JSON.stringify({
-            email: email
+        return body.stat && body.exists
+    }
+)
+
+export const checkEmailExists = createAsyncThunk(
+    'registerForm/checkEmailExists',
+    async (email: string): Promise<boolean> => {
+        const response = await fetch('/api/check_email_exists', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'aplication/json'
+            },
+            body: JSON.stringify({
+                email: email
+            })
         })
-    })
-    const body = await response.json()
-    return body.stat && body.exists
-}
+        const body = await response.json()
+        return body.stat && body.exists
+    }
+)
+
+
 
 const buttonState = (state: RegisterFormState): boolean => {
     return state.passwordValid &&
@@ -109,9 +116,6 @@ export const registerFormSlice = createSlice({
             }
             const emailValid = checkEmail(action.payload)
             state.emailValid = emailValid
-            if (emailValid) {
-                checkEmailExists(action.payload).then(res => state.emailExists = res)
-            }
             state.buttonEnabled = buttonState(state)
         },
         setPassword: (state, action: PayloadAction<string>) => {
@@ -134,9 +138,6 @@ export const registerFormSlice = createSlice({
             }
             const usernameValid = checkUsername(action.payload)
             state.usernameValid = usernameValid
-            if (usernameValid) {
-                checkUsernameExists(action.payload).then(res => state.usernameExists = res)
-            }
             state.buttonEnabled = buttonState(state)
         },
         setUsernameRed: (state, action: PayloadAction) => {
@@ -154,19 +155,35 @@ export const registerFormSlice = createSlice({
         setRegistrationError: (state, action: PayloadAction<string>) => {
             state.registrationError = action.payload
         }
+    },
+    extraReducers: (builder) => {
+        // TODO: fix bug when typing fast
+        builder.addCase(checkEmailExists.fulfilled, (state, action) => {
+            if (action.meta.arg === state.email) {
+                state.emailExists = action.payload
+                state.buttonEnabled = buttonState(state)
+            }
+        })
+        builder.addCase(checkUsernameExists.fulfilled, (state, action) => {
+            console.log(action)
+            if (action.meta.arg === state.username) {
+                state.usernameExists = action.payload
+                state.buttonEnabled = buttonState(state)
+            }
+        })
     }
 })
 
 export const {
     setEmail,
     setPassword,
-    setPasswordConfirmation, 
+    setPasswordConfirmation,
     setUsername,
     setUsernameRed,
     setEmailRed,
     setPasswordConfirmationRed,
     setPasswordRed,
-    setRegistrationError
+    setRegistrationError,
 } = registerFormSlice.actions
 
 export default registerFormSlice.reducer
