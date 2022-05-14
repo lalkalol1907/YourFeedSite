@@ -1,27 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import { CSSTransition } from 'react-transition-group';
+import React, { useEffect } from 'react';
 import Router from 'next/router';
 import { useCookies } from 'react-cookie';
+import { RootState } from '../store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+	setLogin,
+	setPassword,
+	setPasswordRed,
+	setLoginRed,
+	setShowPassword,
+	setIncorrectLogin,
+	setIncorrectPassword,
+	setLoginError
+} from '../store/slices/LoginFormSlice'
+import { setRegisterForm } from '../store/slices/LoginSlice';
 
-interface LoginFormProps {
-	onPressedRegButton: () => void;
-}
 
-function LoginForm(props: LoginFormProps) {
-	const [ login, setLogin ] = useState('');
-	const [ password, setPassword ] = useState('');
-	const [ incorrectPassword, setIncorrectPassword ] = useState(false);
-	const [ incorrectLogin, setIncorrectLogin ] = useState(false);
-	const [ buttonEnabled, setButtonEnabled ] = useState(false); // false
-	const [ showPassword, setShowPassword ] = useState(false);
-	const [ loginValid, setLoginValid ] = useState(true);
-	const [ loginError, setLoginError ] = useState('');
-	const [ cookies, setCookie, removeCookie ] = useCookies([ 'access_token' ]);
-	const [ passwordRed, setPasswordRed ] = useState(false);
-	const [ loginRed, setLoginRed ] = useState(false);
+function LoginForm() {
+	const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
 
 	const wrapperRefLogin = React.createRef<HTMLInputElement>();
 	const wrapperRefPassword = React.createRef<HTMLInputElement>();
+
+	const { login,
+		password,
+		incorrectPassword,
+		incorrectLogin,
+		buttonEnabled,
+		showPassword,
+		loginValid,
+		loginError,
+		passwordRed,
+		loginRed
+	} = useSelector((state: RootState) => state.loginForm)
+
+	const dispatch = useDispatch()
 
 	const logIn = (login: string, password: string) => {
 		console.log('ABOBA');
@@ -42,28 +55,19 @@ function LoginForm(props: LoginFormProps) {
 					Router.push('/feed');
 				} else {
 					if (body.info.message === 'Incorrect password') {
-						setIncorrectPassword(true);
-						setIncorrectLogin(false);
+						dispatch(setIncorrectPassword(true));
+						dispatch(setIncorrectLogin(false));
 					}
 					if (body.info.message === 'Incorrect username') {
-						setIncorrectLogin(true);
-						setIncorrectPassword(false);
+						dispatch(setIncorrectLogin(true));
+						dispatch(setIncorrectPassword(false));
 					}
 					if (!body.info.message) {
-						setLoginError(body.err);
+						dispatch(setLoginError(body.err));
 					}
 				}
 			});
 		});
-	};
-
-	const changeButtonState = () => {
-		setButtonEnabled(password.length != 0 && login.length != 0 && loginValid);
-	};
-
-	const checkLogin = () => {
-		let loginIsValid = /^[0-9A-Z_-]+$/i.test(login);
-		setLoginValid(loginIsValid);
 	};
 
 	const handleSubmit = (event: React.SyntheticEvent) => {
@@ -72,43 +76,17 @@ function LoginForm(props: LoginFormProps) {
 	};
 
 	const handleRegisterButton = (event: React.SyntheticEvent) => {
-		props.onPressedRegButton();
+		dispatch(setRegisterForm())
 		event.preventDefault();
 	};
 
 	const handleLoginChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setLogin(event.target.value);
+		dispatch(setLogin(event.target.value));
 	};
 
 	const handleLPasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setPassword(event.target.value);
+		dispatch(setPassword(event.target.value));
 	};
-
-	useEffect(
-		() => {
-			changeButtonState();
-		},
-		[ password.length != 0, login.length != 0, loginValid ]
-	);
-
-	useEffect(
-		() => {
-			setIncorrectPassword(false);
-		},
-		[ password ]
-	);
-
-	useEffect(
-		() => {
-			setIncorrectLogin(false);
-            if (login.length === 0) {
-                setLoginValid(true)
-            } else {
-                checkLogin()
-            }
-		},
-		[ login ]
-	);
 
 	useEffect(
 		() => {
@@ -116,11 +94,11 @@ function LoginForm(props: LoginFormProps) {
 			if (wrapper) {
 				if (passwordRed !== incorrectPassword) {
 					wrapper.classList.toggle('incorrect');
-                    setPasswordRed(!passwordRed);
+					dispatch(setPasswordRed())
 				}
 			}
 		},
-		[ incorrectPassword ]
+		[incorrectPassword]
 	);
 
 	useEffect(
@@ -129,11 +107,11 @@ function LoginForm(props: LoginFormProps) {
 			if (wrapper) {
 				if ((loginRed && loginValid && !incorrectLogin) || (!loginRed && (!loginValid || incorrectLogin))) {
 					wrapper.classList.toggle('incorrect');
-                    setLoginRed(!loginRed);
+					dispatch(setLoginRed())
 				}
 			}
 		},
-		[ incorrectLogin, loginValid ]
+		[incorrectLogin, loginValid]
 	);
 
 	return (
