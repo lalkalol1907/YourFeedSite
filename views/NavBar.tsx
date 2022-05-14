@@ -1,32 +1,26 @@
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Avatar } from '@mui/material';
-import User from '../models/user';
 import { BsPlusLg } from 'react-icons/bs';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../store/store';
+import { setAuth, setUser } from '../store/slices/UserSlice';
 //TODO: navbar redux
 interface NavBarProps {
-    auth: boolean;
-    user?: User;
     logOut?: () => void;
     newPost?: () => void;
 }
 
 function NavBar(props: NavBarProps) {
-    const [auth, setAuth] = useState(props.auth);
-    const [user, setUser] = useState(props.user);
 
-    useEffect(
-        () => {
-            setAuth(props.auth);
-            setUser(props.user);
-        },
-        [props.auth, props.user]
-    );
+    const { user, auth } = useSelector((state: RootState) => state.user)
+    const dispatch = useDispatch()
 
     const onLogOutPressed = () => {
         if (!props.logOut) {
             return;
         }
+        dispatch(setAuth(false))
+        dispatch(setUser(undefined))
         props.logOut();
     };
 
@@ -54,7 +48,7 @@ function NavBar(props: NavBarProps) {
                         <Link href="/profile">
                             <p className='dropdown_element'>Profile</p>
                         </Link>
-                        <button onClick={props.logOut} className="dropdown_element">Log Out</button>
+                        <button onClick={onLogOutPressed} className="dropdown_element">Log Out</button>
                     </div>
                 </div>
             </nav>

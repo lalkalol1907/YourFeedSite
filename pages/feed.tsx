@@ -11,9 +11,11 @@ import { RootState } from '../store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { like, setPosts } from '../store/slices/FeedSlice';
 import PostViewState from '../models/postviewstate';
+import User from '../models/user';
+import { setAuth, setUser } from '../store/slices/UserSlice';
 
 interface FeedProps {
-    userId: number,
+    user: User,
     posts: PostViewState[],
 }
 
@@ -28,7 +30,7 @@ function Feed(props: FeedProps) {
     };
 
     const onPressedLikeButton = (id: number) => {
-        dispatch(like({ id: id, userId: props.userId }))
+        dispatch(like({ id: id, userId: props.user.id }))
         fetch('/api/like-event', {
             method: 'POST',
             headers: {
@@ -36,7 +38,7 @@ function Feed(props: FeedProps) {
             },
             body: JSON.stringify({
                 post_id: id,
-                user_id: props.userId,
+                user_id: props.user.id,
                 access_token: cookies.access_token
             })
         });
@@ -47,6 +49,8 @@ function Feed(props: FeedProps) {
     };
 
     useEffect(() => {
+        dispatch(setAuth(true))
+        dispatch(setUser(props.user))
         dispatch(setPosts(props.posts))
     }, [])
 
@@ -57,7 +61,7 @@ function Feed(props: FeedProps) {
                 <BsPlusLg className='new_post_icon' />
             </button>
             <div className="feed">
-                <NavBar auth={true} logOut={logOut} newPost={newPost} />
+                <NavBar logOut={logOut} newPost={newPost} />
                 <div className="feed_posts">
                     {posts.map((post) => {
                         return (
@@ -70,7 +74,7 @@ function Feed(props: FeedProps) {
                                 likedUsers={post.likedUsers}
                                 userPic={post.userPic}
                                 onPressedLikeButton={onPressedLikeButton}
-                                userId={props.userId}
+                                userId={props.user.id}
                                 postUserId={post.userId}
                                 likesCounter={post.likesCounter}
                                 liked={post.liked}
@@ -122,7 +126,7 @@ export async function getServerSideProps(context: NextPageContext) {
 
     return {
         props: {
-            userId: response.user?.id,
+            user: response.user,
             posts: postViewStates
         }
     };
