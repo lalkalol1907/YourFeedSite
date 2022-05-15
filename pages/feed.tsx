@@ -57,9 +57,6 @@ function Feed(props: FeedProps) {
 
     return (
         <div className='feed_wrapper'>
-            <button className='new_post_button'>
-                <BsPlusLg className='new_post_icon' />
-            </button>
             <div className="feed">
                 <NavBar logOut={logOut} newPost={newPost} />
                 <div className="feed_posts">

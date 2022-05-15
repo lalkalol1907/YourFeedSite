@@ -1,11 +1,11 @@
 @use "presets/presets.scss"as presets;
 
 .feed {
-    @include presets.flex-col-center();
-    height: 100vh;
+    @include presets.flex-row-center();
+    max-height: 100vh;
     width: 100vw;
     margin: 0px;
-    background-color: presets.$gray-100;
+    background-color: presets.$gray-800;
     overflow: scroll;
 }
 
@@ -13,6 +13,7 @@
     height: 100vh;
     width: 100vw;
     margin: 0;
+    overflow: hidden;
 }
 
 .new_post_button {
@@ -52,7 +53,10 @@
 .feed_posts {
     @include presets.flex-col-center();
     overflow: scroll;
-    width: 100%;
+    width: 60%;
+    height: 100vh;
+    padding: 2rem;
+    background-color: presets.$gray-800;
 }
 
 .clip_loader {
@@ -64,9 +68,8 @@
     display: grid;
     align-items: center;
     max-width: 36rem;
-    min-width: 36rem;
     width: 100%;
-    border: 1px solid presets.$gray-200;
+    border: 1px solid presets.$gray-700;
     border-radius: 1rem;
     margin: 0 1rem;
     margin-bottom: 2.25rem;

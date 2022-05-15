@@ -1,15 +1,15 @@
 @use "presets/presets.scss";
 
 .navbar {
-    @include presets.flex-row-center();
-    min-width: 100%;
+    @include presets.flex-col-center();
+    width: 20%;
+    height: 100vh;
     padding: 1rem 0;
     border-style: solid;
     border-width: 0px;
-    border-bottom-width: 1px;
-    border-color: presets.$gray-200;
-    margin-bottom: 1rem;
-    background-color: presets.$gray-100;
+    border-right-width: 1px;
+    border-color: presets.$gray-700;
+    background-color: presets.$gray-800;
 
     // @media (orientation: portrait) {
     //     min-width: 0;
@@ -52,7 +52,7 @@
 .navbar_button {
     margin: 0 0.5rem;
     padding: 0 1rem;
-    background-color: presets.$gray-100;
+    background-color: presets.$gray-800;
     color: presets.$gray-500;
     border-radius: 0.75rem;
     font-size: large;
