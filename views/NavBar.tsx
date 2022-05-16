@@ -39,10 +39,8 @@ function NavBar(props: NavBarProps) {
                     <p className="navbar_button">Messenger</p>
                 </Link>
                 <div className="spacer" />
-                <button className='createpost_button' onClick={props.newPost} >
-                    <BsPlusLg className='plus_button' />
-                </button>
-                <div className='navbar_avatarButton_wrapper'>
+                
+                {/* <div className='navbar_avatarButton_wrapper'>
                     <Avatar src={''} className="navbar_avatarButton" />
                     <div className='dropdown_profile'>
                         <Link href="/profile">
@@ -50,7 +48,12 @@ function NavBar(props: NavBarProps) {
                         </Link>
                         <button onClick={onLogOutPressed} className="dropdown_element">Log Out</button>
                     </div>
-                </div>
+                </div> */}
+                {props.newPost && (
+                    <button className='createpost_button' onClick={props.newPost} >
+                        New Post
+                    </button>
+                )}
             </nav>
         );
     }

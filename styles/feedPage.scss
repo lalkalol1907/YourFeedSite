@@ -16,34 +16,6 @@
     overflow: hidden;
 }
 
-.new_post_button {
-    box-shadow: 0px 0px 10px presets.$purple;
-    position: absolute;
-    bottom: 3rem;
-    left: 3rem;
-    background-color: presets.$purple;
-    width: 4rem;
-    height: 4rem;
-    border-radius: 50%;
-    transition: transform 0.45s ease 0.6s, box-shadow 0.2s ease 0.5s, background-color 0.4s, color 0.9s;
-    padding: 0;
-    color: white;
-    transform: scale(1);
-
-    @media (max-width: 65rem) {
-        transition: transform 0.45s ease 0.2s, box-shadow 0.1s ease 0.55s;
-        transform: scale(0);
-        box-shadow: none;
-    }
-
-    &:hover {
-        transition: background-color 0.4s, color 0.4s;
-        cursor: pointer;
-        background-color: white;
-        color: presets.$purple;
-    }
-}
-
 .new_post_icon {
     width: 1.75rem;
     height: 1.75rem;
@@ -70,8 +42,8 @@
     display: grid;
     color: presets.$gray-300;
     align-items: center;
-    max-width: 36rem;
-    width: 100%;
+    max-width: 32rem;
+    width: 70%;
     border: 1px solid black;
     background-color: presets.$gray-800;
     border-radius: 1rem;
@@ -158,46 +130,52 @@
 
 .like_button {
     @include bottom_button();
-    background-color: presets.$gray-100;
-    border-color: #e0e0e0;
+    background-color: presets.$gray-700;
+    border-color: presets.$gray-900;
 
     &:hover {
-        background-color: presets.$red-100;
-        border-color: presets.$red-400;
+        background-color: #950740;
+        border-color: #C3073F;
 
         svg {
-            fill: presets.$red-400
+            fill: #C3073F;
         }
     }
 
     svg {
-        fill: #bababa;
+        padding-top: 2px;
+
+        fill: presets.$gray-800;
+
     }
 }
 
 .like_button_pressed {
     @include bottom_button();
-    background-color: presets.$red-300;
-    border-color: presets.$red-500;
+    background-color: #C3073F;
+    border-color: #950740;
 
     &:hover {
-        background-color: presets.$red-200;
-        border-color: presets.$red-400;
+        background-color: #950740;
+        border-color: #C3073F;
 
         svg {
-            fill: presets.$red-400
+
+            fill: #fa034d;
         }
     }
 
     svg {
-        fill: presets.$red-500;
+        padding-top: 2px;
+
+        fill: #950740;
     }
 }
 
 .send_button {
     @include bottom_button();
-    background-color: presets.$gray-100;
-    border-color: #e0e0e0;
+    background-color: presets.$gray-700;
+    border-color: presets.$gray-900;
 
     &:hover {
         background-color: presets.$fuchsia-100;
@@ -209,6 +187,7 @@
     }
 
     svg {
-        fill: #bababa
+        padding-top: 2px;
+        fill: presets.$gray-800;
     }
 }
