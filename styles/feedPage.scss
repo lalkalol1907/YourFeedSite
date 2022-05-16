@@ -56,7 +56,8 @@
     width: 60%;
     height: 100vh;
     padding: 2rem;
-    background-color: presets.$gray-800;
+    border-right: 1px solid black;
+    background-color: presets.$gray-900;
 }
 
 .clip_loader {
@@ -65,11 +66,14 @@
 }
 
 .post {
+    box-shadow: 0 0 15px -5px black;
     display: grid;
+    color: presets.$gray-300;
     align-items: center;
     max-width: 36rem;
     width: 100%;
-    border: 1px solid presets.$gray-700;
+    border: 1px solid black;
+    background-color: presets.$gray-800;
     border-radius: 1rem;
     margin: 0 1rem;
     margin-bottom: 2.25rem;

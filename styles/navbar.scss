@@ -1,14 +1,14 @@
 @use "presets/presets.scss";
 
 .navbar {
-    @include presets.flex-col-center();
-    width: 20%;
+    @include presets.flex-col();
+    width: 15%;
     height: 100vh;
     padding: 1rem 0;
     border-style: solid;
     border-width: 0px;
     border-right-width: 1px;
-    border-color: presets.$gray-700;
+    border-color: black;
     background-color: presets.$gray-800;
 
     // @media (orientation: portrait) {
@@ -53,16 +53,17 @@
     margin: 0 0.5rem;
     padding: 0 1rem;
     background-color: presets.$gray-800;
-    color: presets.$gray-500;
+    // color: presets.$gray-500;
+    color: #950740;
     border-radius: 0.75rem;
     font-size: large;
     font-weight: bold;
     padding: 1rem 1rem;
 
     &:hover {
-        background-color: presets.$gray-200;
+        background-color: presets.$gray-900;
         cursor: pointer;
-        color: presets.$purple;
+        color: #C3073F;
     }
 }
 
