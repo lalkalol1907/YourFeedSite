@@ -22,7 +22,10 @@ function PostView(props: PostViewProps) {
     const mediaProvider = new MediaProvider()
 
     const userId = props.userId
-    // const content = mediaProvider.getContent(props.content)
+    const content = mediaProvider.getContent(props.content)
+    console.log(props.content)
+    console.log(props.userPic);
+    
 
     const onLikePressed = () => {
         props.onPressedLikeButton(props.id)
@@ -40,7 +43,7 @@ function PostView(props: PostViewProps) {
                 <h3>{props.username}</h3>
             </div>
             <div>
-                {/* <img src={content} alt="content" className="post_pic" /> */}
+                <img src={content} alt="content" className="post_pic" />
             </div>
             <div className='post_likes'>
                 <h4>Likes: {props.likesCounter}</h4>

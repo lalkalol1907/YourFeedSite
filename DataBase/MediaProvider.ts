@@ -2,7 +2,7 @@ class MediaProvider {
     path: string
 
     constructor() {
-        this.path = "upload"
+        this.path = "upload" // for dev
     }
 
     getAvatar(pic: string): string {
