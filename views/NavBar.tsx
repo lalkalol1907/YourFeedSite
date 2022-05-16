@@ -38,7 +38,6 @@ function NavBar(props: NavBarProps) {
                 <Link href="/messenger">
                     <p className="navbar_button">Messenger</p>
                 </Link>
-                <div className="spacer" />
                 
                 {/* <div className='navbar_avatarButton_wrapper'>
                     <Avatar src={''} className="navbar_avatarButton" />

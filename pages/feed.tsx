@@ -54,30 +54,37 @@ function Feed(props: FeedProps) {
         dispatch(setPosts(props.posts))
     }, [])
 
-
+// TODO: TopBar with page header; transfer logo to topbar
     return (
         <div className='feed_wrapper'>
             <div className="feed">
                 <NavBar logOut={logOut} newPost={newPost} />
-                <div className="feed_posts">
-                    {posts.map((post) => {
-                        return (
-                            <PostView
-                                key={post.id}
-                                id={post.id}
-                                text={post.text}
-                                username={post.username}
-                                content={post.content}
-                                likedUsers={post.likedUsers}
-                                userPic={post.userPic}
-                                onPressedLikeButton={onPressedLikeButton}
-                                userId={props.user.id}
-                                postUserId={post.userId}
-                                likesCounter={post.likesCounter}
-                                liked={post.liked}
-                            />
-                        )
-                    })}
+                <div className='feed_center_wrapper'>
+                    <div className='feed_header'>
+                        <div className='spacer'></div>
+                        <p>ABOBA</p>
+                        <div className='spacer'></div>
+                    </div>
+                    <div className="feed_posts">
+                        {posts.map((post) => {
+                            return (
+                                <PostView
+                                    key={post.id}
+                                    id={post.id}
+                                    text={post.text}
+                                    username={post.username}
+                                    content={post.content}
+                                    likedUsers={post.likedUsers}
+                                    userPic={post.userPic}
+                                    onPressedLikeButton={onPressedLikeButton}
+                                    userId={props.user.id}
+                                    postUserId={post.userId}
+                                    likesCounter={post.likesCounter}
+                                    liked={post.liked}
+                                />
+                            )
+                        })}
+                    </div>
                 </div>
             </div>
         </div>
